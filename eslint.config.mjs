@@ -17,8 +17,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+export default tseslint.config(
   {
     ignores: [
       'node_modules/**',
@@ -34,8 +33,6 @@ const eslintConfig = [
       js.configs.recommended,
       ...tseslint.configs.strict,
       eslintPluginPrettier,
-      next / core - web - vitals,
-      next / typescript,
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -64,6 +61,5 @@ const eslintConfig = [
       },
     },
   },
-];
-
-export default eslintConfig;
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+);

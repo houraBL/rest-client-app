@@ -1,6 +1,5 @@
 'use client';
 import { auth, registerWithEmailAndPassword } from '@/firebase/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
