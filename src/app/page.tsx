@@ -1,18 +1,8 @@
-'use client';
-import { auth, registerWithEmailAndPassword } from '@/firebase/firebase';
+import Login from '@/components/Login/Login';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function Home() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, loading, error] = useAuthState(auth);
-  const register = () => {
-    registerWithEmailAndPassword(email, password);
-  };
-
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -30,25 +20,8 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
-        <button className="btn btn-accent">daisy button</button>
-        <h2 className="hero-content hero">REGISTER</h2>
-        <input
-          type="text"
-          className="input input-accent"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail Address"
-        />
-        <input
-          type="password"
-          className="input input-secondary"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button className="btn btn-info" onClick={register}>
-          Register
-        </button>
+        <button className="btn btn-accent rounded-3xl">daisy button</button>
+        <Login />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a

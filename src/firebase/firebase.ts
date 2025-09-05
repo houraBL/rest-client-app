@@ -8,13 +8,13 @@ import {
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAUAEwdLRNIroKr0NFLMmJO7gc49CldoG8',
-  authDomain: 'rest-client-app-c5451.firebaseapp.com',
-  projectId: 'rest-client-app-c5451',
-  storageBucket: 'rest-client-app-c5451.firebasestorage.app',
-  messagingSenderId: '752176675338',
-  appId: '1:752176675338:web:6d74c71b04a0095120fdf3',
-  measurementId: 'G-1DE603P0E5',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
