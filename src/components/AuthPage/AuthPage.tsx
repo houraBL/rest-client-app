@@ -11,6 +11,7 @@ import { loginSchema, registerSchema } from '@/lib/validation/auth';
 import z from 'zod';
 import { useRouter } from 'next/navigation';
 import { Loader } from '../Loader/Loader';
+import { AuthForm } from './AuthForm/AuthForm';
 
 type Mode = 'login' | 'register';
 type Errors = {
@@ -107,71 +108,18 @@ export default function AuthPage() {
           {mode === 'login' ? 'Enter your credentials' : 'Create a new account'}
         </p>
       </div>
-      <form
-        data-testid="form"
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4"
-      >
-        {mode === 'register' && (
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              className="input input-accent w-full"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                setErrors((prev) => ({ ...prev, name: undefined }));
-              }}
-              placeholder="Enter your name"
-            />
-            {errors.name && (
-              <p className="text-red-500 m-0 text-xs mt-2">{errors.name}</p>
-            )}
-          </div>
-        )}
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
-            Email
-          </label>
-          <input
-            type="text"
-            className="input input-accent w-full"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors((prev) => ({ ...prev, email: undefined }));
-            }}
-            placeholder="Enter your email"
-          />
-          {errors.email && (
-            <p className="text-red-500 text-xs mt-2">{errors.email}</p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-2">
-            Password
-          </label>
-          <input
-            type="password"
-            className="input input-accent w-full"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrors((prev) => ({ ...prev, password: undefined }));
-            }}
-            placeholder="Enter your password"
-          />
-          {errors.password && (
-            <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-          )}
-        </div>
-        <button className="btn btn-info mt-5" disabled={isSubmitting}>
-          {mode === 'login' ? 'Sign In' : 'Sign Up'}
-        </button>
-      </form>
+      <AuthForm
+        mode={mode}
+        name={name}
+        email={email}
+        password={password}
+        setName={setName}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        errors={errors}
+        handleSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+      />
       <p className="text-center mb-5">
         {mode === 'login' ? "Don't have an account? " : 'Have an account? '}
         <span
