@@ -1,0 +1,10 @@
+{
+  "Header": {
+    "signin": "Sign In",
+    "signup": "Sign Up"
+  },
+  "Test": {
+    "home": "Home",
+    "about": "About"
+  }
+}
