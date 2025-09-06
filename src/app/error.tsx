@@ -9,7 +9,7 @@ export default function Error({
 }) {
   return (
     <div className="text-center py-20">
-      <h1 className="text-2xl font-bold">Something went wrong!</h1>
+      <h1 className="text-2xl font-bold">Something went wrong! Test!</h1>
       <p>{error.message}</p>
       <button onClick={reset} className="">
         Try Again
