@@ -6,9 +6,11 @@ import {
   registerWithEmailAndPassword,
 } from '@/firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loginSchema, registerSchema } from '@/lib/validation/auth';
 import z from 'zod';
+import { useRouter } from 'next/navigation';
+import { Loader } from '../Loader/Loader';
 
 type Mode = 'login' | 'register';
 type Errors = {
@@ -18,6 +20,8 @@ type Errors = {
 };
 
 export default function AuthPage() {
+  const router = useRouter();
+
   const [mode, setMode] = useState<Mode>('login');
 
   const [name, setName] = useState('');
@@ -27,19 +31,24 @@ export default function AuthPage() {
   const [errors, setErrors] = useState<Errors>({});
 
   const [user, loading, error] = useAuthState(auth);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (loading) return <p>Loading...</p>;
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/home');
+    }
+  }, [loading, user, router]);
+
+  if (loading) return <Loader />;
   if (error) {
     console.log(error);
   }
-  if (user) {
-    // TODO: redirect to the main page
-    console.log('Redirecting');
-  }
+  if (user) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setIsSubmitting(true);
 
     try {
       if (mode === 'login') {
@@ -83,13 +92,17 @@ export default function AuthPage() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="flex flex-col gap-3 w-sm">
       <div className="mb-5">
-        <h2>{mode === 'login' ? 'Welcome Back!' : 'Get Started Now'}</h2>
+        <h2 className="mb-2 font-bold text-xl">
+          {mode === 'login' ? 'Welcome Back!' : 'Get Started Now'}
+        </h2>
         <p>
           {mode === 'login' ? 'Enter your credentials' : 'Create a new account'}
         </p>
@@ -151,19 +164,20 @@ export default function AuthPage() {
             <p className="text-red-500 text-xs mt-2">{errors.password}</p>
           )}
         </div>
-        <button className="btn btn-info mt-5">
+        <button className="btn btn-info mt-5" disabled={isSubmitting}>
           {mode === 'login' ? 'Sign In' : 'Sign Up'}
         </button>
       </form>
-      <p className="text-center">
+      <p className="text-center mb-5">
         {mode === 'login' ? "Don't have an account? " : 'Have an account? '}
         <span
-          className="cursor-pointer"
+          className="cursor-pointer text-blue-400"
           onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
         >
           {mode === 'login' ? 'Sign Up' : 'Sign In'}
         </span>
       </p>
+      {isSubmitting && <Loader />}
     </div>
   );
 }
