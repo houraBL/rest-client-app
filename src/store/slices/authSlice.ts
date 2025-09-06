@@ -3,19 +3,18 @@ import { createSlice } from '@reduxjs/toolkit';
 type InitialState = {
   isAuthenticated: boolean;
   user: {
-    userName: string;
+    uid: string;
     email: string;
-    password: string;
   } | null;
   isLoading: boolean;
-  error: boolean;
+  error: string | null;
 };
 
 const initialState: InitialState = {
   isAuthenticated: false,
-  user: null, //данные юзера
+  user: null,
   isLoading: false,
-  error: false,
+  error: '',
 };
 
 const authSlice = createSlice({
@@ -24,7 +23,7 @@ const authSlice = createSlice({
   reducers: {
     signInStart(state) {
       state.isLoading = true;
-      state.error = false;
+      state.error = '';
     },
     signInSuccess(state, action) {
       state.isLoading = false;

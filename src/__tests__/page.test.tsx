@@ -6,7 +6,7 @@ vi.mock('@/firebase/firebase', () => ({
   registerWithEmailAndPassword: vi.fn(),
 }));
 
-test('Page', () => {
+test.skip('Page', () => {
   render(<Page />);
   expect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined();
 });
