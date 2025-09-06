@@ -12,6 +12,8 @@ import z from 'zod';
 import { useRouter } from 'next/navigation';
 import { Loader } from '../Loader/Loader';
 import { AuthForm } from './AuthForm/AuthForm';
+import { FirebaseError } from 'firebase/app';
+import { toast } from 'react-toastify';
 
 type Mode = 'login' | 'register';
 type Errors = {
@@ -92,7 +94,19 @@ export default function AuthPage() {
         }
       }
     } catch (err) {
-      console.error(err);
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
+          case 'auth/user-not-found':
+            toast.error('User with this email not found');
+            break;
+          case 'auth/invalid-credential':
+            toast.error('Wrong password or email');
+            break;
+          case 'auth/email-already-in-use':
+            toast.error('Email already in use');
+            break;
+        }
+      }
     } finally {
       setIsSubmitting(false);
     }
