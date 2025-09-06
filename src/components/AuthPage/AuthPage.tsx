@@ -98,7 +98,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex flex-col gap-3 w-sm">
+    <div data-testid="auth-page" className="flex flex-col gap-3 w-sm">
       <div className="mb-5">
         <h2 className="mb-2 font-bold text-xl">
           {mode === 'login' ? 'Welcome Back!' : 'Get Started Now'}
@@ -107,7 +107,11 @@ export default function AuthPage() {
           {mode === 'login' ? 'Enter your credentials' : 'Create a new account'}
         </p>
       </div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form
+        data-testid="form"
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4"
+      >
         {mode === 'register' && (
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">
