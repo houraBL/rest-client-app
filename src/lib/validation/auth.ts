@@ -6,8 +6,8 @@ export const registerSchema = z.object({
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters' })
-    .regex(/(?=.*\p{L})/u, {
-      message: 'Password must contain at least one letter',
+    .regex(/[A-Za-z]/, {
+      message: 'Password must contain at least one Latin letter',
     })
     .regex(/(?=.*\d)/, { message: 'Password must contain at least one number' })
     .regex(/(?=.*[^\p{L}\d\s])/u, {

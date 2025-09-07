@@ -7,7 +7,7 @@ type Errors = {
 };
 
 type AuthFormProps = {
-  mode: 'login' | 'register';
+  isLogin: boolean;
   name: string;
   email: string;
   password: string;
@@ -20,7 +20,7 @@ type AuthFormProps = {
 };
 
 export const AuthForm = ({
-  mode,
+  isLogin,
   name,
   email,
   password,
@@ -37,7 +37,7 @@ export const AuthForm = ({
       className="flex flex-col gap-4"
       onSubmit={handleSubmit}
     >
-      {mode === 'register' && (
+      {!isLogin && (
         <InputField
           label="Name"
           value={name}
@@ -61,8 +61,12 @@ export const AuthForm = ({
         placeholder="Enter your password"
         error={errors.password}
       />
-      <button className="btn btn-info mt-5" disabled={isSubmitting}>
-        {mode === 'login' ? 'Sign In' : 'Sign Up'}
+      <button
+        type="submit"
+        className="btn btn-info mt-5"
+        disabled={isSubmitting}
+      >
+        {isLogin ? 'Sign In' : 'Sign Up'}
       </button>
     </form>
   );

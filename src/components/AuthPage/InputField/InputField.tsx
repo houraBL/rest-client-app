@@ -16,8 +16,8 @@ export const InputField = ({
   placeholder,
 }: InputFieldProps) => {
   return (
-    <div>
-      <label htmlFor={label} className="block text-sm font-medium mb-2">
+    <>
+      <label htmlFor={label} className="block text-sm font-medium ">
         {label}
       </label>
       <input
@@ -28,7 +28,7 @@ export const InputField = ({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
       />
-      {error && <p className="text-red-500 m-0 text-xs mt-2">{error}</p>}
-    </div>
+      {error && <p className="text-red-500 m-0 text-xs ">{error}</p>}
+    </>
   );
 };

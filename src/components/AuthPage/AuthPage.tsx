@@ -13,9 +13,8 @@ import { useRouter } from 'next/navigation';
 import { Loader } from '../Loader/Loader';
 import { AuthForm } from './AuthForm/AuthForm';
 import { FirebaseError } from 'firebase/app';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
-type Mode = 'login' | 'register';
 type Errors = {
   name?: string;
   email?: string;
@@ -25,7 +24,7 @@ type Errors = {
 export default function AuthPage() {
   const router = useRouter();
 
-  const [mode, setMode] = useState<Mode>('login');
+  const [isLogin, setIsLogin] = useState(true);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -54,7 +53,7 @@ export default function AuthPage() {
     setIsSubmitting(true);
 
     try {
-      if (mode === 'login') {
+      if (isLogin) {
         const result = loginSchema.safeParse({ email, password });
         if (!result.success) {
           const errors = z.treeifyError(result.error);
@@ -65,10 +64,8 @@ export default function AuthPage() {
           return;
         } else {
           const validData = result.data;
-          await await logInWithEmailAndPassword(
-            validData.email,
-            validData.password
-          );
+          await logInWithEmailAndPassword(validData.email, validData.password);
+          toast.success('Welcome back!');
           setEmail('');
           setPassword('');
         }
@@ -88,6 +85,7 @@ export default function AuthPage() {
             validData.email,
             validData.password
           );
+          toast.success('Account created successfully!');
           setName('');
           setEmail('');
           setPassword('');
@@ -105,7 +103,11 @@ export default function AuthPage() {
           case 'auth/email-already-in-use':
             toast.error('Email already in use');
             break;
+          default:
+            toast.error('An unknown authentication error occurred');
         }
+      } else {
+        toast.error('An unknown error occurred');
       }
     } finally {
       setIsSubmitting(false);
@@ -116,14 +118,12 @@ export default function AuthPage() {
     <div data-testid="auth-page" className="flex flex-col gap-3 w-sm">
       <div className="mb-5">
         <h2 className="mb-2 font-bold text-xl">
-          {mode === 'login' ? 'Welcome Back!' : 'Get Started Now'}
+          {isLogin ? 'Welcome Back!' : 'Get Started Now'}
         </h2>
-        <p>
-          {mode === 'login' ? 'Enter your credentials' : 'Create a new account'}
-        </p>
+        <p>{isLogin ? 'Enter your credentials' : 'Create a new account'}</p>
       </div>
       <AuthForm
-        mode={mode}
+        isLogin={isLogin}
         name={name}
         email={email}
         password={password}
@@ -135,12 +135,12 @@ export default function AuthPage() {
         isSubmitting={isSubmitting}
       />
       <p className="text-center mb-5">
-        {mode === 'login' ? "Don't have an account? " : 'Have an account? '}
+        {isLogin ? "Don't have an account? " : 'Have an account? '}
         <span
           className="cursor-pointer text-blue-400"
-          onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
+          onClick={() => setIsLogin(!isLogin)}
         >
-          {mode === 'login' ? 'Sign Up' : 'Sign In'}
+          {isLogin ? 'Sign Up' : 'Sign In'}
         </span>
       </p>
       {isSubmitting && <Loader />}
