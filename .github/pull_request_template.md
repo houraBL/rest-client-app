@@ -1,9 +1,11 @@
 # Description
+
 Please include a summary of the changes and the related issue. Please also include relevant context. List any dependencies that are required for this change.
 
 Fixes # (issue №)
 
 ## Type of change
+
 Please delete options that are not relevant.
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
@@ -12,18 +14,22 @@ Please delete options that are not relevant.
 - [ ] Refactoring (code restructuring without new functionality added)
 - [ ] Style (UI/visual changes only)
 
-## Changes  
-Detailed description of changes:  
+## Changes
+
+Detailed description of changes:
+
 - feature A
 - feature B
 
 # How Has This Been Tested?
+
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
 - Test A
 - Test B
 
 # Checklist:
+
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
 - [ ] My changes generate no new warnings
@@ -32,8 +38,9 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Any dependent changes have been merged and published in downstream modules
 
 ## Screenshots
+
 _Please provide screenshots if visual changes have been made_
 
 ## Additional Comments
-_Any additional information that should be considered during review_
 
+_Any additional information that should be considered during review_
