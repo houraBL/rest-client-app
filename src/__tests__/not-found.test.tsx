@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import NotFound from '@/app/global-not-found';
+import NotFound from '@/app/not-found';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
