@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import Providers from './Providers';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -42,6 +43,7 @@ export default async function RootLayout({
           <Providers>
             <div className="min-h-screen flex flex-col relative w-full">
               <Header />
+              <Toaster position="top-right" reverseOrder={false} />
               <main className="flex-grow flex items-center justify-center text-xl">
                 {children}
               </main>
