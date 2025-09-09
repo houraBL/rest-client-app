@@ -1,10 +1,9 @@
-import { useLocalStorage } from './useLocalStorage';
+import { useVariableLocalStorage } from './useVariableLocalStorage';
 
 export function useVariables(userId: string) {
-  const [variables, setVariables] = useLocalStorage<Record<string, string>>(
-    userId,
-    {}
-  );
+  const [variables, setVariables] = useVariableLocalStorage<
+    Record<string, string>
+  >(userId, {});
 
   const updateOrAdd = (key: string, value: string) => {
     setVariables((prev: Record<string, string>) => ({ ...prev, [key]: value }));
