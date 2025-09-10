@@ -2,31 +2,44 @@
 import useTheme from '@/hooks/useTheme';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
   const { toggleTheme } = useTheme();
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="navbar bg-base-100 z-40 sticky top-0  mb-32 shadow-lg">
-      <div className="flex-1">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link href="/" className="">
-              <Image
-                aria-hidden
-                src="/app-logo.svg"
-                alt="App logo"
-                className="w-6 h-6 p-0"
-                width={300}
-                height={300}
-              />
-              RESTful API
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul className="menu menu-horizontal px-1">
+    <header
+      className={`navbar bg-base-100 z-40 sticky top-0 shadow-lg transition-all duration-500 ease-in-out 
+        ${scrolled ? 'h-16 bg-purple-100 dark:bg-purple-950' : ' h-20'}
+      `}
+    >
+      <ul className="menu menu-horizontal navbar-start px-1">
+        <li>
+          <Link href="/" className="">
+            <Image
+              aria-hidden
+              src="/app-logo.svg"
+              alt="App logo"
+              className="w-6 h-6 p-0"
+              width={300}
+              height={300}
+            />
+            RESTful API
+          </Link>
+        </li>
+      </ul>
+      <ul className="menu menu-horizontal navbar-end px-1">
         <li>
           <label className="flex cursor-pointer gap-2">
             <span className="label-text">SIGNED IN: </span>
