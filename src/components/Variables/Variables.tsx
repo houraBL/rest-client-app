@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { TableRow } from '../TableRow/TableRow';
+import toast from 'react-hot-toast';
 
 type VariableType = {
   picked: boolean;
@@ -16,11 +17,20 @@ export default function Variables() {
 
   const addVariable = () => {
     if (newVarName.trim()) {
+      const duplicate = variables.some(
+        (v) => v.name.toLowerCase() === newVarName.trim().toLowerCase()
+      );
+
+      if (duplicate) {
+        toast.error('Variable with this name already exists!');
+        return;
+      }
+
       setVariables([
         ...variables,
         {
           picked: false,
-          name: newVarName,
+          name: newVarName.trim(),
           initialValue: newInitialValue,
         },
       ]);
