@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TableRow } from '../TableRow/TableRow';
 
 type VariableType = {
   picked: boolean;
@@ -59,49 +60,16 @@ export default function Variables() {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {variables.map((v, index) => (
-              <tr
+              <TableRow
                 key={index}
-                className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                <td className="p-3 text-center">
-                  <input
-                    type="checkbox"
-                    checked={v.picked}
-                    onChange={(e) =>
-                      updateVariable(index, 'picked', e.target.checked)
-                    }
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
-                  />
-                </td>
-                <td className="p-3">
-                  <input
-                    type="text"
-                    value={v.name}
-                    onChange={(e) =>
-                      updateVariable(index, 'name', e.target.value)
-                    }
-                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </td>
-                <td className="p-3">
-                  <input
-                    type="text"
-                    value={v.initialValue}
-                    onChange={(e) =>
-                      updateVariable(index, 'initialValue', e.target.value)
-                    }
-                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </td>
-                <td className="p-3 text-center">
-                  <button
-                    onClick={() => deleteVariable(index)}
-                    className="px-3 py-1 text-sm rounded-md bg-red-500 hover:bg-red-600 text-white shadow-sm transition-colors"
-                  >
-                    ✕
-                  </button>
-                </td>
-              </tr>
+                picked={v.picked}
+                name={v.name}
+                initialValue={v.initialValue}
+                onChange={(field, value) =>
+                  updateVariable(index, field as keyof VariableType, value)
+                }
+                onDelete={() => deleteVariable(index)}
+              />
             ))}
             <tr className="bg-gray-50 dark:bg-gray-800/40">
               <td className="p-3 text-center">
@@ -128,7 +96,7 @@ export default function Variables() {
               <td className="p-3 text-center">
                 <button
                   onClick={addVariable}
-                  className="px-4 py-2 text-sm rounded-md bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition-colors"
+                  className="px-4 py-2 text-sm rounded-md bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition-colors cursor-pointer"
                 >
                   Add
                 </button>
