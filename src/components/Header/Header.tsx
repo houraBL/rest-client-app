@@ -8,7 +8,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loader } from '../Loader/Loader';
 
 export default function Header() {
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [user, loading] = useAuthState(auth);
   const [scrolled, setScrolled] = useState(false);
 
@@ -79,7 +79,7 @@ export default function Header() {
             <input
               type="checkbox"
               className="theme-controller"
-              value=""
+              defaultChecked={theme !== 'dark'}
               onClick={toggleTheme}
             />
 
