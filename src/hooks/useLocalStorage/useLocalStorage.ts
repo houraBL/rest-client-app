@@ -9,20 +9,15 @@ export const LS_KEYS = {
 
 const useLocalStorage = (
   key: string,
-  initialValue: string = ''
+  initialValue = ''
 ): [string, React.Dispatch<React.SetStateAction<string>>] => {
-  const [value, setValue] = useState<string>(initialValue);
-
-  useEffect(() => {
-    try {
+  const [value, setValue] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
       const stored = window.localStorage.getItem(key);
-      if (stored !== null) {
-        setValue(stored);
-      }
-    } catch (err) {
-      console.error('useLocalStorage get error:', err);
+      if (stored !== null) return stored;
     }
-  }, [initialValue, key]);
+    return initialValue;
+  });
 
   useEffect(() => {
     try {
