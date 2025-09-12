@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TableRow } from '../TableRow/TableRow';
 import toast from 'react-hot-toast';
+import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage';
 
 type VariableType = {
   picked: boolean;
@@ -11,14 +12,25 @@ type VariableType = {
 };
 
 export default function Variables() {
-  const [variables, setVariables] = useState<VariableType[]>([]);
+  const [isClient, setIsClient] = useState(false);
+  const [variables, setVariables] = useVariableLocalStorage<VariableType[]>(
+    'variables',
+    []
+  );
   const [newVarName, setNewVarName] = useState('');
   const [newInitialValue, setNewInitialValue] = useState('');
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
 
   const addVariable = () => {
     if (newVarName.trim()) {
       const duplicate = variables.some(
-        (v) => v.name.toLowerCase() === newVarName.trim().toLowerCase()
+        (v: VariableType) =>
+          v.name.toLowerCase() === newVarName.trim().toLowerCase()
       );
 
       if (duplicate) {
@@ -50,7 +62,7 @@ export default function Variables() {
   };
 
   const deleteVariable = (index: number) => {
-    setVariables(variables.filter((_, i) => i !== index));
+    setVariables(variables.filter((_: unknown, i: number) => i !== index));
   };
 
   return (
@@ -69,7 +81,7 @@ export default function Variables() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {variables.map((v, index) => (
+            {variables.map((v: VariableType, index: number) => (
               <TableRow
                 key={index}
                 picked={v.picked}
