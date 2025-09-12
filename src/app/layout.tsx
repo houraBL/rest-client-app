@@ -6,16 +6,7 @@ import Providers from './Providers';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { Toaster } from 'react-hot-toast';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import { getMessages } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'RESTful API',
@@ -24,22 +15,15 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 }>) {
-  const { locale } = await params;
-  console.log(locale);
-  const messages = (await import(`../../messages/${locale || 'en'}.json`))
-    .default;
+  const messages = await getMessages();
 
   return (
-    <html lang={locale || 'en'} suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NextIntlClientProvider locale={locale || 'en'} messages={messages}>
+    <html suppressHydrationWarning>
+      <body className="antialiased">
+        <NextIntlClientProvider messages={messages}>
           <Providers>
             <div className="min-h-screen flex flex-col relative w-full">
               <Header />
