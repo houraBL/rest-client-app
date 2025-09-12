@@ -2,68 +2,26 @@
 
 import { useEffect, useState } from 'react';
 import { TableRow } from '../TableRow/TableRow';
-import toast from 'react-hot-toast';
-import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage';
-
-type VariableType = {
-  picked: boolean;
-  name: string;
-  initialValue: string;
-};
+import useVariables, { VariableType } from '@/hooks/useVariables';
 
 export default function Variables() {
   const [isClient, setIsClient] = useState(false);
-  const [variables, setVariables] = useVariableLocalStorage<VariableType[]>(
-    'variables',
-    []
-  );
-  const [newVarName, setNewVarName] = useState('');
-  const [newInitialValue, setNewInitialValue] = useState('');
+  const {
+    variables,
+    newVarName,
+    setNewVarName,
+    newInitialValue,
+    setNewInitialValue,
+    addVariable,
+    updateVariable,
+    deleteVariable,
+  } = useVariables();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) return null;
-
-  const addVariable = () => {
-    if (newVarName.trim()) {
-      const duplicate = variables.some(
-        (v: VariableType) =>
-          v.name.toLowerCase() === newVarName.trim().toLowerCase()
-      );
-
-      if (duplicate) {
-        toast.error('Variable with this name already exists!');
-        return;
-      }
-
-      setVariables([
-        ...variables,
-        {
-          picked: false,
-          name: newVarName.trim(),
-          initialValue: newInitialValue,
-        },
-      ]);
-      setNewVarName('');
-      setNewInitialValue('');
-    }
-  };
-
-  const updateVariable = (
-    index: number,
-    field: keyof VariableType,
-    value: unknown
-  ) => {
-    const updated = [...variables];
-    updated[index] = { ...updated[index], [field]: value };
-    setVariables(updated);
-  };
-
-  const deleteVariable = (index: number) => {
-    setVariables(variables.filter((_: unknown, i: number) => i !== index));
-  };
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl transition-colors">
@@ -87,9 +45,7 @@ export default function Variables() {
                 picked={v.picked}
                 name={v.name}
                 initialValue={v.initialValue}
-                onChange={(field, value) =>
-                  updateVariable(index, field as keyof VariableType, value)
-                }
+                onChange={(field, value) => updateVariable(index, field, value)}
                 onDelete={() => deleteVariable(index)}
               />
             ))}
