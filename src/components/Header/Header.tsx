@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loader } from '../Loader/Loader';
+import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher';
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
@@ -44,11 +45,7 @@ export default function Header() {
       </ul>
       <ul className="menu menu-horizontal navbar-end px-1">
         <li>
-          <label className="flex cursor-pointer gap-2">
-            <span className="label-text">EN</span>
-            <input type="checkbox" value="ru" className="toggle" />
-            <span className="label-text">RU</span>
-          </label>
+          <LanguageSwitcher />
         </li>
         {loading && <Loader />}
         {!user && !loading && (
