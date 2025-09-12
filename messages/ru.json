@@ -4,6 +4,11 @@
     "signup": "Регистрация",
     "signout": "Выйти"
   },
+  "Footer": {
+    "course": "RS School курс по React",
+    "team": "Наша Команда",
+    "mentors": "Наши менторы"
+  },
   "Test": {
     "home": "Главная",
     "about": "О нас",

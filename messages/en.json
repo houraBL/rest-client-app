@@ -4,6 +4,11 @@
     "signup": "Sign Up",
     "signout": "Sign Out"
   },
+  "Footer": {
+    "course": "RS School React course",
+    "team": "Our Team",
+    "mentors": "Our Mentors"
+  },
   "Test": {
     "home": "Home",
     "about": "About",

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,6 +15,7 @@ const MENTORS = [
 ];
 
 export default function Footer() {
+  const t = useTranslations('Footer');
   return (
     <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
       <aside>
@@ -32,14 +34,14 @@ export default function Footer() {
             className="fill-current"
           />
           <p>
-            RS School React course
+            {t('course')}
             <br />
             2025
           </p>
         </Link>
       </aside>
       <nav>
-        <h6 className="footer-title">Our Team</h6>
+        <h6 className="footer-title">{t('team')}</h6>
         {TEAM_MEMBERS.map((member) => (
           <Link
             key={member.name}
@@ -58,7 +60,7 @@ export default function Footer() {
         ))}
       </nav>
       <nav>
-        <h6 className="footer-title">Our Mentors</h6>
+        <h6 className="footer-title">{t('mentors')}</h6>
         {MENTORS.map((mentor) => (
           <Link
             key={mentor.name}
