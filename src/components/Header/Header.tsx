@@ -7,10 +7,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loader } from '../Loader/Loader';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const [user, loading] = useAuthState(auth);
   const [scrolled, setScrolled] = useState(false);
+  const t = useTranslations('Header');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,12 +53,12 @@ export default function Header() {
           <>
             <li>
               <Link href="/signin">
-                <span className="w-fit">Sign in</span>
+                <span className="w-fit">{t('signin')}</span>
               </Link>
             </li>
             <li>
               <Link href="/signup">
-                <span className="w-fit">Sign up</span>
+                <span className="w-fit">{t('signup')}</span>
               </Link>
             </li>
           </>
@@ -64,7 +66,7 @@ export default function Header() {
         {user && !loading && (
           <li>
             <Link href="/" onClick={logout}>
-              <span>Sign out</span>
+              <span>{t('signout')}</span>
             </Link>
           </li>
         )}

@@ -1,7 +1,8 @@
 {
   "Header": {
     "signin": "Sign In",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "signout": "Sign Out"
   },
   "Test": {
     "home": "Home",
