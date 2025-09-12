@@ -1,12 +1,15 @@
 'use client';
+import { auth, logout } from '@/firebase/firebase';
 import useTheme from '@/hooks/useTheme';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Loader } from '../Loader/Loader';
 
 export default function Header() {
   const { toggleTheme } = useTheme();
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, loading] = useAuthState(auth);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -42,57 +45,34 @@ export default function Header() {
       <ul className="menu menu-horizontal navbar-end px-1">
         <li>
           <label className="flex cursor-pointer gap-2">
-            <span className="label-text">SIGNED IN: </span>
-            <input
-              type="checkbox"
-              className="toggle"
-              value="signed in"
-              checked={isSignedIn}
-              onChange={() => setIsSignedIn(!isSignedIn)}
-            />
-          </label>
-        </li>
-        <li>
-          <label className="flex cursor-pointer gap-2">
             <span className="label-text">EN</span>
             <input type="checkbox" value="ru" className="toggle" />
             <span className="label-text">RU</span>
           </label>
         </li>
-        {!isSignedIn && (
-          <li>
-            <details className="w-fit px-2">
-              <summary className="">Log in</summary>
-              <ul className="bg-base-100 rounded-t-none p-2">
-                <li>
-                  <Link
-                    href="/signin"
-                    className="p-2"
-                    onClick={() => setIsSignedIn(true)}
-                  >
-                    <span className="w-fit">Sign in</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/signup"
-                    className="p-2"
-                    onClick={() => setIsSignedIn(true)}
-                  >
-                    <span className="w-fit">Sign up</span>
-                  </Link>
-                </li>
-              </ul>
-            </details>
-          </li>
+        {loading && <Loader />}
+        {!user && !loading && (
+          <>
+            <li>
+              <Link href="/signin" className="p-2">
+                <span className="w-fit">Sign in</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/signup" className="p-2">
+                <span className="w-fit">Sign up</span>
+              </Link>
+            </li>
+          </>
         )}
-        {isSignedIn && (
+        {user && !loading && (
           <li>
-            <Link href="/" className="a" onClick={() => setIsSignedIn(false)}>
+            <Link href="/" className="a" onClick={logout}>
               <span>Sign out</span>
             </Link>
           </li>
         )}
+        {/* theme controls */}
         <li>
           <label className="swap swap-rotate">
             {/* this hidden checkbox controls the state */}
