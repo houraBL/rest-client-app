@@ -1,9 +1,9 @@
-import VariablesPageComponent from '@/components/VariablesPageComponent/VariablesPageComponent';
+import Variables from '@/components/Variables/Variables';
 
 export default function VariablesPage() {
   return (
     <div className="text-2xl font-bold">
-      <VariablesPageComponent />
+      <Variables />
     </div>
   );
 }
