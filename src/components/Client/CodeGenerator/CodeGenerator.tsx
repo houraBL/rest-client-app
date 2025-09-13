@@ -1,30 +1,30 @@
 import codegen from 'postman-code-generators';
 import sdk from 'postman-collection';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 // import { HeaderRequest } from "@/types/headerRequest";
 
-interface CodeGeneratorProps {
-  method: string;
-  url: string;
-  requestBody: string;
-  lang: string;
-  onLangChange: (lang: string) => void;
-  // headers: HeaderRequest[];
-}
+// interface CodeGeneratorProps {
+//   method: string;
+//   url: string;
+//   requestBody: string;
+//   lang: string;
+//   onLangChange: (lang: string) => void;
+//   // headers: HeaderRequest[];
+// }
 
 interface LanguagesOptions {
   label: string;
   variants: Record<string, string>[];
 }
 
-export function CodeGenerator({
-  method,
-  url,
-  requestBody,
-  lang,
-  onLangChange,
-}: CodeGeneratorProps) {
+export function CodeGenerator() {
+  const { method, url, body } = useSelector((state: RootState) => state.client);
+  const [lang, setLang] = useState('');
   const [code, setCode] = useState('');
+  const [copied, setCopied] = useState(false);
+
   const myRequest = new sdk.Request({
     url: url,
     method: method,
@@ -40,10 +40,6 @@ export function CodeGenerator({
     // })),
   });
   const avaliableLanguages: LanguagesOptions[] = codegen.getLanguageList();
-  console.log(
-    avaliableLanguages,
-    avaliableLanguages.map((i) => console.log(i.variants))
-  );
 
   useEffect(() => {
     if (!lang) return;
@@ -64,14 +60,24 @@ export function CodeGenerator({
         }
       }
     );
-  }, [lang, method, url, requestBody]);
+  }, [lang, method, url, body]);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   return (
     <div>
       <span>Generated code</span>
       <select
         value={lang}
-        onChange={(e) => onLangChange(e.target.value)}
+        onChange={(e) => setLang(e.target.value)}
         className="w-full select select-bordered"
       >
         {avaliableLanguages.flatMap((lang) =>
@@ -85,7 +91,17 @@ export function CodeGenerator({
           ))
         )}
       </select>
-      <pre>{code}</pre>
+      <div className="relative">
+        <button
+          onClick={handleCopy}
+          className="absolute right-2 top-2 btn btn-xs btn-outline"
+        >
+          {copied ? 'Copied!' : 'Copy'}
+        </button>
+        <pre className="text-left bg-base-200 p-4 rounded-lg shadow-inner overflow-x-auto whitespace-pre-wrap break-words">
+          <code>{code}</code>
+        </pre>
+      </div>
     </div>
   );
 }

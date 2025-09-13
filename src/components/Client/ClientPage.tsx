@@ -13,29 +13,22 @@ import { CodeGenerator } from './CodeGenerator/CodeGenerator';
 import { SendButton } from './SendButton/SendButton';
 
 export function ClientPage() {
-  const [method, setMethod] = useState(Methods.GET);
-  const [url, setUrl] = useState('');
   // const [headers, setHeaders] = useState<Headers[]>([]);
-  const [requestBody, setRequestBody] = useState('');
   const [response, setResponse] = useState<ResponseViewerProps>({});
-  const [selectedLang, setSelectedLang] = useState('');
 
   return (
-    <div className="flex flex-col gap-5 w-screen text-center p-20">
-      <div className="flex gap-2 items-center">
-        <MethodSelector method={method} onChange={setMethod} />
-        <UrlInput url={url} onChange={setUrl} />
-        <SendButton />
+    <div className=" w-screen text-center p-20">
+      <div className="flex flex-col gap-5 border-1 p-10">
+        <div className="flex gap-2 items-center">
+          <MethodSelector />
+          <UrlInput />
+          <SendButton />
+        </div>
+        {/* <Header /> */}
+        <CodeGenerator />
+        <BodyEditor />
+        <ResponseViewer status={response.status} body={response.body} />
       </div>
-      <CodeGenerator
-        url={url}
-        requestBody={requestBody}
-        method={method}
-        lang={selectedLang}
-        onLangChange={setSelectedLang}
-      />
-      <BodyEditor requestBody={requestBody} onChange={setRequestBody} />
-      <ResponseViewer status={response.status} body={response.body} />
     </div>
   );
 }

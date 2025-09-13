@@ -1,19 +1,24 @@
 'use client';
 
 import { Methods } from '@/types/methods';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { setMethod } from '@/store/clientSlice';
 
-interface MethodSelectorProps {
-  method: Methods;
-  onChange: (method: Methods) => void;
-}
+// interface MethodSelectorProps {
+//   method: Methods;
+//   onChange: (method: Methods) => void;
+// }
 
-export function MethodSelector({ method, onChange }: MethodSelectorProps) {
+export function MethodSelector() {
+  const dispatch = useDispatch();
+  const method = useSelector((state: RootState) => state.client.method);
   const methods = Object.values(Methods);
   return (
     <div className="flex-1">
       <select
         value={method}
-        onChange={(e) => onChange(e.target.value as Methods)}
+        onChange={(e) => dispatch(setMethod(e.target.value as Methods))}
         className="w-full select select-bordered"
       >
         {methods.map((method) => (

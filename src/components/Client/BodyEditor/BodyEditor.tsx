@@ -1,9 +1,16 @@
-interface BodyEditorProps {
-  requestBody: string;
-  onChange: (body: string) => void;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { setBody } from '@/store/clientSlice';
 
-export function BodyEditor({ requestBody, onChange }: BodyEditorProps) {
+// interface BodyEditorProps {
+//   requestBody: string;
+//   onChange: (body: string) => void;
+// }
+
+export function BodyEditor() {
+  const dispatch = useDispatch();
+  const requestBody = useSelector((state: RootState) => state.client.body);
+
   return (
     <div>
       <span>Body</span>
@@ -12,7 +19,7 @@ export function BodyEditor({ requestBody, onChange }: BodyEditorProps) {
         rows={6}
         placeholder="Enter JSON or text"
         value={requestBody}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => dispatch(setBody(e.target.value))}
       ></textarea>
     </div>
   );
