@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 
 export const LS_KEYS = {
   THEME: 'theme',
-  SEARCH: 'search',
 };
 
-const useLocalStorage = (
+export default function useLocalStorage(
   key: string,
   initialValue = ''
-): [string, React.Dispatch<React.SetStateAction<string>>] => {
+): [string, React.Dispatch<React.SetStateAction<string>>] {
   const [value, setValue] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       const stored = window.localStorage.getItem(key);
@@ -20,14 +19,8 @@ const useLocalStorage = (
   });
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(key, value);
-    } catch (err) {
-      console.error('useLocalStorage set error:', err);
-    }
+    window.localStorage.setItem(key, value);
   }, [key, value]);
 
   return [value, setValue];
-};
-
-export default useLocalStorage;
+}
