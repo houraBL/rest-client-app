@@ -32,7 +32,7 @@ export default function Variables() {
         items={variables}
         columns={[
           { key: 'name', label: 'Variable' },
-          { key: 'initialValue', label: 'Initial Value' },
+          { key: 'initialValue', label: 'Value' },
         ]}
         onChange={updateVariable}
         onDelete={deleteVariable}
