@@ -32,7 +32,6 @@ export default function Variables() {
         <table className="w-full text-sm text-gray-700 dark:text-gray-200">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
             <tr>
-              <th className="p-3 w-10"></th>
               <th className="p-3 text-left">Variable</th>
               <th className="p-3 text-left">Initial Value</th>
               <th className="p-3 w-20"></th>
@@ -42,7 +41,6 @@ export default function Variables() {
             {variables.map((v: VariableType, index: number) => (
               <TableRow
                 key={index}
-                picked={v.picked}
                 name={v.name}
                 initialValue={v.initialValue}
                 onChange={(field, value) => updateVariable(index, field, value)}
@@ -50,9 +48,6 @@ export default function Variables() {
               />
             ))}
             <tr className="bg-gray-50 dark:bg-gray-800/40">
-              <td className="p-3 text-center">
-                <input type="checkbox" disabled className="h-4 w-4" />
-              </td>
               <td className="p-3">
                 <input
                   type="text"
