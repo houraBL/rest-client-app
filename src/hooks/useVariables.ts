@@ -3,7 +3,6 @@ import { useVariableLocalStorage } from './useVariableLocalStorage';
 import toast from 'react-hot-toast';
 
 export type VariableType = {
-  picked: boolean;
   name: string;
   initialValue: string;
 };
@@ -28,7 +27,7 @@ export default function useVariables() {
     }
     setVariables([
       ...variables,
-      { picked: false, name: newVarName.trim(), initialValue: newInitialValue },
+      { name: newVarName.trim(), initialValue: newInitialValue },
     ]);
     setNewVarName('');
     setNewInitialValue('');
