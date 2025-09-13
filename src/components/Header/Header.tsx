@@ -1,7 +1,6 @@
 'use client';
 import { auth } from '@/firebase/firebase';
-import { logUserRequest, RequestLogEntry } from '@/firebase/logRequest';
-import useTheme from '@/hooks/useTheme';
+import { logUserRequest, RequestLogEntry } from '@/firebase/logUserRequest';
 import { Link } from '@/i18n/navigation';
 import { makeApiCall } from '@/utils/makeApiCall';
 import { useState } from 'react';
@@ -60,7 +59,7 @@ const mockRequests: ApiRequest[] = [
       status: 'Alive',
       species: 'Robot',
     }),
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   },
 
   {

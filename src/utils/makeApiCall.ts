@@ -27,11 +27,8 @@ export async function makeApiCall({
   try {
     response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
-      body: requestBody ? requestBody : undefined,
+      headers: headers,
+      body: requestBody,
     });
 
     status = response.status;
