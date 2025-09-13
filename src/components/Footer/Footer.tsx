@@ -1,18 +1,7 @@
+import { MENTORS, TEAM_MEMBERS } from '@/constants/constants';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const TEAM_MEMBERS = [
-  { name: 'alinidi', githubLink: 'https://github.com/alinidi' },
-  { name: 'AleksandrKlesh', githubLink: 'https://github.com/AleksandrKlesh' },
-  { name: 'houraBL', githubLink: 'https://github.com/houraBL' },
-];
-
-const MENTORS = [
-  { name: 'AleksandroSN', githubLink: 'https://github.com/AleksandroSN' },
-  { name: 'vyach-g', githubLink: 'https://github.com/vyach-g' },
-  { name: 'ffriday', githubLink: 'https://github.com/ffriday' },
-];
 
 export default function Footer() {
   const t = useTranslations('Footer');
