@@ -9,11 +9,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect, useState } from 'react';
 import { loginSchema, registerSchema } from '@/lib/validation/auth';
 import z from 'zod';
-import { useRouter } from 'next/navigation';
 import { Loader } from '../Loader/Loader';
 import { AuthForm } from './AuthForm/AuthForm';
 import { FirebaseError } from 'firebase/app';
 import { toast } from 'react-hot-toast';
+import { useRouter } from '@/i18n/navigation';
 
 type Errors = {
   name?: string;
@@ -28,10 +28,9 @@ export default function AuthPage({
 }) {
   const router = useRouter();
 
-  const [isLogin, setIsLogin] = useState<boolean>(
+  const [isLogin, setIsLogin] = useState(
     isInitialLogin !== undefined ? isInitialLogin : true
   );
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,15 +42,17 @@ export default function AuthPage({
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/home');
+      router.push('/');
     }
   }, [loading, user, router]);
 
+  useEffect(() => {
+    router.replace(isLogin ? '/signin' : '/signup');
+  }, [isLogin, router]);
+
   if (loading) return <Loader />;
-  if (error) {
-    console.log(error);
-  }
-  if (user) return null;
+  if (error) return router.push('/');
+  if (user) return router.push('/');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
