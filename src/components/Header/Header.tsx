@@ -1,4 +1,5 @@
 'use client';
+
 import { auth, logout } from '@/firebase/firebase';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
