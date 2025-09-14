@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
@@ -36,16 +37,22 @@ export const logInWithEmailAndPassword = async (
 };
 
 export const registerWithEmailAndPassword = async (
-  name: string,
+  displayName: string,
   email: string,
   password: string
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
+    if (user) {
+      await updateProfile(user, {
+        displayName: displayName,
+      });
+    }
+
     await addDoc(collection(db, 'users'), {
       uid: user.uid,
-      name,
+      displayName,
       authProvider: 'local',
       email,
     });
