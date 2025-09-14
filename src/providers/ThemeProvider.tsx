@@ -2,16 +2,19 @@
 
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { type ReactNode, useEffect, useState } from 'react';
-
 import { type Theme, ThemeContext } from './ThemeContext';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [localTheme, setLocalTheme] = useLocalStorage('theme');
-  const [theme, setTheme] = useState<Theme>(
-    localTheme === 'dark' ? 'dark' : 'light'
-  );
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const root = document.documentElement;
     if (theme === 'dark') {
       root.setAttribute('data-theme', 'dark');
@@ -20,16 +23,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       root.setAttribute('data-theme', 'light');
       root.classList.remove('dark');
     }
-    setLocalTheme(theme);
-  }, [setLocalTheme, theme]);
+  }, [isMounted, theme]);
 
   const toggleTheme = () =>
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
 
+  if (!isMounted) return null;
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: theme as Theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
+
 export { ThemeContext };
