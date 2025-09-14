@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest';
-import AuthPage from './AuthPage';
 import { render, screen, waitFor } from '@testing-library/react';
 import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import '@testing-library/jest-dom';
@@ -9,6 +8,8 @@ import {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
 } from '@/firebase/firebase';
+import AuthPage from './AuthPage';
+import { NextIntlClientProvider } from 'next-intl';
 
 vi.mock('@/firebase/firebase', () => ({
   auth: {},
@@ -18,16 +19,20 @@ vi.mock('@/firebase/firebase', () => ({
 
 const pushMock = vi.fn();
 
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: pushMock,
-    back: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-  }),
-}));
+vi.mock('next/navigation', async (importActual) => {
+  const actual = await importActual<typeof import('next/navigation')>();
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: pushMock,
+      back: vi.fn(),
+      forward: vi.fn(),
+      refresh: vi.fn(),
+      replace: vi.fn(),
+      prefetch: vi.fn(),
+    }),
+  };
+});
 
 vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
   null,
@@ -37,35 +42,48 @@ vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
 
 describe('AuthPage', () => {
   it('Render AuthPage', () => {
-    render(<AuthPage />);
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
     const authPage = screen.getByTestId('auth-page');
     const form = screen.getByTestId('form');
     expect(authPage).toBeInTheDocument();
     expect(form).toBeInTheDocument();
   });
-  it('Redirects to /home if user is logged in', () => {
+  it('Redirects to / if user is logged in', () => {
     vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
       { uid: '12' } as unknown as User,
       false,
       undefined,
     ]);
-    render(<AuthPage />);
-    expect(pushMock).toHaveBeenCalledWith('/home');
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
+    expect(pushMock).toHaveBeenCalledWith('/');
   });
-  it('Logs an error', () => {
-    const consoleSpy = vi.spyOn(console, 'log');
-
+  it('Redirects to / if user is error in useAuthState', () => {
     vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
       null,
       false,
       new Error('Test error'),
     ]);
-
-    render(<AuthPage />);
-    expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
+    expect(pushMock).toHaveBeenCalledWith('/');
   });
   it('Login success calls logInWithEmailAndPassword', async () => {
-    render(<AuthPage />);
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
 
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
@@ -83,7 +101,11 @@ describe('AuthPage', () => {
     });
   });
   it('Login shows validation errors', async () => {
-    render(<AuthPage />);
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
 
     const signInBtn = screen.getByRole('button', { name: /sign in/i });
     await userEvent.click(signInBtn);
@@ -98,7 +120,11 @@ describe('AuthPage', () => {
     expect(passwordError).toBeInTheDocument();
   });
   it('Shows validation errors on register submit', async () => {
-    render(<AuthPage />);
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
 
     const switchMode = screen.getByText(/sign up/i);
     await userEvent.click(switchMode);
@@ -116,7 +142,11 @@ describe('AuthPage', () => {
     expect(passwordError).toBeInTheDocument();
   });
   it('Register success calls registerWithEmailAndPassword', async () => {
-    render(<AuthPage />);
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
 
     const modeSwitcher = screen.getByText(/sign up/i);
     await userEvent.click(modeSwitcher);

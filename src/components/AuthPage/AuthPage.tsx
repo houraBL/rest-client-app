@@ -51,8 +51,8 @@ export default function AuthPage({
   }, [isLogin, router]);
 
   if (loading) return <Loader />;
-  if (error) return router.push('/');
-  if (user) return router.push('/');
+  if (error) router.push('/');
+  if (user) router.push('/');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
