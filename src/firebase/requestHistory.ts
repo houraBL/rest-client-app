@@ -3,13 +3,10 @@ import {
   getFirestore,
   collection,
   query,
-  where,
   orderBy,
   getDocs,
-  Timestamp,
   DocumentData,
 } from 'firebase/firestore';
-import toast from 'react-hot-toast';
 
 export interface RequestLogEntry {
   requestDuration: number;
@@ -29,13 +26,12 @@ interface requestsHistoryEntry {
 export async function requestHistory(): Promise<{
   error: string | null;
   history: requestsHistoryEntry[];
-} | null> {
+}> {
   const auth = getAuth();
   const db = getFirestore();
   const user = auth.currentUser;
 
   if (!user) {
-    toast('User is not authorized');
     return { error: 'User is not authorized', history: [] };
   }
 
