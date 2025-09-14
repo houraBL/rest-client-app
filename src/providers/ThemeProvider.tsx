@@ -1,8 +1,8 @@
 'use client';
 
-import useLocalStorage from '@/hooks/useLocalStorage';
 import { type ReactNode, useEffect, useState } from 'react';
 import { type Theme, ThemeContext } from './ThemeContext';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useLocalStorage('theme', 'light');
