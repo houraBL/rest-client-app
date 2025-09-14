@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, Mock, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import '@testing-library/jest-dom';
@@ -10,6 +10,7 @@ import {
 } from '@/firebase/firebase';
 import AuthPage from './AuthPage';
 import { NextIntlClientProvider } from 'next-intl';
+import { FirebaseError } from 'firebase/app';
 
 vi.mock('@/firebase/firebase', () => ({
   auth: {},
@@ -122,12 +123,9 @@ describe('AuthPage', () => {
   it('Shows validation errors on register submit', async () => {
     render(
       <NextIntlClientProvider locale="en">
-        <AuthPage />
+        <AuthPage isInitialLogin={false} />
       </NextIntlClientProvider>
     );
-
-    const switchMode = screen.getByText(/sign up/i);
-    await userEvent.click(switchMode);
 
     const signUpBtn = screen.getByRole('button', { name: /sign up/i });
     await userEvent.click(signUpBtn);
@@ -144,7 +142,7 @@ describe('AuthPage', () => {
   it('Register success calls registerWithEmailAndPassword', async () => {
     render(
       <NextIntlClientProvider locale="en">
-        <AuthPage />
+        <AuthPage isInitialLogin={false} />
       </NextIntlClientProvider>
     );
 

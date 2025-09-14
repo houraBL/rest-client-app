@@ -28,7 +28,7 @@ export default function AuthPage({
 }) {
   const router = useRouter();
 
-  const [isLogin, setIsLogin] = useState(
+  const [isLogin] = useState(
     isInitialLogin !== undefined ? isInitialLogin : true
   );
   const [name, setName] = useState('');
@@ -47,13 +47,18 @@ export default function AuthPage({
   }, [loading, user, router]);
 
   useEffect(() => {
-    router.replace(isLogin ? '/signin' : '/signup');
-  }, [isLogin, router]);
+    if (!loading && user) {
+      router.push('/');
+    }
+  }, [loading, user, router]);
+
+  useEffect(() => {
+    if (error) {
+      router.push('/');
+    }
+  }, [error, router]);
 
   if (loading) return <Loader />;
-  if (error) router.push('/');
-  if (user) router.push('/');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
@@ -145,7 +150,7 @@ export default function AuthPage({
         {isLogin ? "Don't have an account? " : 'Have an account? '}
         <span
           className="cursor-pointer text-blue-400"
-          onClick={() => setIsLogin(!isLogin)}
+          onClick={() => router.replace(!isLogin ? '/signin' : '/signup')}
         >
           {isLogin ? 'Sign Up' : 'Sign In'}
         </span>
