@@ -21,10 +21,16 @@ type Errors = {
   password?: string;
 };
 
-export default function AuthPage() {
+export default function AuthPage({
+  isInitialLogin,
+}: {
+  isInitialLogin?: boolean;
+}) {
   const router = useRouter();
 
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState<boolean>(
+    isInitialLogin !== undefined ? isInitialLogin : true
+  );
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
