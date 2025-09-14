@@ -2,11 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setBody } from '@/store/clientSlice';
 
-// interface BodyEditorProps {
-//   requestBody: string;
-//   onChange: (body: string) => void;
-// }
-
 export function BodyEditor() {
   const dispatch = useDispatch();
   const requestBody = useSelector((state: RootState) => state.client.body);

@@ -5,15 +5,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 // import { HeaderRequest } from "@/types/headerRequest";
 
-// interface CodeGeneratorProps {
-//   method: string;
-//   url: string;
-//   requestBody: string;
-//   lang: string;
-//   onLangChange: (lang: string) => void;
-//   // headers: HeaderRequest[];
-// }
-
 interface LanguagesOptions {
   label: string;
   variants: Record<string, string>[];
@@ -28,16 +19,12 @@ export function CodeGenerator() {
   const myRequest = new sdk.Request({
     url: url,
     method: method,
-    // body: requestBody
-    //   ? {
-    //       mode: "raw",
-    //       raw: requestBody,
-    //     }
-    //   : undefined,
-    // header: Object.entries(headers).map(([key, value]) => ({
-    //   key,
-    //   value,
-    // })),
+    body: body
+      ? {
+          mode: 'raw',
+          raw: body,
+        }
+      : undefined,
   });
   const avaliableLanguages: LanguagesOptions[] = codegen.getLanguageList();
 

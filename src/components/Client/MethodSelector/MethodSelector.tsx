@@ -5,11 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setMethod } from '@/store/clientSlice';
 
-// interface MethodSelectorProps {
-//   method: Methods;
-//   onChange: (method: Methods) => void;
-// }
-
 export function MethodSelector() {
   const dispatch = useDispatch();
   const method = useSelector((state: RootState) => state.client.method);
