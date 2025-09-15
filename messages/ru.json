@@ -16,7 +16,7 @@
   },
   "Main": {
     "welcome": "Добро пожаловать!",
-    "welcome-back" : "Рады видеть вас, ",
+    "welcome-back": "Рады видеть вас, ",
     "history": "История",
     "client": "REST клиент",
     "variables": "Переменные",

@@ -16,7 +16,7 @@
   },
   "Main": {
     "welcome": "Welcome!",
-    "welcome-back" : "Welcome back, ",
+    "welcome-back": "Welcome back, ",
     "history": "History",
     "client": "REST Client",
     "variables": "Variables",

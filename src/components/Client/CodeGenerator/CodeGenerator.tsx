@@ -3,7 +3,7 @@ import sdk from 'postman-collection';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-// import { HeaderRequest } from "@/types/headerRequest";
+import { Editor } from '@monaco-editor/react';
 
 interface LanguagesOptions {
   label: string;
@@ -85,9 +85,17 @@ export function CodeGenerator() {
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
-        <pre className="text-left bg-base-200 p-4 rounded-lg shadow-inner overflow-x-auto whitespace-pre-wrap break-words">
-          <code>{code}</code>
-        </pre>
+        <Editor
+          height="40vh"
+          defaultLanguage="javascript"
+          value={code}
+          options={{
+            readOnly: true,
+            minimap: { enabled: false },
+            wordWrap: 'on',
+            scrollBeyondLastLine: false,
+          }}
+        />
       </div>
     </div>
   );
