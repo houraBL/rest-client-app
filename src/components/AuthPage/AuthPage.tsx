@@ -1,7 +1,5 @@
 'use client';
 
-import { auth } from '@/lib/firebase/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect, useState, useTransition } from 'react';
 import { loginSchema, registerSchema } from '@/lib/validation/auth';
 import z from 'zod';
