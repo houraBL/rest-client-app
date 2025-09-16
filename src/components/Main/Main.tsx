@@ -1,13 +1,12 @@
 'use client';
-import { auth } from '@/firebase/firebase';
 import { Link } from '@/i18n/navigation';
 import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loader } from '../Loader/Loader';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth/useAuth';
 
 export default function Main() {
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useAuth();
   const t = useTranslations();
   return (
     <div className="items-center w-sm hero-content">
@@ -15,11 +14,11 @@ export default function Main() {
       {!user && !loading && (
         <div className="flex flex-col gap-3 items-center">
           <h2 className="p-2 font-bold text-3xl">{t('Main.welcome')}</h2>
-          <p className="p-2">{t('Main.login-message')}</p>
+          <p className="p-2">{t('Main.authorize')}</p>
           <ul className="menu menu-horizontal w-full">
             <li className="flex-1">
-              <Link href="/signin" className="btn btn-primary">
-                <span className="w-fit">{t('Header.signin')}</span>
+              <Link href="/login" className="btn btn-primary">
+                <span className="w-fit">{t('Header.login')}</span>
               </Link>
             </li>
             <li className="flex-1">

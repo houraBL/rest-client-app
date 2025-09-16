@@ -2,7 +2,7 @@ import { describe, expect, it, Mock, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Main from './Main';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuth } from '@/hooks/useAuth/useAuth';
 
 const pushMock = vi.fn();
 
@@ -29,14 +29,6 @@ vi.mock('next-intl', async (importActual) => {
   };
 });
 
-vi.mock('@/firebase/firebase', () => ({
-  auth: {},
-}));
-
-vi.mock('react-firebase-hooks/auth', () => ({
-  useAuthState: vi.fn(() => [null, false]),
-}));
-
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href} data-testid="mock-link">
@@ -45,17 +37,21 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }));
 
+vi.mock('@/hooks/useAuth/useAuth', () => ({
+  useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
+}));
+
 describe('Main page', () => {
   it('Render Main page when user is null', () => {
     render(<Main />);
     expect(screen.getByText(/welcome/i)).toBeInTheDocument();
-    expect(screen.getByText(/login-message/i)).toBeInTheDocument();
-    expect(screen.getByText(/signin/i)).toBeInTheDocument();
+    expect(screen.getByText(/authorize/i)).toBeInTheDocument();
+    expect(screen.getByText(/login/i)).toBeInTheDocument();
     expect(screen.getByText(/signup/i)).toBeInTheDocument();
   });
 
   it('Render Main page when user is not null', () => {
-    (useAuthState as Mock).mockReturnValueOnce([true, false]);
+    (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
     render(<Main />);
     expect(screen.getByText(/welcome-back/i)).toBeInTheDocument();
     expect(screen.getByText(/instructions/i)).toBeInTheDocument();
@@ -65,7 +61,7 @@ describe('Main page', () => {
   });
 
   it('renders Loader when loading is true', () => {
-    (useAuthState as Mock).mockReturnValueOnce([null, true]);
+    (useAuth as Mock).mockReturnValueOnce({ user: null, loading: true });
     render(<Main />);
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
