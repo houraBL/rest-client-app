@@ -17,6 +17,7 @@ type AuthFormProps = {
   errors: Errors;
   handleSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
+  isPending: boolean;
 };
 
 export const AuthForm = ({
@@ -30,6 +31,7 @@ export const AuthForm = ({
   errors,
   handleSubmit,
   isSubmitting,
+  isPending,
 }: AuthFormProps) => {
   return (
     <form
@@ -44,6 +46,7 @@ export const AuthForm = ({
           onChange={setName}
           placeholder="Enter your name"
           error={errors.name}
+          disabled={isSubmitting || isPending}
         />
       )}
       <InputField
@@ -52,6 +55,7 @@ export const AuthForm = ({
         onChange={setEmail}
         placeholder="Enter your email"
         error={errors.email}
+        disabled={isSubmitting || isPending}
       />
       <InputField
         type="password"
@@ -60,13 +64,14 @@ export const AuthForm = ({
         onChange={setPassword}
         placeholder="Enter your password"
         error={errors.password}
+        disabled={isSubmitting || isPending}
       />
       <button
         type="submit"
         className="btn btn-info mt-5"
-        disabled={isSubmitting}
+        disabled={isSubmitting || isPending}
       >
-        {isLogin ? 'Sign In' : 'Sign Up'}
+        {isLogin ? 'Log In' : 'Sign Up'}
       </button>
     </form>
   );

@@ -5,6 +5,7 @@ type InputFieldProps = {
   error?: string;
   type?: string;
   placeholder: string;
+  disabled: boolean;
 };
 
 export const InputField = ({
@@ -14,6 +15,7 @@ export const InputField = ({
   error,
   type = 'text',
   placeholder,
+  disabled,
 }: InputFieldProps) => {
   return (
     <>
@@ -27,6 +29,7 @@ export const InputField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        disabled={disabled}
       />
       {error && <p className="text-red-500 m-0 text-xs ">{error}</p>}
     </>
