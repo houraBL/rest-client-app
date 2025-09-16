@@ -124,9 +124,6 @@ describe('AuthPage', () => {
       </NextIntlClientProvider>
     );
 
-    const modeSwitcher = screen.getByText(/sign up/i);
-    await userEvent.click(modeSwitcher);
-
     const nameInput = screen.getByPlaceholderText(/enter your name/i);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
