@@ -1,6 +1,6 @@
 {
   "Header": {
-    "signin": "Sign In",
+    "login": "Log In",
     "signup": "Sign Up",
     "signout": "Sign Out"
   },
@@ -20,7 +20,12 @@
     "history": "History",
     "client": "REST Client",
     "variables": "Variables",
-    "login-message": "Please log in or create and account to start using RESTful API",
+    "authorize": "Please log in or create and account to start using RESTful API",
     "instructions": "Follow the links below to navigate to the relevant pages"
+  },
+  "NotFound": {
+    "title": "404 - Page Not Found",
+    "description": "Oops! The page you’re looking for doesn’t exist.",
+    "backHome": "Go back home"
   }
 }
