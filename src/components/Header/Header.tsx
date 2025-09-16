@@ -1,17 +1,19 @@
 'use client';
 
-import { auth, logout } from '@/firebase/firebase';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loader } from '../Loader/Loader';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/useAuth/useAuth';
+import { logoutAndClearCookie } from '@/lib/firebase/authActions';
+import toast from 'react-hot-toast';
 
 export default function Header() {
-  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+  const { user, setUser, loading } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const t = useTranslations('Header');
 
@@ -23,6 +25,13 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await logoutAndClearCookie();
+    setUser(null);
+    toast.success('Logged out');
+    router.push('/');
+  };
 
   return (
     <header
@@ -53,8 +62,8 @@ export default function Header() {
         {!user && !loading && (
           <>
             <li>
-              <Link href="/signin">
-                <span className="w-fit">{t('signin')}</span>
+              <Link href="/login">
+                <span className="w-fit">{t('login')}</span>
               </Link>
             </li>
             <li>
@@ -66,9 +75,9 @@ export default function Header() {
         )}
         {user && !loading && (
           <li>
-            <Link href="/" onClick={logout}>
+            <button onClick={handleLogout}>
               <span>{t('signout')}</span>
-            </Link>
+            </button>
           </li>
         )}
         <li>

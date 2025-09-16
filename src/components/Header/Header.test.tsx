@@ -2,7 +2,7 @@ import { describe, expect, it, Mock, vi } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from './Header';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuth } from '@/hooks/useAuth/useAuth';
 
 vi.mock('next-intl', async (importActual) => {
   const actual = await importActual<typeof import('next-intl')>();
@@ -12,14 +12,15 @@ vi.mock('next-intl', async (importActual) => {
   };
 });
 
-vi.mock('@/firebase/firebase', () => ({
-  auth: {},
-  logout: vi.fn(),
+vi.mock('@/hooks/useAuth/useAuth', () => ({
+  useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
 }));
 
-vi.mock('react-firebase-hooks/auth', () => ({
-  useAuthState: vi.fn(() => [null, false]),
+vi.mock('@/lib/firebase/authActions', () => ({
+  logoutAndClearCookie: vi.fn(),
 }));
+
+const pushMock = vi.fn();
 
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -27,6 +28,14 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
+  useRouter: () => ({
+    push: pushMock,
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+  }),
 }));
 
 vi.mock('./ThemeSwitcher/ThemeSwitcher', () => ({
@@ -83,20 +92,20 @@ describe('Header', () => {
   });
 
   it('renders Loader when loading is true', () => {
-    (useAuthState as Mock).mockReturnValueOnce([null, true]);
+    (useAuth as Mock).mockReturnValueOnce({ user: null, loading: true });
     render(<Header />);
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
-  it('renders sign in and sign up when user is null', () => {
-    (useAuthState as Mock).mockReturnValueOnce([null, false]);
+  it('renders log in and sign up when user is null', () => {
+    (useAuth as Mock).mockReturnValueOnce({ user: null, loading: false });
     render(<Header />);
-    expect(screen.getByText('signin')).toBeInTheDocument();
+    expect(screen.getByText('login')).toBeInTheDocument();
     expect(screen.getByText('signup')).toBeInTheDocument();
   });
 
   it('renders sign out when user is not null', () => {
-    (useAuthState as Mock).mockReturnValueOnce([true, false]);
+    (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
     render(<Header />);
     expect(screen.getByText('signout')).toBeInTheDocument();
   });
