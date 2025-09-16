@@ -26,8 +26,8 @@ export default defineConfig({
     },
     server: {
       deps: {
-        inline: ['next-intl']
-      }
-    }
+        inline: ['next-intl'],
+      },
+    },
   },
 });
