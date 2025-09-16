@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, vi, beforeEach, expect } from 'vitest';
 import { GenericTable } from './GenericTable';
+import { renderWithMessages } from '../Variables/renderWithMessages';
 
 type TestItem = {
   key: string;
@@ -33,7 +34,7 @@ describe('GenericTable', () => {
   });
 
   it('renders columns and rows', () => {
-    render(
+    renderWithMessages(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -52,7 +53,7 @@ describe('GenericTable', () => {
   });
 
   it('calls onChange when input value changes', () => {
-    render(
+    renderWithMessages(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -71,7 +72,7 @@ describe('GenericTable', () => {
   });
 
   it('calls onDelete when delete button is clicked', () => {
-    render(
+    renderWithMessages(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -83,14 +84,14 @@ describe('GenericTable', () => {
       />
     );
 
-    const deleteButtons = screen.getAllByText('✕');
+    const deleteButtons = screen.getAllByRole('button', { name: /✕/i });
     fireEvent.click(deleteButtons[0]);
 
     expect(onDelete).toHaveBeenCalledWith(0);
   });
 
   it('calls onAdd when add button is clicked', () => {
-    render(
+    renderWithMessages(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -102,14 +103,14 @@ describe('GenericTable', () => {
       />
     );
 
-    const addButton = screen.getByText('Add');
+    const addButton = screen.getByRole('button', { name: /add/i });
     fireEvent.click(addButton);
 
     expect(onAdd).toHaveBeenCalled();
   });
 
   it('calls setNewItem when newItem input changes', () => {
-    render(
+    renderWithMessages(
       <GenericTable<TestItem>
         items={items}
         columns={columns}

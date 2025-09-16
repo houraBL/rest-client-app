@@ -16,11 +16,17 @@
   },
   "Main": {
     "welcome": "Welcome!",
-    "welcome-back" : "Welcome back, ",
+    "welcome-back": "Welcome back, ",
     "history": "History",
     "client": "REST Client",
     "variables": "Variables",
     "login-message": "Please log in or create and account to start using RESTful API",
     "instructions": "Follow the links below to navigate to the relevant pages"
+  },
+  "Variables": {
+    "variables": "Variables",
+    "variable": "Variable",
+    "value": "Value",
+    "add": "Add"
   }
 }

@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import Variables from './Variables';
 import * as useVariablesHook from '@/hooks/useVariables';
+import { renderWithMessages } from './renderWithMessages';
 
 describe('Variables component', () => {
   const mockVariables = [
@@ -35,30 +36,39 @@ describe('Variables component', () => {
   });
 
   it('renders variables table', () => {
-    render(<Variables />);
-    expect(screen.getByText('Variable')).toBeDefined();
-    expect(screen.getByText('Value')).toBeDefined();
+    renderWithMessages(<Variables />);
+
+    const variableHeaders = screen.getAllByRole('columnheader', {
+      name: /variable/i,
+    });
+    expect(variableHeaders.length).toBeGreaterThan(0);
+
+    const valueHeaders = screen.getAllByRole('columnheader', {
+      name: /value/i,
+    });
+    expect(valueHeaders.length).toBeGreaterThan(0);
+
     expect(screen.getByDisplayValue('Var1')).toBeDefined();
     expect(screen.getByDisplayValue('Var2')).toBeDefined();
   });
 
   it('calls onChange when editing a cell', () => {
-    render(<Variables />);
+    renderWithMessages(<Variables />);
     const input = screen.getByDisplayValue('Var1') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Var1Updated' } });
     expect(updateVariable).toHaveBeenCalledWith(0, 'name', 'Var1Updated');
   });
 
   it('calls onDelete when delete button is clicked', () => {
-    render(<Variables />);
-    const deleteButtons = screen.getAllByText('✕');
+    renderWithMessages(<Variables />);
+    const deleteButtons = screen.getAllByRole('button', { name: /✕/i });
     fireEvent.click(deleteButtons[0]);
     expect(deleteVariable).toHaveBeenCalledWith(0);
   });
 
   it('calls onAdd when Add button is clicked', () => {
-    render(<Variables />);
-    const addButton = screen.getByText('Add');
+    renderWithMessages(<Variables />);
+    const addButton = screen.getByRole('button', { name: /add/i });
     fireEvent.click(addButton);
     expect(addVariable).toHaveBeenCalled();
   });
