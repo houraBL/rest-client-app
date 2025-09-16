@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ResponseViewer from '@/components/ResponseViewer/ResponseViewer';
+import ResponseViewer from '@/components/Client/ResponseViewer/ResponseViewer';
 
 export default function TestResponsePage() {
   const [loading, setLoading] = useState(false);

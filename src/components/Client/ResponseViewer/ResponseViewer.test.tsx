@@ -3,7 +3,7 @@ import ResponseViewer from './ResponseViewer';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-vi.mock('../Loader/Loader', () => ({
+vi.mock('@/components/Loader/Loader', () => ({
   Loader: () => <div>Loading</div>,
 }));
 
