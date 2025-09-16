@@ -1,21 +1,18 @@
 import { describe, expect, it, Mock, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import '@testing-library/jest-dom';
-import { User } from 'firebase/auth';
 import userEvent from '@testing-library/user-event';
-import {
-  logInWithEmailAndPassword,
-  registerWithEmailAndPassword,
-} from '@/firebase/firebase';
 import AuthPage from './AuthPage';
 import { NextIntlClientProvider } from 'next-intl';
-import { FirebaseError } from 'firebase/app';
+import { useAuth } from '@/hooks/useAuth/useAuth';
+import {
+  logInAndSetCookie,
+  registerAndSetCookie,
+} from '@/lib/firebase/authActions';
 
-vi.mock('@/firebase/firebase', () => ({
-  auth: {},
-  logInWithEmailAndPassword: vi.fn(),
-  registerWithEmailAndPassword: vi.fn(),
+vi.mock('@/lib/firebase/authActions', () => ({
+  logInAndSetCookie: vi.fn(),
+  registerAndSetCookie: vi.fn(),
 }));
 
 const pushMock = vi.fn();
@@ -35,11 +32,9 @@ vi.mock('next/navigation', async (importActual) => {
   };
 });
 
-vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-  null,
-  false,
-  undefined,
-]);
+vi.mock('@/hooks/useAuth/useAuth', () => ({
+  useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
+}));
 
 describe('AuthPage', () => {
   it('Render AuthPage', () => {
@@ -54,11 +49,7 @@ describe('AuthPage', () => {
     expect(form).toBeInTheDocument();
   });
   it('Redirects to / if user is logged in', () => {
-    vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-      { uid: '12' } as unknown as User,
-      false,
-      undefined,
-    ]);
+    (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
     render(
       <NextIntlClientProvider locale="en">
         <AuthPage />
@@ -66,20 +57,7 @@ describe('AuthPage', () => {
     );
     expect(pushMock).toHaveBeenCalledWith('/');
   });
-  it('Redirects to / if user is error in useAuthState', () => {
-    vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-      null,
-      false,
-      new Error('Test error'),
-    ]);
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
-    expect(pushMock).toHaveBeenCalledWith('/');
-  });
-  it('Login success calls logInWithEmailAndPassword', async () => {
+  it('Login success calls logInAndSetCookie', async () => {
     render(
       <NextIntlClientProvider locale="en">
         <AuthPage />
@@ -88,14 +66,14 @@ describe('AuthPage', () => {
 
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
-    const signInBtn = screen.getByRole('button', { name: /sign in/i });
+    const logInBtn = screen.getByRole('button', { name: /log in/i });
 
     await userEvent.type(emailInput, 'katy@test.com');
     await userEvent.type(passwordInput, '11111111k.');
-    await userEvent.click(signInBtn);
+    await userEvent.click(logInBtn);
 
     await waitFor(() => {
-      expect(logInWithEmailAndPassword).toHaveBeenCalledWith(
+      expect(logInAndSetCookie).toHaveBeenCalledWith(
         'katy@test.com',
         '11111111k.'
       );
@@ -108,8 +86,8 @@ describe('AuthPage', () => {
       </NextIntlClientProvider>
     );
 
-    const signInBtn = screen.getByRole('button', { name: /sign in/i });
-    await userEvent.click(signInBtn);
+    const logInBtn = screen.getByRole('button', { name: /log in/i });
+    await userEvent.click(logInBtn);
     const emailError = await screen.findByText((content) =>
       content.toLowerCase().includes('valid email')
     );
@@ -139,7 +117,7 @@ describe('AuthPage', () => {
     expect(emailError).toBeInTheDocument();
     expect(passwordError).toBeInTheDocument();
   });
-  it('Register success calls registerWithEmailAndPassword', async () => {
+  it('Register success calls registerAndSetCookie', async () => {
     render(
       <NextIntlClientProvider locale="en">
         <AuthPage isInitialLogin={false} />
@@ -160,7 +138,7 @@ describe('AuthPage', () => {
     await userEvent.click(signUpBtn);
 
     await waitFor(() => {
-      expect(registerWithEmailAndPassword).toHaveBeenCalledWith(
+      expect(registerAndSetCookie).toHaveBeenCalledWith(
         'Katy',
         'katy@test.com',
         '11111111k.'
