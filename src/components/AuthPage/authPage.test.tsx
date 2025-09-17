@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import AuthPage from './AuthPage';
 import { NextIntlClientProvider } from 'next-intl';
-import { useAuth } from '@/hooks/useAuth/useAuth';
 import {
   logInAndSetCookie,
   registerAndSetCookie,
@@ -17,20 +16,21 @@ vi.mock('@/lib/firebase/authActions', () => ({
 
 const pushMock = vi.fn();
 
-vi.mock('next/navigation', async (importActual) => {
-  const actual = await importActual<typeof import('next/navigation')>();
-  return {
-    ...actual,
-    useRouter: () => ({
-      push: pushMock,
-      back: vi.fn(),
-      forward: vi.fn(),
-      refresh: vi.fn(),
-      replace: vi.fn(),
-      prefetch: vi.fn(),
-    }),
-  };
-});
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href} data-testid="mock-link">
+      {children}
+    </a>
+  ),
+  useRouter: () => ({
+    push: pushMock,
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+}));
 
 vi.mock('@/hooks/useAuth/useAuth', () => ({
   useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
@@ -47,15 +47,6 @@ describe('AuthPage', () => {
     const form = screen.getByTestId('form');
     expect(authPage).toBeInTheDocument();
     expect(form).toBeInTheDocument();
-  });
-  it('Redirects to / if user is logged in', () => {
-    (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
-    expect(pushMock).toHaveBeenCalledWith('/');
   });
   it('Login success calls logInAndSetCookie', async () => {
     render(

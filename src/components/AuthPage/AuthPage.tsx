@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { loginSchema, registerSchema } from '@/lib/validation/auth';
 import z from 'zod';
 import { Loader } from '../Loader/Loader';
@@ -30,7 +30,7 @@ export default function AuthPage({
   const [isLogin] = useState(
     isInitialLogin !== undefined ? isInitialLogin : true
   );
-  const { user, setUser, loading } = useAuth();
+  const { setUser } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,13 +40,6 @@ export default function AuthPage({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    if (user) {
-      router.push('/');
-    }
-  }, [user, router]);
-
-  if (loading) return <Loader />;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
