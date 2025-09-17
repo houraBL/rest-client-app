@@ -1,6 +1,6 @@
 'use client';
 
-type ResponseViewerProps = {
+export type ResponseViewerProps = {
   status: number;
   data?: string;
   error?: string;
@@ -11,11 +11,11 @@ import { Loader } from '@/components/Loader/Loader';
 import Editor from '@monaco-editor/react';
 
 export default function ResponseViewer({
-  status,
-  data,
-  error,
-  loading,
-}: ResponseViewerProps) {
+  response,
+}: {
+  response: ResponseViewerProps;
+}) {
+  const { status, data, error, loading } = response;
   if (loading) return <Loader />;
 
   const responseValue = error ? error : (data ?? '');

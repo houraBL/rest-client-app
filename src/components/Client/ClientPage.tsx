@@ -3,32 +3,33 @@
 import { useState } from 'react';
 import { MethodSelector } from './MethodSelector/MethodSelector';
 import { UrlInput } from './UrlInput/UrlInput';
-import {
-  ResponseViewer,
-  ResponseViewerProps,
-} from './ResponseViewer/ResponseViewer';
 import { BodyEditor } from './BodyEditor/BodyEditor';
-import { Methods } from '@/types/methods';
 import { CodeGenerator } from './CodeGenerator/CodeGenerator';
 import { SendButton } from './SendButton/SendButton';
+import ResponseViewer, {
+  ResponseViewerProps,
+} from './ResponseViewer/ResponseViewer';
 
 export function ClientPage() {
   // const [headers, setHeaders] = useState<Headers[]>([]);
-  const [response, setResponse] = useState<ResponseViewerProps>({});
+  const [response, setResponse] = useState<ResponseViewerProps>({ status: -1 });
 
   return (
-    <div className=" w-screen text-center p-20">
-      <div className="flex flex-col gap-5 border-1 p-10">
-        <div className="flex gap-2 items-center">
-          <MethodSelector />
-          <UrlInput />
-          <SendButton />
+    <>
+      <h2 className="text-2xl font-bold">Client</h2>
+      <div className=" w-screen text-center p-20">
+        <div className="flex flex-col gap-5 border-1 p-10">
+          <div className="flex gap-2 items-center">
+            <MethodSelector />
+            <UrlInput />
+            <SendButton />
+          </div>
+          {/* <Header /> */}
+          <CodeGenerator />
+          <BodyEditor />
+          <ResponseViewer response={response} />
         </div>
-        {/* <Header /> */}
-        <CodeGenerator />
-        <BodyEditor />
-        <ResponseViewer status={response.status} body={response.body} />
       </div>
-    </div>
+    </>
   );
 }

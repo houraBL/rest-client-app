@@ -9,12 +9,12 @@ vi.mock('@/components/Loader/Loader', () => ({
 
 describe('ResponseViewer', () => {
   it('renders loader when loading', () => {
-    render(<ResponseViewer status={200} loading={true} />);
+    render(<ResponseViewer response={{ status: 200, loading: true }} />);
     expect(screen.getByText('Loading')).toBeDefined();
   });
 
   it('renders HTTP success status correctly', () => {
-    render(<ResponseViewer status={201} data='{"ok":true}' />);
+    render(<ResponseViewer response={{ status: 201, data: '{"ok":true}' }} />);
     expect(screen.getByText('Response Status: 201')).toBeDefined();
     const statusDiv = screen.getByText(/Response Status:/);
     expect(statusDiv).toHaveClass('bg-green-100');
@@ -22,7 +22,7 @@ describe('ResponseViewer', () => {
   });
 
   it('renders HTTP error status correctly', () => {
-    render(<ResponseViewer status={400} data='{"ok":true}' />);
+    render(<ResponseViewer response={{ status: 400, data: '{"ok":true}' }} />);
     expect(screen.getByText('Response Status: 400')).toBeDefined();
     const statusDiv = screen.getByText(/Response Status:/);
     expect(statusDiv).toHaveClass('bg-red-100');
@@ -30,7 +30,7 @@ describe('ResponseViewer', () => {
   });
 
   it('renders empty editor if no data or error', () => {
-    render(<ResponseViewer status={204} />);
+    render(<ResponseViewer response={{ status: 204 }} />);
     expect(screen.getByText(/Response Status: 204/)).toBeDefined();
   });
 });
