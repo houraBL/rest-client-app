@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import useVariables, { VariableType } from '@/hooks/useVariables';
 import { GenericTable } from '../GenericTable/GenericTable';
+import { useTranslations } from 'next-intl';
 
 export default function Variables() {
   const [isClient, setIsClient] = useState(false);
@@ -17,6 +18,8 @@ export default function Variables() {
     deleteVariable,
   } = useVariables();
 
+  const t = useTranslations('Variables');
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -26,13 +29,13 @@ export default function Variables() {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl transition-colors">
       <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-        Variables
+        {t('variables')}
       </h1>
       <GenericTable<VariableType>
         items={variables}
         columns={[
-          { key: 'name', label: 'Variable' },
-          { key: 'initialValue', label: 'Value' },
+          { key: 'name', label: t('variable') },
+          { key: 'initialValue', label: t('value') },
         ]}
         onChange={updateVariable}
         onDelete={deleteVariable}

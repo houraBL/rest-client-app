@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 type GenericTableProps<T> = {
   items: T[];
   columns: { key: keyof T; label: string }[];
@@ -19,6 +21,8 @@ export function GenericTable<T extends Record<string, string>>({
   setNewItem,
   onAdd,
 }: GenericTableProps<T>) {
+  const t = useTranslations('Variables');
+
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <table className="w-full text-sm text-gray-700 dark:text-gray-200">
@@ -77,7 +81,7 @@ export function GenericTable<T extends Record<string, string>>({
                 onClick={onAdd}
                 className="px-4 py-2 text-sm rounded-md bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition-colors cursor-pointer"
               >
-                Add
+                {t('add')}
               </button>
             </td>
           </tr>
