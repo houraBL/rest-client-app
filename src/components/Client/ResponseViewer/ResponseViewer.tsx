@@ -29,7 +29,6 @@ export default function ResponseViewer({
       </div>
       <Editor
         height="25vh"
-        width="35vw"
         defaultLanguage="json"
         value={responseValue}
         options={{

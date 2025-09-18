@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useVariables, { VariableType } from '@/hooks/useVariables';
+import useVariables, { VariableType } from '@/hooks/useVariables/useVariables';
 import { GenericTable } from '../GenericTable/GenericTable';
 import { useTranslations } from 'next-intl';
 
