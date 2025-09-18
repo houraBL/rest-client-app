@@ -13,6 +13,8 @@ import {
   registerAndSetCookie,
 } from '@/lib/firebase/authActions';
 import { useAuth } from '@/hooks/useAuth/useAuth';
+import { useTranslations } from 'next-intl';
+
 
 type Errors = {
   name?: string;
@@ -26,6 +28,7 @@ export default function AuthPage({
   isInitialLogin?: boolean;
 }) {
   const router = useRouter();
+  const t = useTranslations('Auth');
 
   const [isLogin] = useState(
     isInitialLogin !== undefined ? isInitialLogin : true
@@ -67,7 +70,7 @@ export default function AuthPage({
               });
             }
 
-            toast.success('Welcome back!');
+            toast.success(t('welcomeBackToast'));
             setEmail('');
             setPassword('');
             router.refresh();
@@ -83,11 +86,11 @@ export default function AuthPage({
               password: errors.properties?.password?.errors[0],
             });
           } else {
-            const validData = result.data;
+            const data = result.data;
             const res = await registerAndSetCookie(
-              validData.name,
-              validData.email,
-              validData.password
+              data.name,
+              data.email,
+              data.password
             );
             if (res) {
               setUser({
@@ -97,7 +100,7 @@ export default function AuthPage({
               });
             }
 
-            toast.success('Account created successfully!');
+            toast.success(t('accountCreated'));
             setName('');
             setEmail('');
             setPassword('');
@@ -107,19 +110,19 @@ export default function AuthPage({
         if (err instanceof FirebaseError) {
           switch (err.code) {
             case 'auth/user-not-found':
-              toast.error('User with this email not found');
+              toast.error(t('userNotFound'));
               break;
             case 'auth/invalid-credential':
-              toast.error('Wrong password or email');
+              toast.error(t('wrongCredentials'));
               break;
             case 'auth/email-already-in-use':
-              toast.error('Email already in use');
+              toast.error(t('emailInUse'));
               break;
             default:
-              toast.error('An unknown authentication error occurred');
+              toast.error(t('unknownAuthError'));
           }
         } else {
-          toast.error('An unknown error occurred');
+          toast.error(t('unknownError'));
         }
       } finally {
         setIsSubmitting(false);
@@ -131,9 +134,9 @@ export default function AuthPage({
     <div data-testid="auth-page" className="flex flex-col gap-3 w-sm text-left">
       <div className="mb-5">
         <h2 className="mb-2 font-bold text-xl">
-          {isLogin ? 'Welcome Back!' : 'Get Started Now'}
+          {isLogin ? t('welcomeBack') : t('getStarted')}
         </h2>
-        <p>{isLogin ? 'Enter your credentials' : 'Create a new account'}</p>
+        <p>{isLogin ? t('enterCredentials') : t('createAccount')}</p>
       </div>
       <AuthForm
         isLogin={isLogin}
@@ -149,12 +152,12 @@ export default function AuthPage({
         isPending={isPending}
       />
       <p className="text-center mb-5">
-        {isLogin ? "Don't have an account? " : 'Have an account? '}
+        {isLogin ? t('noAccount') : t('haveAccount')}
         <span
           className="cursor-pointer text-blue-400"
           onClick={() => router.replace(!isLogin ? '/login' : '/signup')}
         >
-          {isLogin ? 'Sign Up' : 'Log In'}
+          {isLogin ? t('signUp') : t('signIn')}
         </span>
       </p>
       {isSubmitting && <Loader />}

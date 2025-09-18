@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
@@ -8,6 +8,8 @@ import {
   logInAndSetCookie,
   registerAndSetCookie,
 } from '@/lib/firebase/authActions';
+import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
+import { User } from 'firebase/auth';
 
 vi.mock('@/lib/firebase/authActions', () => ({
   logInAndSetCookie: vi.fn(),
@@ -37,17 +39,10 @@ vi.mock('@/hooks/useAuth/useAuth', () => ({
 }));
 
 describe('AuthPage', () => {
-  it('Render AuthPage', () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
-    const authPage = screen.getByTestId('auth-page');
-    const form = screen.getByTestId('form');
-    expect(authPage).toBeInTheDocument();
-    expect(form).toBeInTheDocument();
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
+  
   it('Login success calls logInAndSetCookie', async () => {
     render(
       <NextIntlClientProvider locale="en">
@@ -70,6 +65,7 @@ describe('AuthPage', () => {
       );
     });
   });
+
   it('Login shows validation errors', async () => {
     render(
       <NextIntlClientProvider locale="en">
@@ -114,7 +110,6 @@ describe('AuthPage', () => {
         <AuthPage isInitialLogin={false} />
       </NextIntlClientProvider>
     );
-
     const nameInput = screen.getByPlaceholderText(/enter your name/i);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);

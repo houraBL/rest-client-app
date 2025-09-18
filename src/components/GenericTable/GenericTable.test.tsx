@@ -7,6 +7,14 @@ type TestItem = {
   value: string;
 };
 
+vi.mock('next-intl', async (importActual) => {
+  const actual = await importActual<typeof import('next-intl')>();
+  return {
+    ...actual,
+    useTranslations: () => (key: string) => key,
+  };
+});
+
 describe('GenericTable', () => {
   const columns: { key: keyof TestItem; label: string }[] = [
     { key: 'key', label: 'Key' },
@@ -102,7 +110,7 @@ describe('GenericTable', () => {
       />
     );
 
-    const addButton = screen.getByText('Add');
+    const addButton = screen.getByRole('button', { name: 'add' });
     fireEvent.click(addButton);
 
     expect(onAdd).toHaveBeenCalled();

@@ -9,6 +9,7 @@ import { SendButton } from './SendButton/SendButton';
 import ResponseViewer, {
   ResponseViewerProps,
 } from './ResponseViewer/ResponseViewer';
+import Headers from './Headers/Headers';
 
 export function ClientPage() {
   // const [headers, setHeaders] = useState<Headers[]>([]);
@@ -22,7 +23,7 @@ export function ClientPage() {
           <UrlInput />
           <SendButton />
         </div>
-        {/* <Header /> */}
+        <Headers />
         <CodeGenerator />
         <BodyEditor />
         <ResponseViewer response={response} />
