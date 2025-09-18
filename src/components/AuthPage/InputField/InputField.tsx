@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 type InputFieldProps = {
   label: string;
   value: string;
@@ -15,10 +17,12 @@ export const InputField = ({
   type = 'text',
   placeholder,
 }: InputFieldProps) => {
+  const t = useTranslations('Auth');
+
   return (
     <>
       <label htmlFor={label} className="block text-sm font-medium ">
-        {label}
+        {t(label)}
       </label>
       <input
         id={label}
@@ -26,7 +30,7 @@ export const InputField = ({
         className="input input-accent w-full"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
+        placeholder={t(placeholder)}
       />
       {error && <p className="text-red-500 m-0 text-xs ">{error}</p>}
     </>

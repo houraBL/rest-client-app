@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { InputField } from '../InputField/InputField';
 
 type Errors = {
@@ -31,6 +32,8 @@ export const AuthForm = ({
   handleSubmit,
   isSubmitting,
 }: AuthFormProps) => {
+  const t = useTranslations('Auth');
+
   return (
     <form
       data-testid="form"
@@ -39,26 +42,26 @@ export const AuthForm = ({
     >
       {!isLogin && (
         <InputField
-          label="Name"
+          label="nameLabel"
           value={name}
           onChange={setName}
-          placeholder="Enter your name"
+          placeholder="namePlaceholder"
           error={errors.name}
         />
       )}
       <InputField
-        label="Email"
+        label="emailLabel"
         value={email}
         onChange={setEmail}
-        placeholder="Enter your email"
+        placeholder="emailPlaceholder"
         error={errors.email}
       />
       <InputField
         type="password"
-        label="Password"
+        label="passwordLabel"
         value={password}
         onChange={setPassword}
-        placeholder="Enter your password"
+        placeholder="passwordPlaceholder"
         error={errors.password}
       />
       <button
@@ -66,7 +69,7 @@ export const AuthForm = ({
         className="btn btn-info mt-5"
         disabled={isSubmitting}
       >
-        {isLogin ? 'Sign In' : 'Sign Up'}
+        {isLogin ? t('signIn') : t('signUp')}
       </button>
     </form>
   );
