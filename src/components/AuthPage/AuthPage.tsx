@@ -128,7 +128,7 @@ export default function AuthPage({
   };
 
   return (
-    <div data-testid="auth-page" className="flex flex-col gap-3 w-sm">
+    <div data-testid="auth-page" className="flex flex-col gap-3 w-sm text-left">
       <div className="mb-5">
         <h2 className="mb-2 font-bold text-xl">
           {isLogin ? 'Welcome Back!' : 'Get Started Now'}

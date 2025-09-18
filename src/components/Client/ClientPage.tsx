@@ -12,24 +12,21 @@ import ResponseViewer, {
 
 export function ClientPage() {
   // const [headers, setHeaders] = useState<Headers[]>([]);
-  const [response, setResponse] = useState<ResponseViewerProps>({ status: -1 });
+  const [response, setResponse] = useState<ResponseViewerProps>({ status: 0 });
 
   return (
-    <>
-      <h2 className="text-2xl font-bold">Client</h2>
-      <div className=" w-screen text-center p-20">
-        <div className="flex flex-col gap-5 border-1 p-10">
-          <div className="flex gap-2 items-center">
-            <MethodSelector />
-            <UrlInput />
-            <SendButton />
-          </div>
-          {/* <Header /> */}
-          <CodeGenerator />
-          <BodyEditor />
-          <ResponseViewer response={response} />
+    <div className=" w-screen text-center p-20">
+      <div className="flex flex-col gap-5 border-1 p-10">
+        <div className="flex gap-2 items-center">
+          <MethodSelector />
+          <UrlInput />
+          <SendButton />
         </div>
+        {/* <Header /> */}
+        <CodeGenerator />
+        <BodyEditor />
+        <ResponseViewer response={response} />
       </div>
-    </>
+    </div>
   );
 }

@@ -20,7 +20,5 @@ export default function PrivateGuard({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!user) router.push('/');
-
   return <>{children}</>;
 }

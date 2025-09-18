@@ -20,7 +20,5 @@ export default function PublicGuard({ children }: { children: ReactNode }) {
     );
   }
 
-  if (user) router.push('/');
-
   return <>{children}</>;
 }

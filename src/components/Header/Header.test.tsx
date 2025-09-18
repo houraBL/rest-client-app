@@ -3,6 +3,8 @@ import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from './Header';
 import { useAuth } from '@/hooks/useAuth/useAuth';
+import userEvent from '@testing-library/user-event';
+import { logoutAndClearCookie } from '@/lib/firebase/authActions';
 
 vi.mock('next-intl', async (importActual) => {
   const actual = await importActual<typeof import('next-intl')>();
@@ -12,9 +14,15 @@ vi.mock('next-intl', async (importActual) => {
   };
 });
 
-vi.mock('@/hooks/useAuth/useAuth', () => ({
-  useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
-}));
+vi.mock('@/hooks/useAuth/useAuth', () => {
+  return {
+    useAuth: vi.fn().mockReturnValue({
+      user: true,
+      setUser: vi.fn(),
+      loading: false,
+    }),
+  };
+});
 
 vi.mock('@/lib/firebase/authActions', () => ({
   logoutAndClearCookie: vi.fn(),
@@ -108,5 +116,13 @@ describe('Header', () => {
     (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
     render(<Header />);
     expect(screen.getByText('signout')).toBeInTheDocument();
+  });
+
+  it('signs out user and tr sign out when user is not null', async () => {
+    render(<Header />);
+    const signOutBtn = screen.getByText('signout');
+    await userEvent.click(signOutBtn);
+    expect(logoutAndClearCookie).toBeCalledTimes(1);
+    expect(pushMock).toBeCalledWith('/');
   });
 });
