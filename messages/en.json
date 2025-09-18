@@ -51,5 +51,11 @@
     "emailInUse": "Email already in use",
     "unknownAuthError": "An unknown authentication error occurred",
     "unknownError": "An unknown error occurred"
+  },
+  "Headers": {
+    "headersTitle": "Headers",
+    "header": "Header",
+    "value": "Value",
+    "add": "Add"
   }
 }

@@ -51,5 +51,10 @@
     "emailInUse": "Email уже используется",
     "unknownAuthError": "Произошла неизвестная ошибка аутентификации",
     "unknownError": "Произошла неизвестная ошибка"
+  },
+  "Headers": {
+    "headersTitle": "Хэдеры",
+    "header": "Хэдер",
+    "value": "Значение"
   }
 }
