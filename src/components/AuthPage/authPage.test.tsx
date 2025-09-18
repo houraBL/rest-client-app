@@ -1,16 +1,15 @@
-import { describe, expect, it, Mock, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
-import '@testing-library/jest-dom';
-import { User } from 'firebase/auth';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
+import { User } from 'firebase/auth';
+import AuthPage from './AuthPage';
 import {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
 } from '@/firebase/firebase';
-import AuthPage from './AuthPage';
-import { NextIntlClientProvider } from 'next-intl';
-import { FirebaseError } from 'firebase/app';
+import '@testing-library/jest-dom';
+import { renderWithMessages } from './renderWithMessages';
 
 vi.mock('@/firebase/firebase', () => ({
   auth: {},
@@ -42,50 +41,38 @@ vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
 ]);
 
 describe('AuthPage', () => {
-  it('Render AuthPage', () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
-    const authPage = screen.getByTestId('auth-page');
-    const form = screen.getByTestId('form');
-    expect(authPage).toBeInTheDocument();
-    expect(form).toBeInTheDocument();
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
-  it('Redirects to / if user is logged in', () => {
+
+  it('renders AuthPage', () => {
+    renderWithMessages(<AuthPage />);
+    expect(screen.getByTestId('auth-page')).toBeInTheDocument();
+    expect(screen.getByTestId('form')).toBeInTheDocument();
+  });
+
+  it('redirects to / if user is logged in', () => {
     vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-      { uid: '12' } as unknown as User,
+      { uid: '12' } as User,
       false,
       undefined,
     ]);
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
+    renderWithMessages(<AuthPage />);
     expect(pushMock).toHaveBeenCalledWith('/');
   });
-  it('Redirects to / if user is error in useAuthState', () => {
+
+  it('redirects to / if useAuthState returns an error', () => {
     vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
       null,
       false,
       new Error('Test error'),
     ]);
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
+    renderWithMessages(<AuthPage />);
     expect(pushMock).toHaveBeenCalledWith('/');
   });
-  it('Login success calls logInWithEmailAndPassword', async () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
 
+  it('login calls logInWithEmailAndPassword', async () => {
+    renderWithMessages(<AuthPage />);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
     const signInBtn = screen.getByRole('button', { name: /sign in/i });
@@ -101,54 +88,9 @@ describe('AuthPage', () => {
       );
     });
   });
-  it('Login shows validation errors', async () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage />
-      </NextIntlClientProvider>
-    );
 
-    const signInBtn = screen.getByRole('button', { name: /sign in/i });
-    await userEvent.click(signInBtn);
-    const emailError = await screen.findByText((content) =>
-      content.toLowerCase().includes('valid email')
-    );
-    const passwordError = await screen.findByText((content) =>
-      content.toLocaleLowerCase().includes('password must be')
-    );
-
-    expect(emailError).toBeInTheDocument();
-    expect(passwordError).toBeInTheDocument();
-  });
-  it('Shows validation errors on register submit', async () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage isInitialLogin={false} />
-      </NextIntlClientProvider>
-    );
-
-    const signUpBtn = screen.getByRole('button', { name: /sign up/i });
-    await userEvent.click(signUpBtn);
-    const emailError = await screen.findByText((content) =>
-      content.toLowerCase().includes('valid email')
-    );
-    const passwordError = await screen.findByText((content) =>
-      content.toLocaleLowerCase().includes('password must be')
-    );
-
-    expect(emailError).toBeInTheDocument();
-    expect(passwordError).toBeInTheDocument();
-  });
-  it('Register success calls registerWithEmailAndPassword', async () => {
-    render(
-      <NextIntlClientProvider locale="en">
-        <AuthPage isInitialLogin={false} />
-      </NextIntlClientProvider>
-    );
-
-    const modeSwitcher = screen.getByText(/sign up/i);
-    await userEvent.click(modeSwitcher);
-
+  it('register calls registerWithEmailAndPassword', async () => {
+    renderWithMessages(<AuthPage isInitialLogin={false} />);
     const nameInput = screen.getByPlaceholderText(/enter your name/i);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);

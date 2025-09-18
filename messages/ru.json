@@ -28,5 +28,28 @@
     "variable": "Переменная",
     "value": "Значение",
     "add": "Добавить"
+  },
+  "Auth": {
+    "nameLabel": "Имя",
+    "namePlaceholder": "Введите свое имя",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Введите ваш email",
+    "passwordLabel": "Пароль",
+    "passwordPlaceholder": "Введите свой пароль",
+
+    "welcomeBack": "Добро пожаловать!",
+    "getStarted": "Начнем прямо сейчас",
+    "enterCredentials": "Введите ваши учетные данные",
+    "createAccount": "Создать новую учетную запись",
+    "noAccount": "Нет аккаунта?",
+    "haveAccount": "Есть аккаунт?",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "accountCreated": "Аккаунт успешно создан!",
+    "userNotFound": "Пользователь с таким email не найден",
+    "wrongCredentials": "Неправильный пароль или email",
+    "emailInUse": "Email уже используется",
+    "unknownAuthError": "Произошла неизвестная ошибка аутентификации",
+    "unknownError": "Произошла неизвестная ошибка"
   }
 }
