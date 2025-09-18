@@ -5,12 +5,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Editor } from '@monaco-editor/react';
 import { LANGUAGES } from '@/types/languages';
+import useTheme from '@/hooks/useTheme';
 
 export function CodeGenerator() {
   const { method, url, body } = useSelector((state: RootState) => state.client);
   const [selectedLabel, setSelectedLabel] = useState('');
   const [code, setCode] = useState('');
   const [copied, setCopied] = useState(false);
+  const { theme } = useTheme();
 
   const selectedLang = LANGUAGES.find((lang) => lang.label === selectedLabel);
 
@@ -78,6 +80,7 @@ export function CodeGenerator() {
           {copied ? 'Copied!' : 'Copy'}
         </button>
         <Editor
+          theme={theme === 'light' ? 'light' : 'vs-dark'}
           height="40vh"
           language={selectedLang?.monaco ?? 'python'}
           defaultLanguage="python"
