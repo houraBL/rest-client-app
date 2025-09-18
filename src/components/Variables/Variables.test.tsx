@@ -1,8 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, render } from '@testing-library/react';
 import Variables from './Variables';
 import * as useVariablesHook from '@/hooks/useVariables';
-import { renderWithMessages } from './renderWithMessages';
+
+vi.mock('next-intl', async (importActual) => {
+  const actual = await importActual<typeof import('next-intl')>();
+  return {
+    ...actual,
+    useTranslations: () => (key: string) => key,
+  };
+});
 
 describe('Variables component', () => {
   const mockVariables = [
@@ -36,7 +43,7 @@ describe('Variables component', () => {
   });
 
   it('renders variables table', () => {
-    renderWithMessages(<Variables />);
+    render(<Variables />);
 
     const variableHeaders = screen.getAllByRole('columnheader', {
       name: /variable/i,
@@ -53,21 +60,21 @@ describe('Variables component', () => {
   });
 
   it('calls onChange when editing a cell', () => {
-    renderWithMessages(<Variables />);
+    render(<Variables />);
     const input = screen.getByDisplayValue('Var1') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Var1Updated' } });
     expect(updateVariable).toHaveBeenCalledWith(0, 'name', 'Var1Updated');
   });
 
   it('calls onDelete when delete button is clicked', () => {
-    renderWithMessages(<Variables />);
+    render(<Variables />);
     const deleteButtons = screen.getAllByRole('button', { name: /✕/i });
     fireEvent.click(deleteButtons[0]);
     expect(deleteVariable).toHaveBeenCalledWith(0);
   });
 
   it('calls onAdd when Add button is clicked', () => {
-    renderWithMessages(<Variables />);
+    render(<Variables />);
     const addButton = screen.getByRole('button', { name: /add/i });
     fireEvent.click(addButton);
     expect(addVariable).toHaveBeenCalled();

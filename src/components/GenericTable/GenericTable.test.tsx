@@ -1,12 +1,19 @@
-import { screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, vi, beforeEach, expect } from 'vitest';
 import { GenericTable } from './GenericTable';
-import { renderWithMessages } from '../Variables/renderWithMessages';
 
 type TestItem = {
   key: string;
   value: string;
 };
+
+vi.mock('next-intl', async (importActual) => {
+  const actual = await importActual<typeof import('next-intl')>();
+  return {
+    ...actual,
+    useTranslations: () => (key: string) => key,
+  };
+});
 
 describe('GenericTable', () => {
   const columns: { key: keyof TestItem; label: string }[] = [
@@ -34,7 +41,7 @@ describe('GenericTable', () => {
   });
 
   it('renders columns and rows', () => {
-    renderWithMessages(
+    render(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -53,7 +60,7 @@ describe('GenericTable', () => {
   });
 
   it('calls onChange when input value changes', () => {
-    renderWithMessages(
+    render(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -72,7 +79,7 @@ describe('GenericTable', () => {
   });
 
   it('calls onDelete when delete button is clicked', () => {
-    renderWithMessages(
+    render(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -84,14 +91,14 @@ describe('GenericTable', () => {
       />
     );
 
-    const deleteButtons = screen.getAllByRole('button', { name: /✕/i });
+    const deleteButtons = screen.getAllByText('✕');
     fireEvent.click(deleteButtons[0]);
 
     expect(onDelete).toHaveBeenCalledWith(0);
   });
 
   it('calls onAdd when add button is clicked', () => {
-    renderWithMessages(
+    render(
       <GenericTable<TestItem>
         items={items}
         columns={columns}
@@ -103,14 +110,14 @@ describe('GenericTable', () => {
       />
     );
 
-    const addButton = screen.getByRole('button', { name: /add/i });
+    const addButton = screen.getByRole('button', { name: 'add' });
     fireEvent.click(addButton);
 
     expect(onAdd).toHaveBeenCalled();
   });
 
   it('calls setNewItem when newItem input changes', () => {
-    renderWithMessages(
+    render(
       <GenericTable<TestItem>
         items={items}
         columns={columns}

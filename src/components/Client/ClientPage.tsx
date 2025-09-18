@@ -11,6 +11,7 @@ import { BodyEditor } from './BodyEditor/BodyEditor';
 import { Methods } from '@/types/methods';
 import { CodeGenerator } from './CodeGenerator/CodeGenerator';
 import { SendButton } from './SendButton/SendButton';
+import Headers from './Headers/Headers';
 
 export function ClientPage() {
   // const [headers, setHeaders] = useState<Headers[]>([]);
@@ -24,7 +25,7 @@ export function ClientPage() {
           <UrlInput />
           <SendButton />
         </div>
-        {/* <Header /> */}
+        <Headers />
         <CodeGenerator />
         <BodyEditor />
         <ResponseViewer status={response.status} body={response.body} />
