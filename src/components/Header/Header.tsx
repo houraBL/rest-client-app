@@ -35,13 +35,13 @@ export default function Header() {
 
   return (
     <header
-      className={`navbar bg-base-100 z-40 sticky top-0 shadow-lg transition-all duration-500 ease-in-out 
+      className={`navbar bg-base-100 z-40 sticky top-0 shadow-lg transition-all duration-500 ease-in-out justify-between
         ${scrolled ? 'h-16 bg-purple-100 dark:bg-purple-950' : ' h-20'}
       `}
     >
-      <ul className="menu menu-horizontal navbar-start px-1">
+      <ul className="menu menu-horizontal px-0 sm:text-lg">
         <li>
-          <Link href="/">
+          <Link href="/" className="p-0 my-auto">
             <Image
               aria-hidden
               src="/app-logo.svg"
@@ -50,11 +50,11 @@ export default function Header() {
               width={300}
               height={300}
             />
-            RESTful API
+            <span className="">RESTful API</span>
           </Link>
         </li>
       </ul>
-      <ul className="menu menu-horizontal navbar-end px-1">
+      <ul className="menu menu-horizontal px-0 sm:px-1 sm:text-lg sm:gap-4">
         <li>
           <LanguageSwitcher />
         </li>
@@ -62,12 +62,12 @@ export default function Header() {
         {!user && !loading && (
           <>
             <li>
-              <Link href="/login">
+              <Link href="/login" className="px-1 sm:px-2 my-auto">
                 <span className="w-fit">{t('login')}</span>
               </Link>
             </li>
             <li>
-              <Link href="/signup">
+              <Link href="/signup" className="px-1 sm:px-2 my-auto">
                 <span className="w-fit">{t('signup')}</span>
               </Link>
             </li>
@@ -75,8 +75,8 @@ export default function Header() {
         )}
         {user && !loading && (
           <li>
-            <button onClick={handleLogout}>
-              <span>{t('signout')}</span>
+            <button onClick={handleLogout} className="px-1 sm:px-2 my-auto">
+              <span className="label-text">{t('signout')}</span>
             </button>
           </li>
         )}
