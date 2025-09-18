@@ -18,6 +18,7 @@ type AuthFormProps = {
   errors: Errors;
   handleSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
+  isPending: boolean;
 };
 
 export const AuthForm = ({
@@ -31,6 +32,7 @@ export const AuthForm = ({
   errors,
   handleSubmit,
   isSubmitting,
+  isPending,
 }: AuthFormProps) => {
   const t = useTranslations('Auth');
 
@@ -47,6 +49,7 @@ export const AuthForm = ({
           onChange={setName}
           placeholder="namePlaceholder"
           error={errors.name}
+          disabled={isSubmitting || isPending}
         />
       )}
       <InputField
@@ -55,6 +58,7 @@ export const AuthForm = ({
         onChange={setEmail}
         placeholder="emailPlaceholder"
         error={errors.email}
+        disabled={isSubmitting || isPending}
       />
       <InputField
         type="password"
@@ -63,11 +67,12 @@ export const AuthForm = ({
         onChange={setPassword}
         placeholder="passwordPlaceholder"
         error={errors.password}
+        disabled={isSubmitting || isPending}
       />
       <button
         type="submit"
         className="btn btn-info mt-5"
-        disabled={isSubmitting}
+        disabled={isSubmitting || isPending}
       >
         {isLogin ? t('signIn') : t('signUp')}
       </button>

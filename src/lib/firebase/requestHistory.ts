@@ -8,16 +8,6 @@ import {
   DocumentData,
 } from 'firebase/firestore';
 
-export interface RequestLogEntry {
-  requestDuration: number;
-  responseStatusCode: number;
-  requestMethod: string;
-  requestSize: number;
-  responseSize: number;
-  endpointUrl: string;
-  errorDetails?: string | null;
-}
-
 interface requestsHistoryEntry {
   id: string;
   request: DocumentData;

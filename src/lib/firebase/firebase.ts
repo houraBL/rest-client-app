@@ -26,14 +26,8 @@ export const logInWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error('Unknown error');
-  }
+  const res = await signInWithEmailAndPassword(auth, email, password);
+  return res.user;
 };
 
 export const registerWithEmailAndPassword = async (
@@ -41,27 +35,21 @@ export const registerWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    if (user) {
-      await updateProfile(user, {
-        displayName: displayName,
-      });
-    }
-
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      displayName,
-      authProvider: 'local',
-      email,
+  const res = await createUserWithEmailAndPassword(auth, email, password);
+  const user = res.user;
+  if (user) {
+    await updateProfile(user, {
+      displayName: displayName,
     });
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error('Unknown error');
   }
+
+  await addDoc(collection(db, 'users'), {
+    uid: user.uid,
+    displayName,
+    authProvider: 'local',
+    email,
+  });
+  return user;
 };
 
 export const logout = () => {

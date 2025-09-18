@@ -1,96 +1,115 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
+import AuthPage from './AuthPage';
+import { NextIntlClientProvider } from 'next-intl';
+import {
+  logInAndSetCookie,
+  registerAndSetCookie,
+} from '@/lib/firebase/authActions';
 import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import { User } from 'firebase/auth';
-import AuthPage from './AuthPage';
-import {
-  logInWithEmailAndPassword,
-  registerWithEmailAndPassword,
-} from '@/firebase/firebase';
-import '@testing-library/jest-dom';
-import { renderWithMessages } from './renderWithMessages';
 
-vi.mock('@/firebase/firebase', () => ({
-  auth: {},
-  logInWithEmailAndPassword: vi.fn(),
-  registerWithEmailAndPassword: vi.fn(),
+vi.mock('@/lib/firebase/authActions', () => ({
+  logInAndSetCookie: vi.fn(),
+  registerAndSetCookie: vi.fn(),
 }));
 
 const pushMock = vi.fn();
 
-vi.mock('next/navigation', async (importActual) => {
-  const actual = await importActual<typeof import('next/navigation')>();
-  return {
-    ...actual,
-    useRouter: () => ({
-      push: pushMock,
-      back: vi.fn(),
-      forward: vi.fn(),
-      refresh: vi.fn(),
-      replace: vi.fn(),
-      prefetch: vi.fn(),
-    }),
-  };
-});
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href} data-testid="mock-link">
+      {children}
+    </a>
+  ),
+  useRouter: () => ({
+    push: pushMock,
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+}));
 
-vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-  null,
-  false,
-  undefined,
-]);
+vi.mock('@/hooks/useAuth/useAuth', () => ({
+  useAuth: vi.fn().mockReturnValue({ user: null, loading: false }),
+}));
 
 describe('AuthPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
+  
+  it('Login success calls logInAndSetCookie', async () => {
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
 
-  it('renders AuthPage', () => {
-    renderWithMessages(<AuthPage />);
-    expect(screen.getByTestId('auth-page')).toBeInTheDocument();
-    expect(screen.getByTestId('form')).toBeInTheDocument();
-  });
-
-  it('redirects to / if user is logged in', () => {
-    vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-      { uid: '12' } as User,
-      false,
-      undefined,
-    ]);
-    renderWithMessages(<AuthPage />);
-    expect(pushMock).toHaveBeenCalledWith('/');
-  });
-
-  it('redirects to / if useAuthState returns an error', () => {
-    vi.spyOn(reactFirebaseHooks, 'useAuthState').mockReturnValue([
-      null,
-      false,
-      new Error('Test error'),
-    ]);
-    renderWithMessages(<AuthPage />);
-    expect(pushMock).toHaveBeenCalledWith('/');
-  });
-
-  it('login calls logInWithEmailAndPassword', async () => {
-    renderWithMessages(<AuthPage />);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
-    const signInBtn = screen.getByRole('button', { name: /sign in/i });
+    const logInBtn = screen.getByRole('button', { name: /log in/i });
 
     await userEvent.type(emailInput, 'katy@test.com');
     await userEvent.type(passwordInput, '11111111k.');
-    await userEvent.click(signInBtn);
+    await userEvent.click(logInBtn);
 
     await waitFor(() => {
-      expect(logInWithEmailAndPassword).toHaveBeenCalledWith(
+      expect(logInAndSetCookie).toHaveBeenCalledWith(
         'katy@test.com',
         '11111111k.'
       );
     });
   });
 
-  it('register calls registerWithEmailAndPassword', async () => {
-    renderWithMessages(<AuthPage isInitialLogin={false} />);
+  it('Login shows validation errors', async () => {
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage />
+      </NextIntlClientProvider>
+    );
+
+    const logInBtn = screen.getByRole('button', { name: /log in/i });
+    await userEvent.click(logInBtn);
+    const emailError = await screen.findByText((content) =>
+      content.toLowerCase().includes('valid email')
+    );
+    const passwordError = await screen.findByText((content) =>
+      content.toLocaleLowerCase().includes('password must be')
+    );
+
+    expect(emailError).toBeInTheDocument();
+    expect(passwordError).toBeInTheDocument();
+  });
+  it('Shows validation errors on register submit', async () => {
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage isInitialLogin={false} />
+      </NextIntlClientProvider>
+    );
+
+    const signUpBtn = screen.getByRole('button', { name: /sign up/i });
+    await userEvent.click(signUpBtn);
+    const emailError = await screen.findByText((content) =>
+      content.toLowerCase().includes('valid email')
+    );
+    const passwordError = await screen.findByText((content) =>
+      content.toLocaleLowerCase().includes('password must be')
+    );
+
+    expect(emailError).toBeInTheDocument();
+    expect(passwordError).toBeInTheDocument();
+  });
+  it('Register success calls registerAndSetCookie', async () => {
+    render(
+      <NextIntlClientProvider locale="en">
+        <AuthPage isInitialLogin={false} />
+      </NextIntlClientProvider>
+    );
     const nameInput = screen.getByPlaceholderText(/enter your name/i);
     const emailInput = screen.getByPlaceholderText(/enter your email/i);
     const passwordInput = screen.getByPlaceholderText(/enter your password/i);
@@ -102,7 +121,7 @@ describe('AuthPage', () => {
     await userEvent.click(signUpBtn);
 
     await waitFor(() => {
-      expect(registerWithEmailAndPassword).toHaveBeenCalledWith(
+      expect(registerAndSetCookie).toHaveBeenCalledWith(
         'Katy',
         'katy@test.com',
         '11111111k.'

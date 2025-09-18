@@ -1,4 +1,4 @@
-import { logUserRequest } from '@/firebase/logUserRequest';
+import { logUserRequest } from '@/lib/firebase/logUserRequest';
 
 export async function makeApiCall({
   url,
@@ -39,7 +39,6 @@ export async function makeApiCall({
       errorDetails = `HTTP Error: ${status} - ${responseText.substring(0, 100)}`;
     }
   } catch (error) {
-    console.log(error);
     if (error instanceof Error) {
       errorDetails = `Network/Fetch Error: ${error.message}`;
     } else {
