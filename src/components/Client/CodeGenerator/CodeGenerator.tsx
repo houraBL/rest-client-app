@@ -1,53 +1,80 @@
 import codegen from 'postman-code-generators';
 import sdk from 'postman-collection';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-// import { HeaderRequest } from "@/types/headerRequest";
+import { Editor } from '@monaco-editor/react';
 
-interface LanguagesOptions {
+interface LanguageOption {
   label: string;
-  variants: Record<string, string>[];
+  value: string;
 }
+console.log(codegen.getLanguageList());
+
+const LANGUAGE_MAP: Record<string, { language: string; variant: string }> = {
+  curl: { language: 'curl', variant: 'curl' },
+  'JavaScript (Fetch API)': { language: 'javascript', variant: 'fetch' },
+  'JavaScript (XHR)': { language: 'javascript', variant: 'xhr' },
+  NodeJS: { language: 'nodejs', variant: 'native' },
+  Python: { language: 'python', variant: 'requests' },
+  Java: { language: 'java', variant: 'OkHttp' },
+  'C# (HTTPClient)': { language: 'csharp', variant: 'httpclient' },
+  'C# (RestSharp)': { language: 'csharp', variant: 'restsharp' },
+  Go: { language: 'go', variant: 'native' },
+};
+
+const MONACO_LANGUAGE_MAP: Record<string, string> = {
+  curl: 'shell',
+  'JavaScript (Fetch API)': 'javascript',
+  'JavaScript (XHR)': 'javascript',
+  NodeJS: 'javascript',
+  Python: 'python',
+  Java: 'java',
+  'C# (HTTPClient)': 'csharp',
+  'C# (RestSharp)': 'csharp',
+  Go: 'go',
+};
 
 export function CodeGenerator() {
   const { method, url, body } = useSelector((state: RootState) => state.client);
-  const [lang, setLang] = useState('');
+  const [selectedLabel, setSelectedLabel] = useState('');
   const [code, setCode] = useState('');
   const [copied, setCopied] = useState(false);
 
   const myRequest = new sdk.Request({
-    url: url,
-    method: method,
-    body: body
-      ? {
-          mode: 'raw',
-          raw: body,
-        }
-      : undefined,
+    url,
+    method,
+    body: body ? { mode: 'raw', raw: body } : undefined,
   });
-  const avaliableLanguages: LanguagesOptions[] = codegen.getLanguageList();
+
+  const availableOptions: LanguageOption[] = Object.keys(LANGUAGE_MAP).map(
+    (label) => ({
+      label,
+      value: label,
+    })
+  );
 
   useEffect(() => {
-    if (!lang) return;
+    if (!selectedLabel) return;
 
-    const [language, variant] = lang.split(':');
+    const mapping = LANGUAGE_MAP[selectedLabel];
+    if (!mapping) return;
 
     codegen.convert(
-      language,
-      variant,
+      mapping.language,
+      mapping.variant,
       myRequest,
       {},
-      (error: Error, snippet: string) => {
-        if (error) {
-          console.error('Error generating code:', error);
+      (err: unknown, snippet: SetStateAction<string>) => {
+        if (err) {
+          console.error('Error generating code:', err);
           setCode('// Error generating code');
         } else {
           setCode(snippet);
         }
       }
     );
-  }, [lang, method, url, body]);
+  }, [selectedLabel, method, url, body]);
 
   const handleCopy = async () => {
     try {
@@ -59,35 +86,48 @@ export function CodeGenerator() {
     }
   };
 
+  const monacoLang = selectedLabel
+    ? MONACO_LANGUAGE_MAP[selectedLabel]
+    : 'python';
+
   return (
     <div>
       <span>Generated code</span>
       <select
-        value={lang}
-        onChange={(e) => setLang(e.target.value)}
+        value={selectedLabel}
+        onChange={(e) => {
+          setSelectedLabel(e.target.value);
+          setCode('');
+        }}
         className="w-full select select-bordered"
       >
-        {avaliableLanguages.flatMap((lang) =>
-          lang.variants.map((variant) => (
-            <option
-              key={`${lang.label}:${variant.key}`}
-              value={`${lang.label}:${variant.key}`}
-            >
-              {lang.label}, {variant.key}
-            </option>
-          ))
-        )}
+        <option value="">Select Language</option>
+        {availableOptions.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
       </select>
-      <div className="relative">
+
+      <div className="relative mt-2">
         <button
           onClick={handleCopy}
           className="absolute right-2 top-2 btn btn-xs btn-outline"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
-        <pre className="text-left bg-base-200 p-4 rounded-lg shadow-inner overflow-x-auto whitespace-pre-wrap break-words">
-          <code>{code}</code>
-        </pre>
+        <Editor
+          height="40vh"
+          language={monacoLang}
+          defaultLanguage="python"
+          value={code}
+          options={{
+            readOnly: true,
+            minimap: { enabled: false },
+            wordWrap: 'on',
+            scrollBeyondLastLine: false,
+          }}
+        />
       </div>
     </div>
   );
