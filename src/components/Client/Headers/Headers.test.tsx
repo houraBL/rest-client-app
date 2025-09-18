@@ -35,7 +35,7 @@ vi.mock('@/hooks/useHeaders/useHeaders', () => ({
 describe('Headers', () => {
   it('renders title and table headers', () => {
     render(<Headers />);
-    expect(screen.getByText('Headers')).toBeInTheDocument();
+    expect(screen.getByText('headersTitle')).toBeInTheDocument();
     expect(screen.getByText('header')).toBeInTheDocument();
     expect(screen.getByText('value')).toBeInTheDocument();
   });
