@@ -27,10 +27,8 @@ export default function Variables() {
   if (!isClient) return null;
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-xl transition-colors">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-        {t('variables')}
-      </h1>
+    <div className="max-w-4xl mx-auto mt-10 p-6 rounded-2xl shadow-xl">
+      <h1 className="text-2xl font-bold mb-6">{t('variables')}</h1>
       <GenericTable<VariableType>
         items={variables}
         columns={[
