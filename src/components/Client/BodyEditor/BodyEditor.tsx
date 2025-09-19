@@ -4,8 +4,7 @@ import { setBody, setBodyHeader } from '@/store/clientSlice';
 import { useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { replaceUrl } from '@/utils/replaceUrl';
-import { useRouter } from 'next/navigation';
-import { encodeBase64 } from '@/utils/encodeBase64';
+import { useRouter } from '@/i18n/navigation';
 
 const LANGUAGE_OPTIONS = [
   { label: 'JSON', value: 'json', contentType: 'application/json' },
@@ -16,8 +15,8 @@ const LANGUAGE_OPTIONS = [
 export function BodyEditor() {
   const dispatch = useDispatch();
   const requestBody = useSelector((state: RootState) => state.client.body);
-  const method = useSelector((state: RootState) => state.client.method);
   const router = useRouter();
+  const clientState = useSelector((state: RootState) => state.client);
   const [language, setLanguage] = useState('json');
 
   const handleLanguageChange = (lang: string) => {
@@ -32,12 +31,9 @@ export function BodyEditor() {
 
   const handleBlur = () => {
     if (requestBody) {
-      const encoded = encodeBase64<string>(requestBody);
-      replaceUrl(router, method, encoded);
+      replaceUrl(router, { ...clientState, body: requestBody });
     }
   };
-
-  console.log(encodeBase64<string>(requestBody));
 
   return (
     <div>
