@@ -8,8 +8,10 @@ export interface ClientState {
 }
 const loadState = (): ClientState => {
   try {
-    const saved = localStorage.getItem('clientState');
-    if (saved) return JSON.parse(saved);
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('clientState');
+      if (saved) return JSON.parse(saved);
+    }
   } catch (err) {
     console.error('Failed to load client state', err);
   }
@@ -44,12 +46,21 @@ const clientSlice = createSlice({
     setHeaders(state, action: PayloadAction<Record<string, string>>) {
       state.headers = action.payload;
     },
+    setBodyHeader(
+      state,
+      action: PayloadAction<{ key: string; value: string }>
+    ) {
+      const { key, value } = action.payload;
+      state.headers[key] = value;
+    },
+
     setBody(state, action: PayloadAction<string>) {
       state.body = action.payload;
     },
   },
 });
 
-export const { setMethod, setUrl, setHeaders, setBody } = clientSlice.actions;
+export const { setMethod, setUrl, setHeaders, setBodyHeader, setBody } =
+  clientSlice.actions;
 
 export default clientSlice.reducer;
