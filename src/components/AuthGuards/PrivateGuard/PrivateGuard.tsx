@@ -9,9 +9,7 @@ export default function PrivateGuard({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (!user && !loading) {
-      router.push('/');
-    }
+    if (!user && !loading) router.push('/');
   }, [loading, router, user]);
 
   if (loading || !user) {
