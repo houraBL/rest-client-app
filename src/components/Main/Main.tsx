@@ -9,7 +9,7 @@ export default function Main() {
   const { user, loading } = useAuth();
   const t = useTranslations();
   return (
-    <div className="items-center w-sm hero-content">
+    <div className="items-center w-sm hero-content py-0">
       {loading && <Loader />}
       {!user && !loading && (
         <div className="flex flex-col gap-3 items-center">
