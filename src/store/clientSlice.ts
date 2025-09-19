@@ -8,8 +8,10 @@ export interface ClientState {
 }
 const loadState = (): ClientState => {
   try {
-    const saved = localStorage.getItem('clientState');
-    if (saved) return JSON.parse(saved);
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('clientState');
+      if (saved) return JSON.parse(saved);
+    }
   } catch (err) {
     console.error('Failed to load client state', err);
   }
