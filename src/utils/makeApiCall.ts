@@ -1,31 +1,18 @@
 import { logUserRequest } from '@/lib/firebase/logUserRequest';
-
-type SupportedLanguages = 'json' | 'xml' | 'plaintext';
-
-function getContentType(language: SupportedLanguages): string {
-  switch (language) {
-    case 'json':
-      return 'application/json';
-    case 'xml':
-      return 'application/xml';
-    case 'plaintext':
-    default:
-      return 'text/plain';
-  }
-}
+import { AuthUser } from '@/providers/AuthContext';
 
 export async function makeApiCall({
+  uid,
   url,
   method,
   requestBody,
   headers = {},
-  bodyHeader = 'json',
 }: {
+  uid: string;
   url: string;
   method: string;
   requestBody?: string;
   headers?: Record<string, string>;
-  bodyHeader?: SupportedLanguages;
 }): Promise<{
   status: number;
   data?: string;
@@ -43,11 +30,8 @@ export async function makeApiCall({
   try {
     response = await fetch(url, {
       method,
-      headers: {
-        ...headers,
-        'Content-Type': getContentType(bodyHeader),
-      },
-      body: requestBody,
+      //headers: headers,
+      //body: requestBody,
     });
 
     status = response.status;
@@ -71,6 +55,7 @@ export async function makeApiCall({
       ? new TextEncoder().encode(JSON.stringify(requestBody)).length
       : 0;
     await logUserRequest({
+      uid: uid,
       requestDuration: duration,
       responseStatusCode: status,
       requestMethod: method,
@@ -80,7 +65,6 @@ export async function makeApiCall({
       errorDetails: errorDetails,
     });
   }
-
   return {
     status,
     data: JSON.parse(responseText),
