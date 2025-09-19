@@ -17,7 +17,7 @@ export default function LanguageSwitcher() {
         type="checkbox"
         checked={locale === 'ru'}
         onChange={toggleLang}
-        className="toggle toggle-sm sm:toggle"
+        className="toggle"
       />
       <span className="label-text">RU</span>
     </label>

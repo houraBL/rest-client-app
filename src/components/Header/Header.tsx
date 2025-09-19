@@ -42,16 +42,16 @@ export default function Header() {
       >
         <ul className="menu menu-horizontal px-0 sm:text-lg">
           <li>
-            <Link href="/" className="p-0 my-auto">
+            <Link href="/" className="my-auto">
               <Image
                 aria-hidden
                 src="/app-logo.svg"
                 alt="App logo"
-                className="w-6 h-6 p-0"
+                className="w-6 h-6"
                 width={300}
                 height={300}
               />
-              <span className="">RESTful API</span>
+              <span className="">RESTful</span>
             </Link>
           </li>
         </ul>
