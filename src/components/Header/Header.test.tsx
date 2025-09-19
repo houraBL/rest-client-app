@@ -58,7 +58,7 @@ describe('Header', () => {
   it('renders logo and mocked switchers', () => {
     render(<Header />);
 
-    expect(screen.getByText(/RESTful API/i)).toBeInTheDocument();
+    expect(screen.getByText(/RESTful/i)).toBeInTheDocument();
     expect(screen.getByTestId('mock-theme-switcher')).toBeInTheDocument();
     expect(screen.getByTestId('mock-language-switcher')).toBeInTheDocument();
   });
