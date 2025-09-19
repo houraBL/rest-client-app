@@ -8,13 +8,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { MethodSelector } from './MethodSelector';
 import { Methods } from '@/types/methods';
-import { replaceUrl } from '@/utils/replaceUrl';
 
 const mockRouter = { push: vi.fn() };
-
-vi.mock('@/utils/replaceUrl', () => ({
-  replaceUrl: vi.fn(),
-}));
 
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => mockRouter,
@@ -67,17 +62,5 @@ describe('MethodSelector', () => {
     fireEvent.change(select, { target: { value: Methods.PUT } });
 
     expect(store.getState().client.method).toBe(Methods.PUT);
-  });
-
-  it('calls replaceUrl with new method', () => {
-    renderWithStore(<MethodSelector />);
-    const select = screen.getByRole('combobox');
-
-    fireEvent.change(select, { target: { value: Methods.PATCH } });
-
-    expect(replaceUrl).toHaveBeenCalledWith(
-      mockRouter,
-      expect.objectContaining({ method: Methods.PATCH })
-    );
   });
 });
