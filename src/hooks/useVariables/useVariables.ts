@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useVariableLocalStorage } from './useVariableLocalStorage';
 import toast from 'react-hot-toast';
+import { useVariableLocalStorage } from '../useVariableLocalStorage/useVariableLocalStorage';
 
 export type VariableType = {
   name: string;

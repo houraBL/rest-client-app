@@ -21,6 +21,7 @@ export default function Footer() {
             width={50}
             height={50}
             className="fill-current"
+            priority={true}
           />
           <p>
             {t('course')}
@@ -39,7 +40,7 @@ export default function Footer() {
           >
             <Image
               src="/icon-github.svg"
-              className="h-6"
+              className="h-6 w-auto"
               alt="GitHub logo"
               width={32}
               height={32}
@@ -58,7 +59,7 @@ export default function Footer() {
           >
             <Image
               src="/icon-github.svg"
-              className="h-6"
+              className="h-6 w-auto"
               alt="GitHub logo"
               width={32}
               height={32}

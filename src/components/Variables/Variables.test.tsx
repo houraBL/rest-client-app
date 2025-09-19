@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, fireEvent, render } from '@testing-library/react';
 import Variables from './Variables';
-import * as useVariablesHook from '@/hooks/useVariables';
+import * as useVariablesHook from '@/hooks/useVariables/useVariables';
 
 vi.mock('next-intl', async (importActual) => {
   const actual = await importActual<typeof import('next-intl')>();

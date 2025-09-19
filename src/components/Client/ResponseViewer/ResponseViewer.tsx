@@ -8,6 +8,7 @@ export type ResponseViewerProps = {
 };
 
 import { Loader } from '@/components/Loader/Loader';
+import useTheme from '@/hooks/useTheme';
 import Editor from '@monaco-editor/react';
 
 export default function ResponseViewer({
@@ -15,6 +16,7 @@ export default function ResponseViewer({
 }: {
   response: ResponseViewerProps;
 }) {
+  const { theme } = useTheme();
   const { status, data, error, loading } = response;
   if (loading) return <Loader />;
 
@@ -23,13 +25,13 @@ export default function ResponseViewer({
   return (
     <div className="w-full">
       <div
-        className={`font-bold mb-5 ml-5 p-2 rounded ${status >= 200 && status < 300 ? 'bg-green-100 text-green-700' : status >= 400 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}
+        className={`m-2 p-4 badge badge-soft ${status >= 200 && status < 300 ? 'badge-success' : status >= 400 ? 'badge-error' : 'badge-warning'}`}
       >
         Response Status: {status}
       </div>
       <Editor
+        theme={theme === 'light' ? 'light' : 'vs-dark'}
         height="25vh"
-        width="35vw"
         defaultLanguage="json"
         value={responseValue}
         options={{

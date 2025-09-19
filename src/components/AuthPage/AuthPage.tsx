@@ -15,7 +15,6 @@ import {
 import { useAuth } from '@/hooks/useAuth/useAuth';
 import { useTranslations } from 'next-intl';
 
-
 type Errors = {
   name?: string;
   email?: string;
@@ -42,6 +41,12 @@ export default function AuthPage({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const resetState = () => {
+    setName('');
+    setEmail('');
+    setPassword('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,11 +75,8 @@ export default function AuthPage({
               });
             }
 
-            toast.success(t('welcomeBackToast'));
-            setEmail('');
-            setPassword('');
-            router.refresh();
-            router.push('/');
+            toast.success(t('welcomeBack'));
+            resetState();
           }
         } else {
           const result = registerSchema.safeParse({ name, email, password });
@@ -101,9 +103,7 @@ export default function AuthPage({
             }
 
             toast.success(t('accountCreated'));
-            setName('');
-            setEmail('');
-            setPassword('');
+            resetState();
           }
         }
       } catch (err) {

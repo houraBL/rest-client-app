@@ -4,65 +4,30 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Editor } from '@monaco-editor/react';
-
-interface LanguageOption {
-  label: string;
-  value: string;
-}
-console.log(codegen.getLanguageList());
-
-const LANGUAGE_MAP: Record<string, { language: string; variant: string }> = {
-  curl: { language: 'curl', variant: 'curl' },
-  'JavaScript (Fetch API)': { language: 'javascript', variant: 'fetch' },
-  'JavaScript (XHR)': { language: 'javascript', variant: 'xhr' },
-  NodeJS: { language: 'nodejs', variant: 'native' },
-  Python: { language: 'python', variant: 'requests' },
-  Java: { language: 'java', variant: 'OkHttp' },
-  'C# (HTTPClient)': { language: 'csharp', variant: 'httpclient' },
-  'C# (RestSharp)': { language: 'csharp', variant: 'restsharp' },
-  Go: { language: 'go', variant: 'native' },
-};
-
-const MONACO_LANGUAGE_MAP: Record<string, string> = {
-  curl: 'shell',
-  'JavaScript (Fetch API)': 'javascript',
-  'JavaScript (XHR)': 'javascript',
-  NodeJS: 'javascript',
-  Python: 'python',
-  Java: 'java',
-  'C# (HTTPClient)': 'csharp',
-  'C# (RestSharp)': 'csharp',
-  Go: 'go',
-};
+import { LANGUAGES } from '@/types/languages';
+import useTheme from '@/hooks/useTheme';
 
 export function CodeGenerator() {
   const { method, url, body } = useSelector((state: RootState) => state.client);
   const [selectedLabel, setSelectedLabel] = useState('');
   const [code, setCode] = useState('');
   const [copied, setCopied] = useState(false);
+  const { theme } = useTheme();
 
-  const myRequest = new sdk.Request({
-    url,
-    method,
-    body: body ? { mode: 'raw', raw: body } : undefined,
-  });
-
-  const availableOptions: LanguageOption[] = Object.keys(LANGUAGE_MAP).map(
-    (label) => ({
-      label,
-      value: label,
-    })
-  );
+  const selectedLang = LANGUAGES.find((lang) => lang.label === selectedLabel);
 
   useEffect(() => {
-    if (!selectedLabel) return;
+    if (!selectedLang) return;
 
-    const mapping = LANGUAGE_MAP[selectedLabel];
-    if (!mapping) return;
+    const myRequest = new sdk.Request({
+      url,
+      method,
+      body: body ? { mode: 'raw', raw: body } : undefined,
+    });
 
     codegen.convert(
-      mapping.language,
-      mapping.variant,
+      selectedLang.codegen.language,
+      selectedLang.codegen.variant,
       myRequest,
       {},
       (err: unknown, snippet: SetStateAction<string>) => {
@@ -74,7 +39,7 @@ export function CodeGenerator() {
         }
       }
     );
-  }, [selectedLabel, method, url, body]);
+  }, [selectedLabel, method, url, body, selectedLang]);
 
   const handleCopy = async () => {
     try {
@@ -85,10 +50,6 @@ export function CodeGenerator() {
       console.error('Failed to copy:', err);
     }
   };
-
-  const monacoLang = selectedLabel
-    ? MONACO_LANGUAGE_MAP[selectedLabel]
-    : 'python';
 
   return (
     <div>
@@ -101,24 +62,27 @@ export function CodeGenerator() {
         }}
         className="w-full select select-bordered"
       >
-        <option value="">Select Language</option>
-        {availableOptions.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+        <option value="" className="hidden">
+          Select Language
+        </option>
+        {LANGUAGES.map((opt) => (
+          <option key={opt.label} value={opt.label}>
             {opt.label}
           </option>
         ))}
       </select>
 
-      <div className="relative mt-2">
+      <div className="relative mt-2 border-2 border-base-300 rounded-lg">
         <button
           onClick={handleCopy}
-          className="absolute right-2 top-2 btn btn-xs btn-outline"
+          className="absolute right-2 top-2 btn btn-xs btn-outline z-10"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
         <Editor
+          theme={theme === 'light' ? 'light' : 'vs-dark'}
           height="40vh"
-          language={monacoLang}
+          language={selectedLang?.monaco ?? 'python'}
           defaultLanguage="python"
           value={code}
           options={{
