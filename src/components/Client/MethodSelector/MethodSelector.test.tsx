@@ -10,12 +10,14 @@ import { MethodSelector } from './MethodSelector';
 import { Methods } from '@/types/methods';
 import { replaceUrl } from '@/utils/replaceUrl';
 
+const mockRouter = { push: vi.fn() };
+
 vi.mock('@/utils/replaceUrl', () => ({
   replaceUrl: vi.fn(),
 }));
 
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+vi.mock('@/i18n/navigation', () => ({
+  useRouter: () => mockRouter,
 }));
 
 function renderWithStore(
@@ -73,6 +75,9 @@ describe('MethodSelector', () => {
 
     fireEvent.change(select, { target: { value: Methods.PATCH } });
 
-    expect(replaceUrl).toHaveBeenCalledWith(expect.anything(), Methods.PATCH);
+    expect(replaceUrl).toHaveBeenCalledWith(
+      mockRouter,
+      expect.objectContaining({ method: Methods.PATCH })
+    );
   });
 });

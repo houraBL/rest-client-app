@@ -5,17 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setMethod } from '@/store/clientSlice';
 import { replaceUrl } from '@/utils/replaceUrl';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 
 export function MethodSelector() {
   const router = useRouter();
   const dispatch = useDispatch();
   const method = useSelector((state: RootState) => state.client.method);
+  const clientState = useSelector((state: RootState) => state.client);
   const methods = Object.values(Methods);
 
   const handleChange = (value: Methods) => {
     dispatch(setMethod(value));
-    replaceUrl(router, value);
+    replaceUrl(router, { ...clientState, method: value });
   };
 
   return (
