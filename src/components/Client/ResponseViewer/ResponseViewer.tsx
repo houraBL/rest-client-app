@@ -7,20 +7,31 @@ export type ResponseViewerProps = {
   loading?: boolean;
 };
 
-import { Loader } from '@/components/Loader/Loader';
 import useTheme from '@/hooks/useTheme';
+import { RootState } from '@/store/store';
 import Editor from '@monaco-editor/react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function ResponseViewer({
-  response,
-}: {
-  response: ResponseViewerProps;
-}) {
+export default function ResponseViewer() {
   const { theme } = useTheme();
-  const { status, data, error, loading } = response;
-  if (loading) return <Loader />;
+  const { status, data, error } = useSelector(
+    (state: RootState) => state.client.response
+  );
+
+  const [copied, setCopied] = useState(false);
 
   const responseValue = error ? error : (data ?? '');
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(data || error || '');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -29,18 +40,30 @@ export default function ResponseViewer({
       >
         Response Status: {status}
       </div>
-      <Editor
-        theme={theme === 'light' ? 'light' : 'vs-dark'}
-        height="25vh"
-        defaultLanguage="json"
-        value={responseValue}
-        options={{
-          readOnly: true,
-          minimap: { enabled: false },
-          wordWrap: 'on',
-          scrollBeyondLastLine: false,
-        }}
-      />
+      <div className="relative mt-2 border-2 border-base-300 rounded-lg">
+        <button
+          onClick={handleCopy}
+          className="absolute right-5 top-2 btn btn-xs z-10"
+        >
+          {copied ? 'Copied!' : 'Copy'}
+        </button>
+        <Editor
+          theme={theme === 'light' ? 'light' : 'vs-dark'}
+          height="300px"
+          defaultLanguage="json"
+          value={responseValue}
+          options={{
+            minimap: { enabled: false },
+            readOnly: true,
+            wordWrap: 'on',
+            scrollBeyondLastLine: false,
+            scrollbar: {
+              alwaysConsumeMouseWheel: false,
+            },
+            padding: { top: 10, bottom: 10 },
+          }}
+        />
+      </div>
     </div>
   );
 }
