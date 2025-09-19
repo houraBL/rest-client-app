@@ -25,7 +25,7 @@ export default function ResponseViewer({
   return (
     <div className="w-full">
       <div
-        className={`badge badge-soft ${status >= 200 && status < 300 ? 'badge-success' : status >= 400 ? 'badge-error' : 'badge-warning'}`}
+        className={`m-1 p-2 badge badge-soft ${status >= 200 && status < 300 ? 'badge-success' : status >= 400 ? 'badge-error' : 'badge-warning'}`}
       >
         Response Status: {status}
       </div>
