@@ -1,21 +1,21 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { RootState } from '@/store/store';
+import { encodeBase64 } from './encodeBase64';
 
 export function replaceUrl(
   router: ReturnType<typeof useRouter>,
-  method: string,
-  url?: string,
-  body?: string
+  state: RootState['client']
 ) {
-  let path = `/client/${method}`;
+  let path = `/client/${state.method}`;
 
-  if (url) {
-    path += `/${url}`;
+  if (state.url) {
+    path += `/${encodeBase64(state.url)}`;
   }
 
-  if (body) {
-    path += `/${body}`;
+  if (state.body) {
+    path += `/${encodeBase64(state.body)}`;
   }
 
   router.push(path);
