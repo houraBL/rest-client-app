@@ -10,7 +10,7 @@ export default function PublicGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
   useEffect(() => {
     if (user) router.push('/');
-  }, [router, user]);
+  }, [loading, router, user]);
 
   if (loading || user) {
     return (
