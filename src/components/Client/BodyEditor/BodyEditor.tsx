@@ -3,7 +3,9 @@ import { RootState } from '@/store/store';
 import { setBody, setBodyHeader } from '@/store/clientSlice';
 import { useState } from 'react';
 import { Editor } from '@monaco-editor/react';
-// import { useParams } from 'next/navigation';
+import { replaceUrl } from '@/utils/replaceUrl';
+import { useRouter } from 'next/navigation';
+import { encodeBase64 } from '@/utils/encodeBase64';
 
 const LANGUAGE_OPTIONS = [
   { label: 'JSON', value: 'json', contentType: 'application/json' },
@@ -12,10 +14,10 @@ const LANGUAGE_OPTIONS = [
 ];
 
 export function BodyEditor() {
-  // const params = useParams();
-  // console.log(params);
   const dispatch = useDispatch();
   const requestBody = useSelector((state: RootState) => state.client.body);
+  const method = useSelector((state: RootState) => state.client.method);
+  const router = useRouter();
   const [language, setLanguage] = useState('json');
 
   const handleLanguageChange = (lang: string) => {
@@ -27,6 +29,15 @@ export function BodyEditor() {
       );
     }
   };
+
+  const handleBlur = () => {
+    if (requestBody) {
+      const encoded = encodeBase64<string>(requestBody);
+      replaceUrl(router, method, encoded);
+    }
+  };
+
+  console.log(encodeBase64<string>(requestBody));
 
   return (
     <div>
@@ -44,27 +55,29 @@ export function BodyEditor() {
           </button>
         ))}
       </div>
-      <Editor
-        height="300px"
-        defaultLanguage="json"
-        language={language}
-        value={requestBody}
-        onChange={(value) => dispatch(setBody(value || ''))}
-        theme="vs-dark"
-        options={{
-          minimap: { enabled: false },
-          fontSize: 14,
-          wordWrap: 'on',
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
-          mouseWheelScrollSensitivity: 0,
-          cursorSmoothCaretAnimation: 'on',
-          scrollbar: {
-            alwaysConsumeMouseWheel: false,
-          },
-          padding: { top: 10, bottom: 10 },
-        }}
-      />
+      <div onBlur={handleBlur}>
+        <Editor
+          height="300px"
+          defaultLanguage="json"
+          language={language}
+          value={requestBody}
+          onChange={(value) => dispatch(setBody(value || ''))}
+          theme="vs-dark"
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            wordWrap: 'on',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            mouseWheelScrollSensitivity: 0,
+            cursorSmoothCaretAnimation: 'on',
+            scrollbar: {
+              alwaysConsumeMouseWheel: false,
+            },
+            padding: { top: 10, bottom: 10 },
+          }}
+        />
+      </div>
     </div>
   );
 }
