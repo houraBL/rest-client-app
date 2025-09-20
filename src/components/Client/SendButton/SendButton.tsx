@@ -10,21 +10,24 @@ export function SendButton() {
   const router = useRouter();
   const dispatch = useDispatch();
   const clientState = useSelector((state: RootState) => state.client);
+  const method = useSelector((state: RootState) => state.client.method);
+  const body = useSelector((state: RootState) => state.client.body);
   const { user } = useAuth();
 
   const handleClick = async () => {
-    replaceUrl(router, clientState);
-    const myHeaders = {
+    const headers = {
       ...clientState.headers,
       'Content-Type': clientState.bodyHeader,
     };
 
+    replaceUrl(router, { ...clientState, headers });
+
     const response = await makeApiCall({
       uid: user?.uid || '',
       url: clientState.url,
-      headers: myHeaders,
+      headers: headers,
       method: clientState.method,
-      requestBody: clientState.body,
+      ...(body && method !== 'GET' ? { requestBody: body } : {}),
     });
 
     dispatch(setResponse({ response }));
