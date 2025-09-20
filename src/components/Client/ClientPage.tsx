@@ -10,7 +10,7 @@ import Headers from './Headers/Headers';
 import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage/useVariableLocalStorage';
 import { VariableType } from '@/hooks/useVariables/useVariables';
 
-export function ClientPage() {
+export default function ClientPage() {
   const variables = useVariableLocalStorage<VariableType[]>('variables', []);
   //setVariables(variables)
   return (
