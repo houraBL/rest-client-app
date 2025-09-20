@@ -17,7 +17,18 @@ export function replaceUrl(
     }
   }
 
-  // TODO: add headers
+  const headersEntries = Object.entries(state.headers);
+
+  if (headersEntries.length > 0) {
+    const queryString = headersEntries
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join('&');
+
+    path += `?${queryString}`;
+  }
 
   router.push(path, { scroll: false });
 }
