@@ -15,7 +15,7 @@ export async function makeApiCall({
   headers?: Record<string, string>;
 }): Promise<{
   status: number;
-  data?: string;
+  data?: unknown;
   error?: string;
 }> {
   const startTime = Date.now();

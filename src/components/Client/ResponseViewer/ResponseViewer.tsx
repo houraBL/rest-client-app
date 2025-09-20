@@ -2,7 +2,7 @@
 
 export type ResponseViewerProps = {
   status: number;
-  data?: string;
+  data?: unknown;
   error?: string;
   loading?: boolean;
 };
@@ -10,6 +10,7 @@ export type ResponseViewerProps = {
 import useTheme from '@/hooks/useTheme';
 import { RootState } from '@/store/store';
 import Editor from '@monaco-editor/react';
+import { stat } from 'fs';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -18,14 +19,21 @@ export default function ResponseViewer() {
   const { status, data, error } = useSelector(
     (state: RootState) => state.client.response
   );
+  console.log('ResponseViewer: ', status, data, error);
 
   const [copied, setCopied] = useState(false);
 
-  const responseValue = error ? error : (data ?? '');
+  const responseValue = error
+    ? error
+    : data !== undefined
+      ? typeof data === 'string'
+        ? data
+        : JSON.stringify(data, null, 2)
+      : '';
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(data || error || '');
+      await navigator.clipboard.writeText(JSON.stringify(data) || error || '');
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {

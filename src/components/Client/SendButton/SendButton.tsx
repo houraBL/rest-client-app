@@ -4,10 +4,11 @@ import { setResponse } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
 import { makeApiCall } from '@/utils/makeApiCall';
 import { replaceUrl } from '@/utils/replaceUrl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function SendButton() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const clientState = useSelector((state: RootState) => state.client);
   const { user } = useAuth();
 
@@ -26,7 +27,8 @@ export function SendButton() {
       requestBody: clientState.body,
     });
     console.log(response); // for visibility of response
-    setResponse({ response }); // fix this
+    console.log('Test', typeof response.data);
+    dispatch(setResponse({ response }));
   };
   return (
     <div>
