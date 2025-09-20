@@ -12,11 +12,12 @@ export function replaceUrl(
 
   if (state.url) {
     path += `/${encodeBase64(state.url)}`;
+    if (state.body) {
+      path += `/${encodeBase64(state.body)}`;
+    }
   }
 
-  if (state.body) {
-    path += `/${encodeBase64(state.body)}`;
-  }
+  // TODO: add headers
 
-  router.push(path);
+  router.push(path, { scroll: false });
 }

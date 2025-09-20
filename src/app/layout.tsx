@@ -27,7 +27,7 @@ export default async function RootLayout({
             <div className="min-h-screen flex flex-col relative w-full">
               <Header />
               <Toaster position="top-right" reverseOrder={false} />
-              <main className="flex-grow flex items-center justify-center text-xl text-center">
+              <main className="flex-grow flex items-center justify-center text-xl text-center py-20">
                 {children}
               </main>
               <Footer />

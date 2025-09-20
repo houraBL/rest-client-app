@@ -3,8 +3,7 @@ import { RootState } from '@/store/store';
 import { setBody, setBodyHeader } from '@/store/clientSlice';
 import { useState } from 'react';
 import { Editor } from '@monaco-editor/react';
-import { replaceUrl } from '@/utils/replaceUrl';
-import { useRouter } from '@/i18n/navigation';
+import useTheme from '@/hooks/useTheme';
 
 const LANGUAGE_OPTIONS = [
   { label: 'JSON', value: 'json', contentType: 'application/json' },
@@ -15,23 +14,14 @@ const LANGUAGE_OPTIONS = [
 export function BodyEditor() {
   const dispatch = useDispatch();
   const requestBody = useSelector((state: RootState) => state.client.body);
-  const router = useRouter();
-  const clientState = useSelector((state: RootState) => state.client);
   const [language, setLanguage] = useState('json');
+  const { theme } = useTheme();
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
     const selected = LANGUAGE_OPTIONS.find((l) => l.value === lang);
     if (selected) {
-      dispatch(
-        setBodyHeader({ key: 'Content-Type', value: selected.contentType })
-      );
-    }
-  };
-
-  const handleBlur = () => {
-    if (requestBody) {
-      replaceUrl(router, { ...clientState, body: requestBody });
+      dispatch(setBodyHeader({ value: selected.contentType }));
     }
   };
 
@@ -51,22 +41,20 @@ export function BodyEditor() {
           </button>
         ))}
       </div>
-      <div onBlur={handleBlur}>
+      <div className="mt-2 border-2 border-base-300 rounded-lg">
         <Editor
+          theme={theme === 'light' ? 'light' : 'vs-dark'}
           height="300px"
           defaultLanguage="json"
           language={language}
           value={requestBody}
           onChange={(value) => dispatch(setBody(value || ''))}
-          theme="vs-dark"
           options={{
             minimap: { enabled: false },
-            fontSize: 14,
             wordWrap: 'on',
+            fontSize: 14,
             scrollBeyondLastLine: false,
-            automaticLayout: true,
             mouseWheelScrollSensitivity: 0,
-            cursorSmoothCaretAnimation: 'on',
             scrollbar: {
               alwaysConsumeMouseWheel: false,
             },

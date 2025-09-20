@@ -75,21 +75,25 @@ export function CodeGenerator() {
       <div className="relative mt-2 border-2 border-base-300 rounded-lg">
         <button
           onClick={handleCopy}
-          className="absolute right-2 top-2 btn btn-xs btn-outline z-10"
+          className="absolute right-5 top-2 btn btn-xs z-10"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
         <Editor
           theme={theme === 'light' ? 'light' : 'vs-dark'}
-          height="40vh"
-          language={selectedLang?.monaco ?? 'python'}
+          height="300px"
           defaultLanguage="python"
+          language={selectedLang?.monaco ?? 'python'}
           value={code}
           options={{
-            readOnly: true,
             minimap: { enabled: false },
+            readOnly: true,
             wordWrap: 'on',
             scrollBeyondLastLine: false,
+            scrollbar: {
+              alwaysConsumeMouseWheel: false,
+            },
+            padding: { top: 10, bottom: 10 },
           }}
         />
       </div>

@@ -1,3 +1,4 @@
+import { VariableType } from '@/hooks/useVariables/useVariables';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ClientState {
@@ -5,33 +6,29 @@ export interface ClientState {
   url: string;
   headers: Record<string, string>;
   body: string;
+  bodyHeader: string;
+  variables: VariableType[];
+  response: {
+    status: number;
+    data?: string;
+    error?: string;
+  };
 }
 const loadState = (): ClientState => {
-  try {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('clientState');
-      if (saved) return JSON.parse(saved);
-    }
-  } catch (err) {
-    console.error('Failed to load client state', err);
-  }
   return {
     method: 'GET',
     url: '',
     headers: {},
+    bodyHeader: 'application/json',
     body: '',
+    variables: [],
+    response: {
+      status: 0,
+    },
   };
 };
 
 const initialState: ClientState = loadState();
-
-// const initialState: ClientState = {
-//   method: "GET",
-//   url: "",
-//   headers: {},
-//   body: "",
-//   // response: null,
-// };
 
 const clientSlice = createSlice({
   name: 'client',
@@ -46,21 +43,37 @@ const clientSlice = createSlice({
     setHeaders(state, action: PayloadAction<Record<string, string>>) {
       state.headers = action.payload;
     },
-    setBodyHeader(
-      state,
-      action: PayloadAction<{ key: string; value: string }>
-    ) {
-      const { key, value } = action.payload;
-      state.headers[key] = value;
+    setBodyHeader(state, action: PayloadAction<{ value: string }>) {
+      state.bodyHeader = action.payload.value;
     },
-
     setBody(state, action: PayloadAction<string>) {
       state.body = action.payload;
+    },
+
+    //setVariables()
+    setResponse(
+      state,
+      action: PayloadAction<{
+        response: {
+          status: number;
+          data?: string;
+          error?: string;
+        };
+      }>
+    ) {
+      state.response = action.payload.response;
     },
   },
 });
 
-export const { setMethod, setUrl, setHeaders, setBodyHeader, setBody } =
-  clientSlice.actions;
+export const {
+  setMethod,
+  setUrl,
+  setHeaders,
+  setBodyHeader,
+  setBody,
+  setResponse,
+  //setVariables,
+} = clientSlice.actions;
 
 export default clientSlice.reducer;

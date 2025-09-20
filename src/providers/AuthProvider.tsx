@@ -11,9 +11,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const fetchUser = async () => {
       try {
         const res = await fetch('/api/me');
+        if (res.status === 401) {
+          setUser(null);
+          return;
+        }
         const data = await res.json();
         setUser(data.user);
-      } catch (err) {
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);
@@ -21,6 +25,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchUser();
+
+    const interval = setInterval(fetchUser, 10 * 60 * 1000);
+
+    const handleFocus = () => fetchUser();
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   return (

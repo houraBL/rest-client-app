@@ -13,6 +13,17 @@ import {
 } from '../authActions';
 import { User } from 'firebase/auth';
 
+vi.mock('firebase-admin', () => ({
+  apps: [],
+  initializeApp: vi.fn(),
+  credential: {
+    cert: vi.fn(),
+  },
+  auth: vi
+    .fn()
+    .mockReturnValue({ createSessionCookie: vi.fn(() => 'session_cookie') }),
+}));
+
 const setMock = vi.fn();
 const deleteMock = vi.fn();
 vi.mock('next/headers', () => ({
@@ -50,7 +61,7 @@ describe('auth actions', () => {
     await setAuthCookie(mockUserWithToken as unknown as User);
     expect(setMock).toHaveBeenCalledWith(
       'auth_token',
-      'mock-token',
+      'session_cookie',
       expect.any(Object)
     );
   });
