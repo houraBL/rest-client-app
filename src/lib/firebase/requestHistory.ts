@@ -1,12 +1,13 @@
-import { getAuth } from 'firebase/auth';
 import {
-  getFirestore,
   collection,
   query,
   orderBy,
   getDocs,
   DocumentData,
 } from 'firebase/firestore';
+import { cookies } from 'next/headers';
+import { adminAuth } from './firebaseAdmin';
+import { db } from './firebase';
 
 interface requestsHistoryEntry {
   id: string;
@@ -17,23 +18,22 @@ export async function requestHistory(): Promise<{
   error: string | null;
   history: requestsHistoryEntry[];
 }> {
-  const auth = getAuth();
-  const db = getFirestore();
-  const user = auth.currentUser;
-
-  if (!user) {
-    return { error: 'User is not authorized', history: [] };
-  }
-
-  const userRequestsRef = collection(
-    db,
-    'userActivities',
-    user.uid,
-    'requests'
-  );
-
-  const q = query(userRequestsRef, orderBy('requestTimestamp', 'desc'));
   try {
+    const token = (await cookies()).get('auth_token')?.value;
+    if (!token) {
+      return { error: 'User is not authorized', history: [] };
+    }
+
+    const decoded = await adminAuth.verifySessionCookie(token);
+
+    const userRequestsRef = collection(
+      db,
+      'userActivities',
+      decoded.uid,
+      'requests'
+    );
+
+    const q = query(userRequestsRef, orderBy('requestTimestamp', 'desc'));
     const querySnapshot = await getDocs(q);
     const requests: requestsHistoryEntry[] = [];
     querySnapshot.forEach((doc) =>
