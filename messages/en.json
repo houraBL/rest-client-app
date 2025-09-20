@@ -61,5 +61,18 @@
     "headersTitle": "Headers",
     "header": "Header",
     "value": "Value"
+  },
+  "History": {
+    "historyTitle": "Requests History",
+    "requestTimestamp": "Timestamp",
+    "requestMethod": "Method",
+    "endpointUrl": "Endpoint",
+    "responseStatusCode": "Status",
+    "requestDuration": "Dur (ms)",
+    "requestSize": "Req Size (B)",
+    "responseSize": "Res Size (B)",
+    "errorDetails": "Error",
+    "emptyHistory": "You haven't executed any requests yet",
+    "client": "REST Client"
   }
 }

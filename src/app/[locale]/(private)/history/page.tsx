@@ -1,3 +1,8 @@
+import History from '@/components/History/History';
 export default function HistoryPage() {
-  return <h2 className="text-2xl font-bold">History & Analytics</h2>;
+  return (
+    <div className="text-2xl font-bold">
+      <History />
+    </div>
+  );
 }
