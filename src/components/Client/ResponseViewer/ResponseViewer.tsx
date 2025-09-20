@@ -19,7 +19,6 @@ export default function ResponseViewer() {
   const { status, data, error } = useSelector(
     (state: RootState) => state.client.response
   );
-  console.log('ResponseViewer: ', status, data, error);
 
   const [copied, setCopied] = useState(false);
 

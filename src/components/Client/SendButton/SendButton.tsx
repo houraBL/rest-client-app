@@ -26,8 +26,7 @@ export function SendButton() {
       method: clientState.method,
       requestBody: clientState.body,
     });
-    console.log(response); // for visibility of response
-    console.log('Test', typeof response.data);
+
     dispatch(setResponse({ response }));
   };
   return (
