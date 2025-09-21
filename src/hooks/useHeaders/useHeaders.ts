@@ -1,6 +1,6 @@
 import { setHeaders } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export type HeadersType = {
@@ -22,6 +22,15 @@ export default function useHeaders() {
     name: '',
     initialValue: '',
   });
+
+  useEffect(() => {
+    setHeadersState(
+      Object.entries(storedHeaders).map(([name, initialValue]) => ({
+        name,
+        initialValue,
+      }))
+    );
+  }, [storedHeaders]);
 
   const syncWithStore = (updated: HeadersType[]) => {
     setHeadersState(updated);
