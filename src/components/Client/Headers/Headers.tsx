@@ -4,7 +4,7 @@ import { GenericTable } from '@/components/GenericTable/GenericTable';
 import useHeaders, { HeadersType } from '@/hooks/useHeaders/useHeaders';
 import { useTranslations } from 'next-intl';
 
-export default function Headers() {
+export function Headers() {
   const {
     headers,
     newHeader,
@@ -23,7 +23,7 @@ export default function Headers() {
         items={headers}
         columns={[
           { key: 'name', label: t('header') },
-          { key: 'initialValue', label: t('value') },
+          { key: 'value', label: t('value') },
         ]}
         onChange={updateHeader}
         onDelete={deleteHeader}

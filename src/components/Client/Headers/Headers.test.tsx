@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Headers from './Headers';
+import { Headers } from './Headers';
 import { HeadersType } from '@/hooks/useHeaders/useHeaders';
 import userEvent from '@testing-library/user-event';
 
@@ -21,10 +21,10 @@ const setNewHeader = vi.fn();
 vi.mock('@/hooks/useHeaders/useHeaders', () => ({
   default: () => ({
     headers: [
-      { name: 'Content-Type', initialValue: 'application/json' },
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Content-Type', value: 'application/json' },
+      { name: 'Authorization', value: 'Bearer token' },
     ] as HeadersType[],
-    newHeader: { name: '', initialValue: '' },
+    newHeader: { name: 'NewName', value: 'NewValue' },
     setNewHeader,
     addHeader,
     updateHeader,
@@ -52,7 +52,7 @@ describe('Headers', () => {
     render(<Headers />);
     const input = screen.getByDisplayValue('application/json');
     fireEvent.change(input, { target: { value: 'text/html' } });
-    expect(updateHeader).toHaveBeenCalledWith(0, 'initialValue', 'text/html');
+    expect(updateHeader).toHaveBeenCalledWith(0, 'value', 'text/html');
   });
 
   it('calls deleteHeader when delete button clicked', () => {
