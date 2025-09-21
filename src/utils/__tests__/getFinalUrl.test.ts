@@ -13,6 +13,7 @@ function makeState(partial: Partial<ClientState>): ClientState {
     variables: {},
     response: { status: 0 },
     ...partial,
+    initialized: false,
   };
 }
 
@@ -34,10 +35,7 @@ describe('getFinalUrl', () => {
       body: '{"foo":"bar"}',
     });
     const expectedUrl = encodeBase64('https://example.com');
-    const expectedBody = encodeBase64('{"foo":"bar"}');
-    expect(getFinalUrl(state)).toBe(
-      `/client/GET/${expectedUrl}/${expectedBody}`
-    );
+    expect(getFinalUrl(state)).toBe(`/client/GET/${expectedUrl}`);
   });
 
   it('includes query string when headers are present', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { formatXml } from './formatXml';
+import { formatXml } from '../formatXml';
 
 describe('formatXml', () => {
   it('formats a minified XML string', () => {

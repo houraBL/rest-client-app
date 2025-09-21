@@ -114,7 +114,7 @@ describe('SendButton', () => {
     });
   });
 
-  it('does not send requestBody if method is GET', async () => {
+  it('does not send requestBody and Content-Type header if method is GET', async () => {
     (useSelector as unknown as Mock).mockImplementation((selector) =>
       selector({ client: { ...mockState.client, method: 'GET' } } as RootState)
     );
@@ -134,7 +134,6 @@ describe('SendButton', () => {
         url: mockState.client.url,
         headers: {
           ...mockState.client.headers,
-          'Content-Type': mockState.client.bodyHeader,
         },
         method: 'GET',
         finalURL: '/final-url',

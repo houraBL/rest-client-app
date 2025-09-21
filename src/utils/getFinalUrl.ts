@@ -8,7 +8,7 @@ export function getFinalUrl(state: RootState['client']) {
 
   if (state.url) {
     path += `/${encodeBase64(state.url)}`;
-    if (state.body) {
+    if (state.method !== 'GET' && state.body) {
       path += `/${encodeBase64(state.body)}`;
     }
   }

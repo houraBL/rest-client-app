@@ -30,9 +30,12 @@ export function resolveReplaceVariables(clientState: ClientState) {
     finalHeaders[finalKey] = finalValue;
   });
 
-  const finalBody = replaceVariables({
-    stringToReplace: body,
-  });
+  const finalBody =
+    method === 'GET'
+      ? undefined
+      : replaceVariables({
+          stringToReplace: body,
+        });
 
   if (finalBody) {
     finalHeaders['Content-Type'] = bodyHeader;
@@ -42,7 +45,7 @@ export function resolveReplaceVariables(clientState: ClientState) {
     ...clientState,
     url: finalUrlValue,
     headers: finalHeaders,
-    body: finalBody,
+    body: finalBody || '',
   });
 
   return {
