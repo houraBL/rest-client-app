@@ -74,7 +74,11 @@ export function GenericTable<T extends Record<string, string>>({
               </td>
             ))}
             <td className="px-1 flex items-center justify-center">
-              <button onClick={onAdd} className="btn btn-accent w-14 sm:w-20 ">
+              <button
+                onClick={onAdd}
+                className="btn btn-accent w-14 sm:w-20"
+                disabled={!newItem.name.trim() || !newItem.initialValue.trim()}
+              >
                 {t('add')}
               </button>
             </td>
