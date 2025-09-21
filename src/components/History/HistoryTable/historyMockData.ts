@@ -21,6 +21,7 @@ export const mockH: FormFields = {
   endpointUrl: 'url.com',
   errorDetails: '',
   requestTimestamp: { seconds: DATE_IN_SECONDS } as Timestamp,
+  finalURL: '/GET/url/body',
 };
 
 export const validEntry = {

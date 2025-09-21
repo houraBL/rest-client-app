@@ -21,9 +21,11 @@ export default function HistoryCell({ colKey, data }: Props) {
   if (colKey === 'endpointUrl') {
     const m = data.requestMethod;
     const u = encodeBase64(data.endpointUrl);
+
+    const finalURL = data.finalURL || `/client/${m}/${u}`;
     return (
       <td key={colKey} className="p-2">
-        <Link href={`/client/${m}/${u}`}>
+        <Link href={`${finalURL}`}>
           <span className="link-primary">{data.endpointUrl}</span>
         </Link>
       </td>
