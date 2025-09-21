@@ -1,11 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setBody, setBodyHeader } from '@/store/clientSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import useTheme from '@/hooks/useTheme';
 
-const LANGUAGE_OPTIONS = [
+type Language = 'json' | 'xml' | 'plaintext';
+
+interface LanguageOption {
+  label: string;
+  value: Language;
+  contentType: string;
+}
+
+const LANGUAGE_OPTIONS: LanguageOption[] = [
   { label: 'JSON', value: 'json', contentType: 'application/json' },
   { label: 'XML', value: 'xml', contentType: 'application/xml' },
   { label: 'Plain', value: 'plaintext', contentType: 'text/plain' },
@@ -13,11 +21,23 @@ const LANGUAGE_OPTIONS = [
 
 export function BodyEditor() {
   const dispatch = useDispatch();
-  const requestBody = useSelector((state: RootState) => state.client.body);
-  const [language, setLanguage] = useState('json');
   const { theme } = useTheme();
+  const requestBody = useSelector((state: RootState) => state.client.body);
+  const bodyHeader = useSelector((state: RootState) => state.client.bodyHeader);
 
-  const handleLanguageChange = (lang: string) => {
+  const [language, setLanguage] = useState<Language>('json');
+
+  useEffect(() => {
+    if (bodyHeader === 'application/xml') {
+      setLanguage('xml');
+    } else if (bodyHeader === 'text/plain') {
+      setLanguage('plaintext');
+    } else {
+      setLanguage('json');
+    }
+  }, [bodyHeader]);
+
+  const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
     const selected = LANGUAGE_OPTIONS.find((l) => l.value === lang);
     if (selected) {
