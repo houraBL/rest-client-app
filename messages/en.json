@@ -74,5 +74,22 @@
     "errorDetails": "Error",
     "emptyHistory": "You haven't executed any requests yet",
     "client": "REST Client"
+  },
+  "Code": {
+    "generatedCode": "Generated code",
+    "error": "Error generating code",
+    "selectLanguage": "Select Language"
+  },
+  "Body": {
+    "body": "Body"
+  },
+  "Send": {
+    "send": "Send"
+  },
+  "Response": {
+    "responseStatus": "Статус ответа:"
+  },
+  "Input": {
+    "enterUrl": "Enter URL"
   }
 }

@@ -5,8 +5,10 @@ import { RootState } from '@/store/store';
 import { makeApiCall } from '@/utils/makeApiCall';
 import { getFinalUrl } from '@/utils/getFinalUrl';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslations } from 'next-intl';
 
 export function SendButton() {
+  const t = useTranslations('Send');
   const router = useRouter();
   const dispatch = useDispatch();
   const clientState = useSelector((state: RootState) => state.client);
@@ -40,7 +42,7 @@ export function SendButton() {
         className="btn btn-primary"
         disabled={clientState.url === ''}
       >
-        Send
+        {t('send')}
       </button>
     </div>
   );

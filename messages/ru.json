@@ -74,5 +74,22 @@
     "errorDetails": "Ошибка",
     "emptyHistory": "Вы ещё не выполняли запросы",
     "client": "REST клиент"
+  },
+  "Code": {
+    "generatedCode": "Сгенерированный код",
+    "error": "Ошибка при генерации кода",
+    "selectLanguage": "Выберите язык"
+  },
+  "Body": {
+    "body": "Тело запроса"
+  },
+  "Send": {
+    "send": "Отправить"
+  },
+  "Response": {
+    "responseStatus": "Статус ответа:"
+  },
+  "Input": {
+    "enterUrl": "Введите URL"
   }
 }

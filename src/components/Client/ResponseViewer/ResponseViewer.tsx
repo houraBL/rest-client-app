@@ -11,10 +11,13 @@ import useTheme from '@/hooks/useTheme';
 import { RootState } from '@/store/store';
 import Editor from '@monaco-editor/react';
 import { stat } from 'fs';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 
 export function ResponseViewer() {
+  const t = useTranslations('Response');
   const { theme } = useTheme();
   const { status, data, error } = useSelector(
     (state: RootState) => state.client.response
@@ -37,6 +40,7 @@ export function ResponseViewer() {
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
       console.error('Failed to copy:', err);
+      toast.error('Failed to copy:');
     }
   };
 
@@ -45,7 +49,7 @@ export function ResponseViewer() {
       <div
         className={`m-2 p-4 badge badge-soft ${status >= 200 && status < 300 ? 'badge-success' : status >= 400 ? 'badge-error' : 'badge-warning'}`}
       >
-        Response Status: {status}
+        {t('responseStatus')} {status}
       </div>
       <div className="relative mt-2 border-2 border-base-300 rounded-lg">
         <button
