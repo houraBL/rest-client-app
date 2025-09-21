@@ -77,7 +77,9 @@ export function GenericTable<T extends Record<string, string>>({
               <button
                 onClick={onAdd}
                 className="btn btn-accent w-14 sm:w-20"
-                disabled={!newItem.name.trim() || !newItem.initialValue.trim()}
+                disabled={columns.some(
+                  (col) => !newItem[col.key] || !newItem[col.key].trim()
+                )}
               >
                 {t('add')}
               </button>
