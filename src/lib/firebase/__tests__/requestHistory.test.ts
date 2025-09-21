@@ -1,16 +1,26 @@
-import { describe, expect, it, Mock, vi } from 'vitest';
-import { getAuth } from 'firebase/auth';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { getDocs } from 'firebase/firestore';
 import { requestHistory } from '../requestHistory';
+import { adminAuth } from '../firebaseAdmin';
 
-vi.mock('firebase/auth', () => ({
-  getAuth: vi.fn(() => ({
-    currentUser: { uid: '123' },
-  })),
+vi.mock('../firebaseAdmin.ts', () => ({
+  adminAuth: {
+    verifySessionCookie: vi.fn(),
+  },
+}));
+
+vi.mock('../firebase.ts', () => ({
+  db: 'mocked-db',
+}));
+
+const getMock = vi.fn();
+vi.mock('next/headers', () => ({
+  cookies: () => ({
+    get: getMock,
+  }),
 }));
 
 const mockDocData = { requestMethod: 'GET', endpointUrl: '/api/test' };
-
 vi.mock('firebase/firestore', () => {
   const forEachMock = vi.fn((callback) => {
     callback({ id: 'doc1', data: () => mockDocData });
@@ -27,6 +37,12 @@ vi.mock('firebase/firestore', () => {
 });
 
 describe('get history', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getMock.mockReturnValue({ value: 'good-token' });
+    (adminAuth.verifySessionCookie as Mock).mockResolvedValue({ value: '123' });
+  });
+
   it('returns history array when user is signed in', async () => {
     const result = await requestHistory();
 
@@ -37,9 +53,7 @@ describe('get history', () => {
     ]);
   });
   it('returns error and empty array when user is now signed in', async () => {
-    (getAuth as Mock).mockResolvedValueOnce({
-      currentUser: null,
-    });
+    getMock.mockReturnValueOnce(null);
     const result = await requestHistory();
 
     expect(result.error).toEqual('User is not authorized');

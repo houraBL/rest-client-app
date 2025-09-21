@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import ResponseViewer from './ResponseViewer';
+import { ResponseViewer } from './ResponseViewer';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeProvider } from '@/providers/ThemeProvider';

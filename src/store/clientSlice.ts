@@ -1,4 +1,3 @@
-import { VariableType } from '@/hooks/useVariables/useVariables';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ClientState {
@@ -7,7 +6,7 @@ export interface ClientState {
   headers: Record<string, string>;
   body: string;
   bodyHeader: string;
-  variables: VariableType[];
+  variables: Record<string, string>;
   response: {
     status: number;
     data?: unknown;
@@ -21,7 +20,7 @@ const loadState = (): ClientState => {
     headers: {},
     bodyHeader: 'application/json',
     body: '',
-    variables: [],
+    variables: {},
     response: {
       status: 0,
     },
@@ -49,8 +48,9 @@ const clientSlice = createSlice({
     setBody(state, action: PayloadAction<string>) {
       state.body = action.payload;
     },
-
-    //setVariables()
+    setVariables(state, action: PayloadAction<Record<string, string>>) {
+      state.variables = action.payload;
+    },
     setResponse(
       state,
       action: PayloadAction<{
@@ -69,7 +69,7 @@ export const {
   setBodyHeader,
   setBody,
   setResponse,
-  //setVariables,
+  setVariables,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

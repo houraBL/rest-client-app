@@ -13,29 +13,29 @@ vi.mock('next-intl', async (importActual) => {
 
 describe('Variables component', () => {
   const mockVariables = [
-    { name: 'Var1', initialValue: 'Value1' },
-    { name: 'Var2', initialValue: 'Value2' },
+    { name: 'Var1', value: 'Value1' },
+    { name: 'Var2', value: 'Value2' },
   ];
 
   let addVariable: ReturnType<typeof vi.fn>;
   let updateVariable: ReturnType<typeof vi.fn>;
   let deleteVariable: ReturnType<typeof vi.fn>;
   let setNewVarName: ReturnType<typeof vi.fn>;
-  let setNewInitialValue: ReturnType<typeof vi.fn>;
+  let setNewValue: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     addVariable = vi.fn();
     updateVariable = vi.fn();
     deleteVariable = vi.fn();
     setNewVarName = vi.fn();
-    setNewInitialValue = vi.fn();
+    setNewValue = vi.fn();
 
     vi.spyOn(useVariablesHook, 'default').mockReturnValue({
       variables: mockVariables,
-      newVarName: '',
+      newVarName: 'NewVar',
       setNewVarName,
-      newInitialValue: '',
-      setNewInitialValue,
+      newValue: 'NewValue',
+      setNewValue,
       addVariable,
       updateVariable,
       deleteVariable,

@@ -37,7 +37,7 @@ describe('GenericTable', () => {
     onDelete = vi.fn();
     onAdd = vi.fn();
     setNewItem = vi.fn();
-    newItem = { key: '', value: '' };
+    newItem = { key: 'newItem', value: 'newItemValue' };
   });
 
   it('renders columns and rows', () => {

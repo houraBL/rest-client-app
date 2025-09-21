@@ -61,5 +61,18 @@
     "headersTitle": "Хэдеры",
     "header": "Хэдер",
     "value": "Значение"
+  },
+  "History": {
+    "historyTitle": "История Запросов",
+    "requestTimestamp": "Время",
+    "requestMethod": "Метод",
+    "endpointUrl": "Эндпоинт",
+    "responseStatusCode": "Статус",
+    "requestDuration": "Длит (мс)",
+    "requestSize": "Размер зап (Б)",
+    "responseSize": "Размер отв (Б)",
+    "errorDetails": "Ошибка",
+    "emptyHistory": "Вы ещё не выполняли запросы",
+    "client": "REST клиент"
   }
 }

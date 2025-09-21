@@ -1,3 +1,11 @@
+import { Loader } from '@/components/Loader/Loader';
+import { lazy, Suspense } from 'react';
+
+const History = lazy(() => import('@/components/History/History'));
 export default function HistoryPage() {
-  return <h2 className="text-2xl font-bold">History & Analytics</h2>;
+  return (
+    <Suspense fallback={<Loader />}>
+      <History />
+    </Suspense>
+  );
 }

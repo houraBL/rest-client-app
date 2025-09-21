@@ -5,25 +5,29 @@ import { UrlInput } from './UrlInput/UrlInput';
 import { BodyEditor } from './BodyEditor/BodyEditor';
 import { CodeGenerator } from './CodeGenerator/CodeGenerator';
 import { SendButton } from './SendButton/SendButton';
-import ResponseViewer from './ResponseViewer/ResponseViewer';
-import Headers from './Headers/Headers';
-import { useParsedUrl } from '@/hooks/useParseUrl/useParseUrl';
+import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage/useVariableLocalStorage';
+import { VariableType } from '@/hooks/useVariables/useVariables';
+import { ResponseViewer } from './ResponseViewer/ResponseViewer';
+import { Headers } from './Headers/Headers';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useParsedUrl } from '@/hooks/useParseUrl/useParseUrl';
 import {
   setBody,
   setBodyHeader,
   setHeaders,
   setMethod,
   setUrl,
+  setVariables,
 } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
 
-export function ClientPage() {
+export default function ClientPage() {
   const { method, url, body, headers } = useParsedUrl();
   const storedHeaders = useSelector((state: RootState) => state.client.headers);
   const dispatch = useDispatch();
-
+  const [variables] = useVariableLocalStorage<VariableType[]>('variables', []);
+  
   useEffect(() => {
     dispatch(setMethod(method));
     if (url) dispatch(setUrl(url));
@@ -48,9 +52,11 @@ export function ClientPage() {
         dispatch(setHeaders(restHeaders));
       }
     }
+    const variablesObj = Object.fromEntries(
+      variables.map((v: VariableType) => [v.name, v.value])
+    );
+    dispatch(setVariables(variablesObj));
   }, []);
-
-  console.log(method, 'url', url, 'body', body, headers);
 
   return (
     <div className="flex w-full max-w-5xl flex-col gap-5 py-10 px-2 sm:px-10 mx-1 sm:mx-10">

@@ -27,7 +27,7 @@ describe('useHeaders', () => {
   it('initializes from store headers', () => {
     const { result } = renderUseHeaders({ 'Content-Type': 'application/json' });
     expect(result.current.headers).toEqual([
-      { name: 'Content-Type', initialValue: 'application/json' },
+      { name: 'Content-Type', value: 'application/json' },
     ]);
   });
 
@@ -36,7 +36,7 @@ describe('useHeaders', () => {
     act(() => {
       result.current.setNewHeader({
         name: 'Authorization',
-        initialValue: 'Bearer token',
+        value: 'Bearer token',
       });
     });
 
@@ -45,7 +45,7 @@ describe('useHeaders', () => {
     });
 
     expect(result.current.headers).toEqual([
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Authorization', value: 'Bearer token' },
     ]);
 
     const state = store.getState().client.headers;
@@ -58,10 +58,10 @@ describe('useHeaders', () => {
     });
 
     act(() => {
-      result.current.updateHeader(0, 'initialValue', 'Bearer new');
+      result.current.updateHeader(0, 'value', 'Bearer new');
     });
 
-    expect(result.current.headers[0].initialValue).toBe('Bearer new');
+    expect(result.current.headers[0].value).toBe('Bearer new');
     expect(store.getState().client.headers.Authorization).toBe('Bearer new');
   });
 

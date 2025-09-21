@@ -1,17 +1,17 @@
 type ReplaceArgs = {
-  input: string;
+  stringToReplace: string;
   variables: Record<string, string | undefined>;
 };
 
 export const replaceURLVariables = ({
-  input,
+  stringToReplace,
   variables,
 }: ReplaceArgs): string => {
-  if (!input) return input;
+  if (!stringToReplace) return stringToReplace;
 
   const reg = /{{\s*([^}\s]+)\s*}}/g;
 
-  return input.replace(reg, (matchStr, text) => {
+  return stringToReplace.replace(reg, (matchStr, text) => {
     if (variables[text] !== undefined) {
       return variables[text] as string;
     }

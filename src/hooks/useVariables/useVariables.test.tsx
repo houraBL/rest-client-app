@@ -12,7 +12,7 @@ describe('useVariables', () => {
     const { result } = renderHook(() => useVariables());
     act(() => {
       result.current.setNewVarName('Authorization');
-      result.current.setNewInitialValue('Bearer token');
+      result.current.setNewValue('Bearer token');
     });
 
     act(() => {
@@ -20,7 +20,7 @@ describe('useVariables', () => {
     });
 
     expect(result.current.variables).toEqual([
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Authorization', value: 'Bearer token' },
     ]);
   });
 
@@ -28,10 +28,10 @@ describe('useVariables', () => {
     const { result } = renderHook(() => useVariables());
 
     act(() => {
-      result.current.updateVariable(0, 'initialValue', 'Bearer new');
+      result.current.updateVariable(0, 'value', 'Bearer new');
     });
 
-    expect(result.current.variables[0].initialValue).toBe('Bearer new');
+    expect(result.current.variables[0].value).toBe('Bearer new');
   });
 
   it('deletes a variable', () => {
@@ -48,7 +48,7 @@ describe('useVariables', () => {
     const { result } = renderHook(() => useVariables());
     act(() => {
       result.current.setNewVarName('Authorization');
-      result.current.setNewInitialValue('Bearer token');
+      result.current.setNewValue('Bearer token');
     });
 
     act(() => {
@@ -56,12 +56,12 @@ describe('useVariables', () => {
     });
 
     expect(result.current.variables).toEqual([
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Authorization', value: 'Bearer token' },
     ]);
 
     act(() => {
       result.current.setNewVarName('Authorization');
-      result.current.setNewInitialValue('Bearer token');
+      result.current.setNewValue('Bearer token');
     });
 
     act(() => {
@@ -69,7 +69,7 @@ describe('useVariables', () => {
     });
 
     expect(result.current.variables).toEqual([
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Authorization', value: 'Bearer token' },
     ]);
   });
 });
