@@ -9,8 +9,31 @@ import ResponseViewer from './ResponseViewer/ResponseViewer';
 import Headers from './Headers/Headers';
 import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage/useVariableLocalStorage';
 import { VariableType } from '@/hooks/useVariables/useVariables';
+import { useParsedUrl } from '@/hooks/useParseUrl/useParseUrl';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setBody, setHeaders, setMethod, setUrl } from '@/store/clientSlice';
+import { RootState } from '@/store/store';
 
 export function ClientPage() {
+  const { method, url, body, headers } = useParsedUrl();
+  const storedHeaders = useSelector((state: RootState) => state.client.headers);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setMethod(method));
+    if (url) dispatch(setUrl(url));
+    if (body) dispatch(setBody(body));
+    if (
+      Object.keys(headers).length > 0 &&
+      Object.keys(storedHeaders).length === 0
+    ) {
+      dispatch(setHeaders(headers));
+    }
+  }, []);
+
+  console.log(method, 'url', url, 'body', body, headers);
+
   const variables = useVariableLocalStorage<VariableType[]>('variables', []);
   //setVariables(variables)
   return (
