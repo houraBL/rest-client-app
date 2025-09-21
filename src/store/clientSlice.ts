@@ -49,8 +49,9 @@ const clientSlice = createSlice({
     setBody(state, action: PayloadAction<string>) {
       state.body = action.payload;
     },
-
-    //setVariables()
+    setVariables(state, action: PayloadAction<Record<string, string>>) {
+      state.headers = action.payload;
+    },
     setResponse(
       state,
       action: PayloadAction<{
@@ -69,7 +70,7 @@ export const {
   setBodyHeader,
   setBody,
   setResponse,
-  //setVariables,
+  setVariables,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;
