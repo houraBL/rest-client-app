@@ -65,7 +65,7 @@ describe('CodeGenerator', () => {
   });
 
   it('updates selected language and calls codegen.convert', async () => {
-    const snippet = 'console.log("hello")';
+    const snippet = 'const boo = foo()';
     (codegen.convert as unknown as Mock).mockImplementation(
       (_lang, _variant, _req, _opts, cb) => {
         cb(null, snippet);
@@ -105,7 +105,7 @@ describe('CodeGenerator', () => {
 
     (codegen.convert as unknown as Mock).mockImplementation(
       (_lang, _variant, _req, _opts, cb) => {
-        cb(null, 'console.log("copy")');
+        cb(null, 'const boo = foo()');
       }
     );
 
@@ -117,7 +117,7 @@ describe('CodeGenerator', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(writeTextMock).toHaveBeenCalledWith('console.log("copy")');
+      expect(writeTextMock).toHaveBeenCalledWith('const boo = foo()');
       expect(screen.getByText('copied')).toBeInTheDocument();
     });
   });

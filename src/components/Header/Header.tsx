@@ -10,12 +10,15 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/useAuth/useAuth';
 import { logoutAndClearCookie } from '@/lib/firebase/authActions';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { resetClient } from '@/store/clientSlice';
 
 export default function Header() {
   const router = useRouter();
   const { user, setUser, loading } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const t = useTranslations('Header');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +34,7 @@ export default function Header() {
     setUser(null);
     toast.success('Logged out');
     router.push('/');
+    dispatch(resetClient());
   };
 
   return (

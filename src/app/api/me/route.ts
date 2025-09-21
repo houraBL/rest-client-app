@@ -14,7 +14,7 @@ export async function GET() {
       user: {
         uid: decoded.uid,
         email: decoded.email,
-        displayName: decoded.name ?? null,
+        displayName: decoded.name,
       },
     });
   } catch (err) {

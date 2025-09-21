@@ -16,6 +16,7 @@ import {
   setBody,
   setBodyHeader,
   setHeaders,
+  setInitialized,
   setMethod,
   setUrl,
   setVariables,
@@ -27,8 +28,13 @@ export default function ClientPage() {
   const storedHeaders = useSelector((state: RootState) => state.client.headers);
   const dispatch = useDispatch();
   const [variables] = useVariableLocalStorage<VariableType[]>('variables', []);
-  
+  const initialized = useSelector(
+    (state: RootState) => state.client.initialized
+  );
+
   useEffect(() => {
+    if (initialized) return;
+    dispatch(setInitialized(true));
     dispatch(setMethod(method));
     if (url) dispatch(setUrl(url));
     if (body) dispatch(setBody(body));
@@ -66,8 +72,8 @@ export default function ClientPage() {
         <SendButton />
       </div>
       <Headers />
-      <CodeGenerator />
       <BodyEditor />
+      <CodeGenerator />
       <ResponseViewer />
     </div>
   );

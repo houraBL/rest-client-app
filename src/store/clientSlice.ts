@@ -12,6 +12,7 @@ export interface ClientState {
     data?: unknown;
     error?: string;
   };
+  initialized: boolean;
 }
 const loadState = (): ClientState => {
   return {
@@ -24,6 +25,7 @@ const loadState = (): ClientState => {
     response: {
       status: 0,
     },
+    initialized: false,
   };
 };
 
@@ -59,6 +61,12 @@ const clientSlice = createSlice({
     ) {
       state.response = action.payload.response;
     },
+    setInitialized(state, action: PayloadAction<boolean>) {
+      state.initialized = action.payload;
+    },
+    resetClient() {
+      return loadState();
+    },
   },
 });
 
@@ -70,6 +78,8 @@ export const {
   setBody,
   setResponse,
   setVariables,
+  setInitialized,
+  resetClient,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;
