@@ -1,5 +1,4 @@
 import { logUserRequest } from '@/lib/firebase/logUserRequest';
-import { AuthUser } from '@/providers/AuthContext';
 
 export async function makeApiCall({
   uid,
@@ -7,12 +6,14 @@ export async function makeApiCall({
   method,
   requestBody,
   headers = {},
+  finalURL,
 }: {
   uid: string;
   url: string;
   method: string;
   requestBody?: string;
   headers?: Record<string, string>;
+  finalURL: string;
 }): Promise<{
   status: number;
   data?: unknown;
@@ -63,6 +64,7 @@ export async function makeApiCall({
       responseSize: responseSize,
       endpointUrl: url,
       errorDetails: errorDetails,
+      finalURL: finalURL,
     });
   }
 

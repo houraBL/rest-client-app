@@ -29,6 +29,7 @@ export function SendButton() {
       headers: headers,
       method: clientState.method,
       ...(body && method !== 'GET' ? { requestBody: body } : {}),
+      finalURL,
     });
 
     dispatch(setResponse({ response }));
