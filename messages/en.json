@@ -87,7 +87,7 @@
     "send": "Send"
   },
   "Response": {
-    "responseStatus": "Статус ответа:"
+    "responseStatus": "Response Status: "
   },
   "Input": {
     "enterUrl": "Enter URL"
