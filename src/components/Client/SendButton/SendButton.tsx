@@ -4,7 +4,7 @@ import { setResponse } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
 import { makeApiCall } from '@/utils/makeApiCall';
 import { parseUrl } from '@/utils/parseUrl';
-import { replaceUrl } from '@/utils/replaceUrl';
+import { getFinalUrl } from '@/utils/getFinalUrl';
 import { useDispatch, useSelector } from 'react-redux';
 
 export function SendButton() {
@@ -25,7 +25,8 @@ export function SendButton() {
       'Content-Type': clientState.bodyHeader,
     };
 
-    replaceUrl(router, { ...clientState, headers });
+    const path = getFinalUrl({ ...clientState, headers });
+    router.push(path, { scroll: false });
 
     const response = await makeApiCall({
       uid: user?.uid || '',
