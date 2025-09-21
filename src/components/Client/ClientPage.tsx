@@ -19,7 +19,7 @@ export default function ClientPage() {
 
   useEffect(() => {
     const variablesObj = Object.fromEntries(
-      variables.map((v: VariableType) => [v.name, v.initialValue])
+      variables.map((v: VariableType) => [v.name, v.value])
     );
     dispatch(setVariables(variablesObj));
   }, [dispatch]);
