@@ -5,6 +5,33 @@ import Header from './Header';
 import { useAuth } from '@/hooks/useAuth/useAuth';
 import userEvent from '@testing-library/user-event';
 import { logoutAndClearCookie } from '@/lib/firebase/authActions';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { RootState } from '@/store/store';
+import clientReducer, { ClientState } from '@/store/clientSlice';
+
+function renderWithStoreAndTheme(
+  children: React.ReactElement,
+  preloadedClient?: Partial<ClientState>
+) {
+  const store = configureStore({
+    reducer: { client: clientReducer },
+    preloadedState: {
+      client: {
+        method: 'GET',
+        url: '',
+        headers: {},
+        body: '',
+        ...preloadedClient,
+      },
+    } as RootState,
+  });
+
+  return {
+    store,
+    ...render(<Provider store={store}>{children}</Provider>),
+  };
+}
 
 vi.mock('next-intl', async (importActual) => {
   const actual = await importActual<typeof import('next-intl')>();
@@ -56,28 +83,29 @@ vi.mock('./LanguageSwitcher/LanguageSwitcher', () => ({
 
 describe('Header', () => {
   it('renders logo and mocked switchers', () => {
-    render(<Header />);
+    renderWithStoreAndTheme(<Header />);
 
     expect(screen.getByText(/RESTful/i)).toBeInTheDocument();
     expect(screen.getByTestId('mock-theme-switcher')).toBeInTheDocument();
     expect(screen.getByTestId('mock-language-switcher')).toBeInTheDocument();
   });
 
-  it('applies scrolled styles when window is scrolled', async () => {
-    const { rerender } = render(<Header />);
+  it('applies scrolled styles when window is scrolled', () => {
+    renderWithStoreAndTheme(<Header />);
 
     const header = screen.getByRole('banner');
     expect(header).toHaveClass('h-20');
+
     act(() => {
       window.scrollY = 100;
       window.dispatchEvent(new Event('scroll'));
     });
-    rerender(<Header />);
+
     expect(header).toHaveClass('h-16');
   });
 
   it('removes scrolled styles when scrolled back up', () => {
-    const { rerender } = render(<Header />);
+    renderWithStoreAndTheme(<Header />);
     const header = screen.getByRole('banner');
 
     act(() => {
@@ -85,7 +113,6 @@ describe('Header', () => {
       window.dispatchEvent(new Event('scroll'));
     });
 
-    rerender(<Header />);
     expect(header).toHaveClass('h-16');
     expect(header).toHaveClass('bg-purple-100');
 
@@ -94,35 +121,47 @@ describe('Header', () => {
       window.dispatchEvent(new Event('scroll'));
     });
 
-    rerender(<Header />);
     expect(header).toHaveClass('h-20');
     expect(header).not.toHaveClass('bg-purple-100');
   });
 
   it('renders Loader when loading is true', () => {
     (useAuth as Mock).mockReturnValueOnce({ user: null, loading: true });
-    render(<Header />);
+    renderWithStoreAndTheme(<Header />);
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
   it('renders log in and sign up when user is null', () => {
     (useAuth as Mock).mockReturnValueOnce({ user: null, loading: false });
-    render(<Header />);
+    renderWithStoreAndTheme(<Header />);
     expect(screen.getByText('login')).toBeInTheDocument();
     expect(screen.getByText('signup')).toBeInTheDocument();
   });
 
   it('renders sign out when user is not null', () => {
     (useAuth as Mock).mockReturnValueOnce({ user: true, loading: false });
-    render(<Header />);
+    renderWithStoreAndTheme(<Header />);
     expect(screen.getByText('signout')).toBeInTheDocument();
   });
 
-  it('signs out user and tr sign out when user is not null', async () => {
-    render(<Header />);
+  it('signs out user and resets client state', async () => {
+    const { store } = renderWithStoreAndTheme(<Header />);
     const signOutBtn = screen.getByText('signout');
+
     await userEvent.click(signOutBtn);
+
     expect(logoutAndClearCookie).toBeCalledTimes(1);
     expect(pushMock).toBeCalledWith('/');
+
+    expect(store.getState().client).toEqual({
+      method: 'GET',
+      url: '',
+      headers: {},
+      bodyHeader: 'application/json',
+      body: '',
+      variables: {},
+      response: { status: 0 },
+      initialized: false,
+    });
   });
 });
