@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from '@/i18n/navigation';
 import { RootState } from '@/store/store';
 import { encodeBase64 } from './encodeBase64';
 
