@@ -11,8 +11,8 @@ export default function Variables() {
     variables,
     newVarName,
     setNewVarName,
-    newInitialValue,
-    setNewInitialValue,
+    newValue,
+    setNewValue,
     addVariable,
     updateVariable,
     deleteVariable,
@@ -33,17 +33,17 @@ export default function Variables() {
         items={variables}
         columns={[
           { key: 'name', label: t('variable') },
-          { key: 'initialValue', label: t('value') },
+          { key: 'value', label: t('value') },
         ]}
         onChange={updateVariable}
         onDelete={deleteVariable}
         newItem={{
           name: newVarName,
-          initialValue: newInitialValue,
+          value: newValue,
         }}
         setNewItem={(item) => {
           setNewVarName(item.name);
-          setNewInitialValue(item.initialValue);
+          setNewValue(item.value);
         }}
         onAdd={addVariable}
       />
