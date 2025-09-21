@@ -1,0 +1,110 @@
+{
+  "Header": {
+    "login": "Войти",
+    "signup": "Регистрация",
+    "signout": "Выйти",
+    "loggedOut": "Вы вышли из системы"
+  },
+  "Footer": {
+    "course": "RS School курс по React",
+    "team": "Наша Команда",
+    "mentors": "Наши менторы"
+  },
+  "Test": {
+    "home": "Главная",
+    "about": "О нас",
+    "history": "История"
+  },
+  "Main": {
+    "welcome": "Добро пожаловать!",
+    "welcome-back": "Рады видеть вас, ",
+    "history": "История",
+    "client": "REST клиент",
+    "variables": "Переменные",
+    "authorize": "Пожалуйста, войдите или создайте аккаунт, чтобы начать пользоваться RESTful API",
+    "instructions": "Пройдите по ссылкам ниже, чтобы попасть на соответствующие страницы"
+  },
+  "NotFound": {
+    "title": "404 – Страница не найдена",
+    "description": "Упс! Страница, которую вы ищете, не существует.",
+    "backHome": "Вернуться на главную"
+  },
+  "Variables": {
+    "variables": "Переменные",
+    "variable": "Переменная",
+    "value": "Значение",
+    "add": "Добавить",
+    "errorEmptyName": "Имя не может быть пустым",
+    "errorDuplicateName": "Переменная с таким именем уже существует",
+    "errorEmptyValue": "Значение не может быть пустым"
+  },
+  "Auth": {
+    "nameLabel": "Имя",
+    "namePlaceholder": "Введите свое имя",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Введите ваш email",
+    "passwordLabel": "Пароль",
+    "passwordPlaceholder": "Введите свой пароль",
+
+    "welcomeBack": "Добро пожаловать!",
+    "getStarted": "Начнем прямо сейчас",
+    "enterCredentials": "Введите ваши учетные данные",
+    "createAccount": "Создать новую учетную запись",
+    "noAccount": "Нет аккаунта? ",
+    "haveAccount": "Есть аккаунт? ",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "accountCreated": "Аккаунт успешно создан!",
+    "userNotFound": "Пользователь с таким email не найден",
+    "wrongCredentials": "Неправильный пароль или email",
+    "emailInUse": "Email уже используется",
+    "unknownAuthError": "Произошла неизвестная ошибка аутентификации",
+    "unknownError": "Произошла неизвестная ошибка"
+  },
+  "Headers": {
+    "headersTitle": "Хэдеры",
+    "header": "Хэдер",
+    "value": "Значение",
+    "errorEmptyName": "Имя не может быть пустым",
+    "errorDuplicateName": "Хэдер с таким именем уже существует",
+    "errorEmptyValue": "Значение не может быть пустым"
+  },
+  "History": {
+    "historyTitle": "История Запросов",
+    "requestTimestamp": "Время",
+    "requestMethod": "Метод",
+    "endpointUrl": "Эндпоинт",
+    "responseStatusCode": "Статус",
+    "requestDuration": "Длит (мс)",
+    "requestSize": "Размер зап (Б)",
+    "responseSize": "Размер отв (Б)",
+    "errorDetails": "Ошибка",
+    "emptyHistory": "Вы ещё не выполняли запросы",
+    "client": "REST клиент"
+  },
+  "Code": {
+    "generatedCode": "Сгенерированный код",
+    "error": "Ошибка при генерации кода",
+    "selectLanguage": "Выберите язык",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "failedToCopy": "Не удалось скопировать"
+  },
+  "Body": {
+    "body": "Тело запроса",
+    "prettify": "Форматировать",
+    "prettyfyError": "Невозможно отформатировать содержимое"
+  },
+  "Send": {
+    "send": "Отправить"
+  },
+  "Response": {
+    "responseStatus": "Статус ответа:",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "failedToCopy": "Не удалось скопировать"
+  },
+  "Input": {
+    "enterUrl": "Введите URL"
+  }
+}

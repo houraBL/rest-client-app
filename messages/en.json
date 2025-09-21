@@ -1,0 +1,110 @@
+{
+  "Header": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "signout": "Sign Out",
+    "loggedOut": "You have been logged out"
+  },
+  "Footer": {
+    "course": "RS School React course",
+    "team": "Our Team",
+    "mentors": "Our Mentors"
+  },
+  "Test": {
+    "home": "Home",
+    "about": "About",
+    "history": "History"
+  },
+  "Main": {
+    "welcome": "Welcome!",
+    "welcome-back": "Welcome back, ",
+    "history": "History",
+    "client": "REST Client",
+    "variables": "Variables",
+    "authorize": "Please log in or create and account to start using RESTful API",
+    "instructions": "Follow the links below to navigate to the relevant pages"
+  },
+  "NotFound": {
+    "title": "404 - Page Not Found",
+    "description": "Oops! The page you’re looking for doesn’t exist.",
+    "backHome": "Go back home"
+  },
+  "Variables": {
+    "variables": "Variables",
+    "variable": "Variable",
+    "value": "Value",
+    "add": "Add",
+    "errorEmptyName": "Name cannot be empty",
+    "errorDuplicateName": "Variable with this name already exists",
+    "errorEmptyValue": "Value cannot be empty"
+  },
+  "Auth": {
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+
+    "welcomeBack": "Welcome Back!",
+    "getStarted": "Get Started Now",
+    "enterCredentials": "Enter your credentials",
+    "createAccount": "Create a new account",
+    "noAccount": "Don't have an account? ",
+    "haveAccount": "Have an account? ",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "accountCreated": "Account created successfully!",
+    "userNotFound": "User with this email not found",
+    "wrongCredentials": "Wrong password or email",
+    "emailInUse": "Email already in use",
+    "unknownAuthError": "An unknown authentication error occurred",
+    "unknownError": "An unknown error occurred"
+  },
+  "Headers": {
+    "headersTitle": "Headers",
+    "header": "Header",
+    "value": "Value",
+    "errorEmptyName": "Name cannot be empty",
+    "errorDuplicateName": "Header with this name already exists",
+    "errorEmptyValue": "Value cannot be empty"
+  },
+  "History": {
+    "historyTitle": "Requests History",
+    "requestTimestamp": "Timestamp",
+    "requestMethod": "Method",
+    "endpointUrl": "Endpoint",
+    "responseStatusCode": "Status",
+    "requestDuration": "Dur (ms)",
+    "requestSize": "Req Size (B)",
+    "responseSize": "Res Size (B)",
+    "errorDetails": "Error",
+    "emptyHistory": "You haven't executed any requests yet",
+    "client": "REST Client"
+  },
+  "Code": {
+    "generatedCode": "Generated code",
+    "error": "Error generating code",
+    "selectLanguage": "Select Language",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "failedToCopy": "Failed to copy"
+  },
+  "Body": {
+    "body": "Body",
+    "prettify": "Prettify",
+    "prettyfyError": "Unable to prettify content"
+  },
+  "Send": {
+    "send": "Send"
+  },
+  "Response": {
+    "responseStatus": "Response Status: ",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "failedToCopy": "Failed to copy"
+  },
+  "Input": {
+    "enterUrl": "Enter URL"
+  }
+}
