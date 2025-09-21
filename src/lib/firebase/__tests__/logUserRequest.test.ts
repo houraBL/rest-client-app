@@ -24,6 +24,7 @@ const mockLogRequest: RequestLogEntry = {
   responseSize: 69420,
   endpointUrl: 'url.com',
   errorDetails: 'some-error',
+  finalURL: 'client/GET/url/body',
 };
 
 describe('log user request', () => {

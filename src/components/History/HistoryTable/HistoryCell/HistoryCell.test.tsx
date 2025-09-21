@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HistoryCell from './HistoryCell';
-import { encodeBase64 } from '@/utils/encodeBase64';
 import { mockH } from '../historyMockData';
 
 const pushMock = vi.fn();
@@ -62,10 +61,7 @@ describe('History Cell', () => {
       </table>
     );
     const link = screen.getByTestId('mock-link');
-    expect(link).toHaveAttribute(
-      'href',
-      `/client/PUT/${encodeBase64(mockH.endpointUrl)}`
-    );
+    expect(link).toHaveAttribute('href', `/client/GET/url/body`);
     expect(link).toHaveTextContent(mockH.endpointUrl);
   });
 

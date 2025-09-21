@@ -14,4 +14,5 @@ export const historyEntry = z.object({
     z.string().optional()
   ),
   requestTimestamp: z.instanceof(Timestamp),
+  finalURL: z.string().optional(),
 });

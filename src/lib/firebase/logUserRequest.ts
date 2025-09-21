@@ -10,6 +10,7 @@ export interface RequestLogEntry {
   responseSize: number;
   endpointUrl: string;
   errorDetails?: string | null;
+  finalURL: string;
 }
 
 export const logUserRequest = async (logData: RequestLogEntry) => {
@@ -26,9 +27,7 @@ export const logUserRequest = async (logData: RequestLogEntry) => {
         ...logData,
         requestTimestamp: Timestamp.now(),
       });
-      console.log('added to firebase: ', logData.uid);
     } catch (error) {
-      console.log('error while adding to firebase for user', logData.uid);
       if (error instanceof Error) {
         throw error;
       }
