@@ -4,7 +4,7 @@ import { useVariableLocalStorage } from '../useVariableLocalStorage/useVariableL
 
 export type VariableType = {
   name: string;
-  initialValue: string;
+  value: string;
 };
 
 function isDuplicate(
@@ -25,23 +25,20 @@ export default function useVariables() {
     []
   );
   const [newVarName, setNewVarName] = useState('');
-  const [newInitialValue, setNewInitialValue] = useState('');
+  const [newValue, setNewValue] = useState('');
 
   const addVariable = () => {
     const trimmedName = newVarName.trim();
-    const trimmedValue = newInitialValue.trim();
+    const trimmedValue = newValue.trim();
     if (!trimmedName) return toast.error('Please enter a variable name!');
     if (!trimmedValue) return toast.error('Please enter a variable value!');
 
     if (isDuplicate(variables, trimmedName)) {
       return toast.error('Variable with this name already exists!');
     }
-    setVariables([
-      ...variables,
-      { name: trimmedName, initialValue: trimmedValue },
-    ]);
+    setVariables([...variables, { name: trimmedName, value: trimmedValue }]);
     setNewVarName('');
-    setNewInitialValue('');
+    setNewValue('');
   };
 
   const updateVariable = (
@@ -77,8 +74,8 @@ export default function useVariables() {
     variables,
     newVarName,
     setNewVarName,
-    newInitialValue,
-    setNewInitialValue,
+    newValue,
+    setNewValue,
     addVariable,
     updateVariable,
     deleteVariable,
