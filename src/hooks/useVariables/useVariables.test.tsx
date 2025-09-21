@@ -1,6 +1,14 @@
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import useVariables from './useVariables';
+
+vi.mock('next-intl', async () => {
+  const actual = await import('next-intl');
+  return {
+    ...actual,
+    useTranslations: () => (key: string) => key,
+  };
+});
 
 describe('useVariables', () => {
   it('initializes with empty array', () => {

@@ -5,6 +5,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import useHeaders from './useHeaders';
 import clientReducer from '@/store/clientSlice';
 
+vi.mock('next-intl', async () => {
+  const actual = await import('next-intl');
+  return {
+    ...actual,
+    useTranslations: () => (key: string) => key,
+  };
+});
+
 function renderUseHeaders(initialHeaders: Record<string, string> = {}) {
   const store = configureStore({
     reducer: { client: clientReducer },

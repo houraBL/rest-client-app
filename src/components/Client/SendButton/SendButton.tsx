@@ -18,7 +18,7 @@ export function SendButton() {
     const { url, headers, body, method, finalURL } =
       resolveReplaceVariables(clientState);
 
-    router.push(finalURL, { scroll: false });
+    router.push(finalURL, { scroll: false, shallow: true });
 
     const response = await makeApiCall({
       uid: user?.uid || '',

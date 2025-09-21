@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useParsedUrl } from '@/hooks/useParseUrl/useParseUrl';
 import {
+  resetClient,
   setBody,
   setBodyHeader,
   setHeaders,
@@ -62,6 +63,13 @@ export default function ClientPage() {
       variables.map((v: VariableType) => [v.name, v.value])
     );
     dispatch(setVariables(variablesObj));
+
+    return () => {
+      const pathname = window.location.pathname;
+      if (!pathname.startsWith('/client')) {
+        dispatch(resetClient());
+      }
+    };
   }, []);
 
   return (
