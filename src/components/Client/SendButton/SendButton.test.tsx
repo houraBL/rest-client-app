@@ -106,6 +106,7 @@ describe('SendButton', () => {
         },
         method: mockState.client.method,
         requestBody: mockState.client.body,
+        finalURL: '/final-url',
       });
       expect(mockDispatch).toHaveBeenCalledWith(
         setResponse({ response: mockResponse })
@@ -136,6 +137,7 @@ describe('SendButton', () => {
           'Content-Type': mockState.client.bodyHeader,
         },
         method: 'GET',
+        finalURL: '/final-url',
       });
     });
   });
