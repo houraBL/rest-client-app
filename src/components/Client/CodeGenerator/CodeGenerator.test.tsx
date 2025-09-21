@@ -113,12 +113,12 @@ describe('CodeGenerator', () => {
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: LANGUAGES[0].label } });
 
-    const button = await screen.findByText('Copy');
+    const button = await screen.findByText('copy');
     fireEvent.click(button);
 
     await waitFor(() => {
       expect(writeTextMock).toHaveBeenCalledWith('console.log("copy")');
-      expect(screen.getByText('Copied!')).toBeInTheDocument();
+      expect(screen.getByText('copied')).toBeInTheDocument();
     });
   });
 });

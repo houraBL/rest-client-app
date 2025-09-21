@@ -78,16 +78,22 @@
   "Code": {
     "generatedCode": "Сгенерированный код",
     "error": "Ошибка при генерации кода",
-    "selectLanguage": "Выберите язык"
+    "selectLanguage": "Выберите язык",
+    "copy": "Копировать",
+    "copied": "Скопировано!"
   },
   "Body": {
-    "body": "Тело запроса"
+    "body": "Тело запроса",
+    "prettify": "Форматировать",
+    "prettyfyError": "Невозможно отформатировать содержимое"
   },
   "Send": {
     "send": "Отправить"
   },
   "Response": {
-    "responseStatus": "Статус ответа:"
+    "responseStatus": "Статус ответа:",
+    "copy": "Копировать",
+    "copied": "Скопировано!"
   },
   "Input": {
     "enterUrl": "Введите URL"

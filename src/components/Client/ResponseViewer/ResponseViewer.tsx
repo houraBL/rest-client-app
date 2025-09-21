@@ -10,7 +10,6 @@ export type ResponseViewerProps = {
 import useTheme from '@/hooks/useTheme';
 import { RootState } from '@/store/store';
 import Editor from '@monaco-editor/react';
-import { stat } from 'fs';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -55,7 +54,7 @@ export function ResponseViewer() {
           onClick={handleCopy}
           className="absolute right-5 top-2 btn btn-xs z-10"
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? t('copied') : t('copy')}
         </button>
         <Editor
           theme={theme === 'light' ? 'light' : 'vs-dark'}

@@ -78,16 +78,22 @@
   "Code": {
     "generatedCode": "Generated code",
     "error": "Error generating code",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "copy": "Copy",
+    "copied": "Copied!"
   },
   "Body": {
-    "body": "Body"
+    "body": "Body",
+    "prettify": "Prettify",
+    "prettyfyError": "Unable to prettify content"
   },
   "Send": {
     "send": "Send"
   },
   "Response": {
-    "responseStatus": "Response Status: "
+    "responseStatus": "Response Status: ",
+    "copy": "Copy",
+    "copied": "Copied!"
   },
   "Input": {
     "enterUrl": "Enter URL"

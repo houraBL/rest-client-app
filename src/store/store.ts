@@ -7,16 +7,5 @@ export const store = configureStore({
   },
 });
 
-store.subscribe(() => {
-  try {
-    localStorage.setItem(
-      'clientState',
-      JSON.stringify(store.getState().client)
-    );
-  } catch (err) {
-    console.error('Failed to save client state', err);
-  }
-});
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
