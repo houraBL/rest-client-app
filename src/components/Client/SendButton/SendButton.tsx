@@ -17,11 +17,11 @@ export function SendButton() {
   const handleClick = async () => {
     const headers = {
       ...clientState.headers,
-      'Content-Type': clientState.bodyHeader,
+      ...(body ? { 'Content-Type': clientState.bodyHeader } : {}),
     };
 
-    const path = getFinalUrl({ ...clientState, headers });
-    router.push(path, { scroll: false });
+    const finalURL = getFinalUrl({ ...clientState, headers });
+    router.push(finalURL, { scroll: false });
 
     const response = await makeApiCall({
       uid: user?.uid || '',
