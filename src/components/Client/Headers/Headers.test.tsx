@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Headers from './Headers';
+import { Headers } from './Headers';
 import { HeadersType } from '@/hooks/useHeaders/useHeaders';
 import userEvent from '@testing-library/user-event';
 

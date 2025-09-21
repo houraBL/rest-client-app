@@ -4,7 +4,7 @@ import { GenericTable } from '@/components/GenericTable/GenericTable';
 import useHeaders, { HeadersType } from '@/hooks/useHeaders/useHeaders';
 import { useTranslations } from 'next-intl';
 
-export default function Headers() {
+export function Headers() {
   const {
     headers,
     newHeader,

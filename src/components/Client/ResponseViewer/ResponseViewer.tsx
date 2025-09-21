@@ -14,7 +14,7 @@ import { stat } from 'fs';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export default function ResponseViewer() {
+export function ResponseViewer() {
   const { theme } = useTheme();
   const { status, data, error } = useSelector(
     (state: RootState) => state.client.response
