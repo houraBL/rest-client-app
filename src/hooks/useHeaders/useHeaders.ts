@@ -38,9 +38,9 @@ export default function useHeaders() {
 
   useEffect(() => {
     setHeadersState(
-      Object.entries(storedHeaders).map(([name, initialValue]) => ({
+      Object.entries(storedHeaders).map(([name, value]) => ({
         name,
-        initialValue,
+        value,
       }))
     );
   }, [storedHeaders]);
