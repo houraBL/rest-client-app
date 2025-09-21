@@ -15,7 +15,7 @@ export async function makeApiCall({
   headers?: Record<string, string>;
 }): Promise<{
   status: number;
-  data?: string;
+  data?: unknown;
   error?: string;
 }> {
   const startTime = Date.now();
@@ -30,8 +30,8 @@ export async function makeApiCall({
   try {
     response = await fetch(url, {
       method,
-      //headers: headers,
-      //body: requestBody,
+      headers: headers,
+      body: requestBody,
     });
 
     status = response.status;
@@ -65,9 +65,17 @@ export async function makeApiCall({
       errorDetails: errorDetails,
     });
   }
+
+  let parsedData: unknown = null;
+  try {
+    parsedData = responseText ? JSON.parse(responseText) : null;
+  } catch {
+    parsedData = responseText;
+  }
+
   return {
     status,
-    data: JSON.parse(responseText),
+    data: parsedData,
     error: errorDetails ?? undefined,
   };
 }

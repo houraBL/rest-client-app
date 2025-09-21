@@ -10,7 +10,7 @@ export interface ClientState {
   variables: VariableType[];
   response: {
     status: number;
-    data?: string;
+    data?: unknown;
     error?: string;
   };
 }
@@ -54,11 +54,7 @@ const clientSlice = createSlice({
     setResponse(
       state,
       action: PayloadAction<{
-        response: {
-          status: number;
-          data?: string;
-          error?: string;
-        };
+        response: { status: number; data?: unknown; error?: string };
       }>
     ) {
       state.response = action.payload.response;

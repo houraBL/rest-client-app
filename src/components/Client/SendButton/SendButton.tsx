@@ -3,30 +3,39 @@ import { useRouter } from '@/i18n/navigation';
 import { setResponse } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
 import { makeApiCall } from '@/utils/makeApiCall';
+import { parseUrl } from '@/utils/parseUrl';
 import { replaceUrl } from '@/utils/replaceUrl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function SendButton() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const clientState = useSelector((state: RootState) => state.client);
+  const method = useSelector((state: RootState) => state.client.method);
+  const body = useSelector((state: RootState) => state.client.body);
   const { user } = useAuth();
 
   const handleClick = async () => {
-    replaceUrl(router, clientState);
-    const myHeaders = {
+    parseUrl(
+      'http://localhost:3000/client/GET/Imh0dHBzOi8vcmlja2FuZG1vcnR5YXBpLmNvbS9hcGkvY2hhcmFjdGVyIg==?Content-Type=application%2Fjson'
+    );
+
+    const headers = {
       ...clientState.headers,
       'Content-Type': clientState.bodyHeader,
     };
 
+    replaceUrl(router, { ...clientState, headers });
+
     const response = await makeApiCall({
       uid: user?.uid || '',
       url: clientState.url,
-      headers: myHeaders,
+      headers: headers,
       method: clientState.method,
-      requestBody: clientState.body,
+      ...(body && method !== 'GET' ? { requestBody: body } : {}),
     });
-    console.log(response); // for visibility of response
-    setResponse({ response }); // fix this
+
+    dispatch(setResponse({ response }));
   };
   return (
     <div>
