@@ -80,7 +80,7 @@ export function CodeGenerator() {
           onClick={handleCopy}
           className="absolute right-5 top-2 btn btn-xs z-10"
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? t('copied') : t('copy')}
         </button>
         <Editor
           theme={theme === 'light' ? 'light' : 'vs-dark'}

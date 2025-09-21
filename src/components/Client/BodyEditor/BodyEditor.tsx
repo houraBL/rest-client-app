@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setBody, setBodyHeader } from '@/store/clientSlice';
-import { useEffect, useState } from 'react';
-import { Editor } from '@monaco-editor/react';
+import { useEffect, useRef, useState } from 'react';
+import { Editor, OnMount } from '@monaco-editor/react';
 import useTheme from '@/hooks/useTheme';
 import { useTranslations } from 'next-intl';
+import type * as monaco from 'monaco-editor';
+import toast from 'react-hot-toast';
+import { formatXml } from '@/utils/formatXml';
 
 type Language = 'json' | 'xml' | 'plaintext';
 
@@ -26,6 +29,7 @@ export function BodyEditor() {
   const { theme } = useTheme();
   const requestBody = useSelector((state: RootState) => state.client.body);
   const bodyHeader = useSelector((state: RootState) => state.client.bodyHeader);
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
   const [language, setLanguage] = useState<Language>('json');
 
@@ -47,6 +51,17 @@ export function BodyEditor() {
     }
   };
 
+  const handleEditorMount: OnMount = (editor) => {
+    editorRef.current = editor;
+  };
+
+  function prettify() {
+    const currBody = editorRef.current?.getValue() || '';
+    editorRef.current?.getAction('editor.action.formatDocument')?.run();
+    const formatted = editorRef.current?.getValue() || '';
+    if (currBody === formatted) toast.error(t('prettyfyError'));
+  }
+
   return (
     <div>
       <span>{t('body')}</span>
@@ -63,7 +78,26 @@ export function BodyEditor() {
           </button>
         ))}
       </div>
-      <div className="mt-2 border-2 border-base-300 rounded-lg">
+      <div className="relative mt-2 border-2 border-base-300 rounded-lg">
+        {language !== 'plaintext' && (
+          <button
+            onClick={
+              language === 'json'
+                ? prettify
+                : () =>
+                    dispatch(
+                      setBody(
+                        formatXml(requestBody, () =>
+                          toast.error(t('prettyfyError'))
+                        )
+                      )
+                    )
+            }
+            className="absolute right-5 top-2 btn btn-xs z-10"
+          >
+            {t('prettify')}
+          </button>
+        )}
         <Editor
           theme={theme === 'light' ? 'light' : 'vs-dark'}
           height="300px"
@@ -81,7 +115,13 @@ export function BodyEditor() {
               alwaysConsumeMouseWheel: false,
             },
             padding: { top: 10, bottom: 10 },
+            tabSize: 2,
+            insertSpaces: true,
+            formatOnPaste: true,
+            formatOnType: true,
+            automaticLayout: true,
           }}
+          onMount={handleEditorMount}
         />
       </div>
     </div>
