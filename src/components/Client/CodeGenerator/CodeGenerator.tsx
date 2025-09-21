@@ -35,7 +35,6 @@ export function CodeGenerator() {
       {},
       (err: unknown, snippet: SetStateAction<string>) => {
         if (err) {
-          console.error('Error generating code:', err);
           toast.error(t('error'));
           setCode(t('error'));
         } else {
@@ -51,7 +50,6 @@ export function CodeGenerator() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
-      console.error('Failed to copy:', err);
       toast.error('Failed to copy:');
     }
   };
