@@ -21,10 +21,10 @@ const setNewHeader = vi.fn();
 vi.mock('@/hooks/useHeaders/useHeaders', () => ({
   default: () => ({
     headers: [
-      { name: 'Content-Type', initialValue: 'application/json' },
-      { name: 'Authorization', initialValue: 'Bearer token' },
+      { name: 'Content-Type', value: 'application/json' },
+      { name: 'Authorization', value: 'Bearer token' },
     ] as HeadersType[],
-    newHeader: { name: '', initialValue: '' },
+    newHeader: { name: 'NewName', value: 'NewValue' },
     setNewHeader,
     addHeader,
     updateHeader,
@@ -52,7 +52,7 @@ describe('Headers', () => {
     render(<Headers />);
     const input = screen.getByDisplayValue('application/json');
     fireEvent.change(input, { target: { value: 'text/html' } });
-    expect(updateHeader).toHaveBeenCalledWith(0, 'initialValue', 'text/html');
+    expect(updateHeader).toHaveBeenCalledWith(0, 'value', 'text/html');
   });
 
   it('calls deleteHeader when delete button clicked', () => {

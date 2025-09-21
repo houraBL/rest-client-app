@@ -23,7 +23,7 @@ export function Headers() {
         items={headers}
         columns={[
           { key: 'name', label: t('header') },
-          { key: 'initialValue', label: t('value') },
+          { key: 'value', label: t('value') },
         ]}
         onChange={updateHeader}
         onDelete={deleteHeader}
