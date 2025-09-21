@@ -38,7 +38,7 @@ export function ResponseViewer() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
-      toast.error('Failed to copy:');
+      toast.error(t('failedToCopy'));
     }
   };
 

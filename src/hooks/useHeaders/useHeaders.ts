@@ -1,5 +1,6 @@
 import { setHeaders } from '@/store/clientSlice';
 import { RootState } from '@/store/store';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +24,7 @@ function isDuplicate(
 
 export default function useHeaders() {
   const dispatch = useDispatch();
+  const t = useTranslations('Headers');
   const storedHeaders = useSelector((state: RootState) => state.client.headers);
 
   const [headers, setHeadersState] = useState<HeadersType[]>(
@@ -60,11 +62,11 @@ export default function useHeaders() {
   const addHeader = () => {
     const name = newHeader.name.trim();
     const value = newHeader.value.trim();
-    if (!name) return toast.error('Please enter a header name!');
-    if (!value) return toast.error('Please enter a header value!');
+    if (!name) return toast.error(t('errorEmptyName'));
+    if (!value) return toast.error(t('errorEmptyValue'));
 
     if (isDuplicate(headers, name)) {
-      toast.error('Header with this name already exists!');
+      toast.error(t('errorDuplicateName'));
       return;
     }
 
@@ -81,12 +83,12 @@ export default function useHeaders() {
     const trimmedValue = value.trim();
     if (!trimmedValue) {
       toast.error(
-        field === 'name' ? 'Name cannot be empty!' : 'Value cannot be empty!'
+        field === 'name' ? t('errorEmptyName') : t('errorEmptyValue')
       );
       return;
     }
     if (field === 'name' && isDuplicate(headers, trimmedValue, index)) {
-      toast.error('Header with this name already exists!');
+      toast.error(t('errorDuplicateName'));
       return;
     }
     const updated = [...headers];

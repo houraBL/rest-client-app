@@ -2,7 +2,8 @@
   "Header": {
     "login": "Log In",
     "signup": "Sign Up",
-    "signout": "Sign Out"
+    "signout": "Sign Out",
+    "loggedOut": "You have been logged out"
   },
   "Footer": {
     "course": "RS School React course",
@@ -32,7 +33,10 @@
     "variables": "Variables",
     "variable": "Variable",
     "value": "Value",
-    "add": "Add"
+    "add": "Add",
+    "errorEmptyName": "Name cannot be empty",
+    "errorDuplicateName": "Variable with this name already exists",
+    "errorEmptyValue": "Value cannot be empty"
   },
   "Auth": {
     "nameLabel": "Name",
@@ -60,7 +64,10 @@
   "Headers": {
     "headersTitle": "Headers",
     "header": "Header",
-    "value": "Value"
+    "value": "Value",
+    "errorEmptyName": "Name cannot be empty",
+    "errorDuplicateName": "Header with this name already exists",
+    "errorEmptyValue": "Value cannot be empty"
   },
   "History": {
     "historyTitle": "Requests History",
@@ -80,7 +87,8 @@
     "error": "Error generating code",
     "selectLanguage": "Select Language",
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "failedToCopy": "Failed to copy"
   },
   "Body": {
     "body": "Body",
@@ -93,7 +101,8 @@
   "Response": {
     "responseStatus": "Response Status: ",
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "failedToCopy": "Failed to copy"
   },
   "Input": {
     "enterUrl": "Enter URL"

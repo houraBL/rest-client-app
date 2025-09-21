@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useVariableLocalStorage } from '../useVariableLocalStorage/useVariableLocalStorage';
+import { useTranslations } from 'next-intl';
 
 export type VariableType = {
   name: string;
@@ -20,6 +21,7 @@ function isDuplicate(
 }
 
 export default function useVariables() {
+  const t = useTranslations('Variables');
   const [variables, setVariables] = useVariableLocalStorage<VariableType[]>(
     'variables',
     []
@@ -30,11 +32,11 @@ export default function useVariables() {
   const addVariable = () => {
     const trimmedName = newVarName.trim();
     const trimmedValue = newValue.trim();
-    if (!trimmedName) return toast.error('Please enter a variable name!');
-    if (!trimmedValue) return toast.error('Please enter a variable value!');
+    if (!trimmedName) return toast.error(t('errorEmptyName'));
+    if (!trimmedValue) return toast.error(t('errorEmptyValue'));
 
     if (isDuplicate(variables, trimmedName)) {
-      return toast.error('Variable with this name already exists!');
+      return toast.error(t('errorDuplicateName'));
     }
     setVariables([...variables, { name: trimmedName, value: trimmedValue }]);
     setNewVarName('');
@@ -49,13 +51,13 @@ export default function useVariables() {
     const trimmedValue = typeof value === 'string' ? value.trim() : value;
     if (!trimmedValue) {
       toast.error(
-        field === 'name' ? 'Name cannot be empty!' : 'Value cannot be empty!'
+        field === 'name' ? t('errorEmptyName') : t('errorEmptyValue')
       );
       return;
     }
 
     if (field === 'name' && isDuplicate(variables, trimmedValue, index)) {
-      toast.error('Variable with this name already exists!');
+      toast.error(t('errorDuplicateName'));
       return;
     }
 

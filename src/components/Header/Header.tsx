@@ -32,7 +32,7 @@ export default function Header() {
   const handleLogout = async () => {
     await logoutAndClearCookie();
     setUser(null);
-    toast.success('Logged out');
+    toast.success(t('loggedOut'));
     router.push('/');
     dispatch(resetClient());
   };

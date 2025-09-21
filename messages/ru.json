@@ -2,7 +2,8 @@
   "Header": {
     "login": "Войти",
     "signup": "Регистрация",
-    "signout": "Выйти"
+    "signout": "Выйти",
+    "loggedOut": "Вы вышли из системы"
   },
   "Footer": {
     "course": "RS School курс по React",
@@ -32,7 +33,10 @@
     "variables": "Переменные",
     "variable": "Переменная",
     "value": "Значение",
-    "add": "Добавить"
+    "add": "Добавить",
+    "errorEmptyName": "Имя не может быть пустым",
+    "errorDuplicateName": "Переменная с таким именем уже существует",
+    "errorEmptyValue": "Значение не может быть пустым"
   },
   "Auth": {
     "nameLabel": "Имя",
@@ -60,7 +64,10 @@
   "Headers": {
     "headersTitle": "Хэдеры",
     "header": "Хэдер",
-    "value": "Значение"
+    "value": "Значение",
+    "errorEmptyName": "Имя не может быть пустым",
+    "errorDuplicateName": "Хэдер с таким именем уже существует",
+    "errorEmptyValue": "Значение не может быть пустым"
   },
   "History": {
     "historyTitle": "История Запросов",
@@ -80,7 +87,8 @@
     "error": "Ошибка при генерации кода",
     "selectLanguage": "Выберите язык",
     "copy": "Копировать",
-    "copied": "Скопировано!"
+    "copied": "Скопировано!",
+    "failedToCopy": "Не удалось скопировать"
   },
   "Body": {
     "body": "Тело запроса",
@@ -93,7 +101,8 @@
   "Response": {
     "responseStatus": "Статус ответа:",
     "copy": "Копировать",
-    "copied": "Скопировано!"
+    "copied": "Скопировано!",
+    "failedToCopy": "Не удалось скопировать"
   },
   "Input": {
     "enterUrl": "Введите URL"
