@@ -5,24 +5,58 @@ import { UrlInput } from './UrlInput/UrlInput';
 import { BodyEditor } from './BodyEditor/BodyEditor';
 import { CodeGenerator } from './CodeGenerator/CodeGenerator';
 import { SendButton } from './SendButton/SendButton';
-import { ResponseViewer } from './ResponseViewer/ResponseViewer';
-import { Headers } from './Headers/Headers';
 import { useVariableLocalStorage } from '@/hooks/useVariableLocalStorage/useVariableLocalStorage';
 import { VariableType } from '@/hooks/useVariables/useVariables';
-import { useDispatch } from 'react-redux';
-import { setVariables } from '@/store/clientSlice';
+import { ResponseViewer } from './ResponseViewer/ResponseViewer';
+import { Headers } from './Headers/Headers';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useParsedUrl } from '@/hooks/useParseUrl/useParseUrl';
+import {
+  setBody,
+  setBodyHeader,
+  setHeaders,
+  setMethod,
+  setUrl,
+  setVariables,
+} from '@/store/clientSlice';
+import { RootState } from '@/store/store';
 
 export default function ClientPage() {
+  const { method, url, body, headers } = useParsedUrl();
+  const storedHeaders = useSelector((state: RootState) => state.client.headers);
   const dispatch = useDispatch();
   const [variables] = useVariableLocalStorage<VariableType[]>('variables', []);
-
+  
   useEffect(() => {
+    dispatch(setMethod(method));
+    if (url) dispatch(setUrl(url));
+    if (body) dispatch(setBody(body));
+
+    if (
+      Object.keys(headers).length > 0 &&
+      Object.keys(storedHeaders).length === 0
+    ) {
+      if (headers['Content-Type']) {
+        const CTheader = headers['Content-Type'];
+        if (
+          CTheader === 'application/json' ||
+          CTheader === 'application/xml' ||
+          CTheader === 'text/plain'
+        ) {
+          dispatch(setBodyHeader({ value: CTheader }));
+        }
+      }
+      const { ['Content-Type']: _, ...restHeaders } = headers;
+      if (Object.keys(restHeaders).length > 0) {
+        dispatch(setHeaders(restHeaders));
+      }
+    }
     const variablesObj = Object.fromEntries(
       variables.map((v: VariableType) => [v.name, v.value])
     );
     dispatch(setVariables(variablesObj));
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="flex w-full max-w-5xl flex-col gap-5 py-10 px-2 sm:px-10 mx-1 sm:mx-10">

@@ -4,10 +4,7 @@ import { useRouter } from '@/i18n/navigation';
 import { RootState } from '@/store/store';
 import { encodeBase64 } from './encodeBase64';
 
-export function replaceUrl(
-  router: ReturnType<typeof useRouter>,
-  state: RootState['client']
-) {
+export function getFinalUrl(state: RootState['client']) {
   let path = `/client/${state.method}`;
 
   if (state.url) {
@@ -30,5 +27,5 @@ export function replaceUrl(
     path += `?${queryString}`;
   }
 
-  router.push(path, { scroll: false });
+  return path;
 }
