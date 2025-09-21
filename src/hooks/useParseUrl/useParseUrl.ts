@@ -19,7 +19,7 @@ export function useParsedUrl() {
   if (typeof window !== 'undefined') {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.forEach((value, key) => {
-      headers[key] = decodeURIComponent(value);
+      headers[key] = value;
     });
   }
 
