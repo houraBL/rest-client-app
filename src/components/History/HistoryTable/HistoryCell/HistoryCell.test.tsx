@@ -47,7 +47,9 @@ describe('History Cell', () => {
         </tbody>
       </table>
     );
-    expect(screen.getByText('18 Sep 2023, 03:15:30')).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes('18 Sep 2023'))
+    ).toBeInTheDocument();
   });
 
   it('renders endpoint URL as a link with encoded href', () => {

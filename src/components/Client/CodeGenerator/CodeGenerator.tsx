@@ -6,8 +6,11 @@ import { RootState } from '@/store/store';
 import { Editor } from '@monaco-editor/react';
 import { LANGUAGES } from '@/types/languages';
 import useTheme from '@/hooks/useTheme';
+import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 
 export function CodeGenerator() {
+  const t = useTranslations('Code');
   const { method, url, body } = useSelector((state: RootState) => state.client);
   const [selectedLabel, setSelectedLabel] = useState('');
   const [code, setCode] = useState('');
@@ -32,8 +35,8 @@ export function CodeGenerator() {
       {},
       (err: unknown, snippet: SetStateAction<string>) => {
         if (err) {
-          console.error('Error generating code:', err);
-          setCode('// Error generating code');
+          toast.error(t('error'));
+          setCode(t('error'));
         } else {
           setCode(snippet);
         }
@@ -47,13 +50,13 @@ export function CodeGenerator() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      toast.error('Failed to copy:');
     }
   };
 
   return (
     <div>
-      <span>Generated code</span>
+      <span>{t('generatedCode')}</span>
       <select
         value={selectedLabel}
         onChange={(e) => {
@@ -63,7 +66,7 @@ export function CodeGenerator() {
         className="w-full select select-bordered"
       >
         <option value="" className="hidden">
-          Select Language
+          {t('selectLanguage')}
         </option>
         {LANGUAGES.map((opt) => (
           <option key={opt.label} value={opt.label}>

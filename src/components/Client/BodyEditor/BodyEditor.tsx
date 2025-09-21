@@ -4,6 +4,7 @@ import { setBody, setBodyHeader } from '@/store/clientSlice';
 import { useEffect, useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import useTheme from '@/hooks/useTheme';
+import { useTranslations } from 'next-intl';
 
 type Language = 'json' | 'xml' | 'plaintext';
 
@@ -20,6 +21,7 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
 ];
 
 export function BodyEditor() {
+  const t = useTranslations('Body');
   const dispatch = useDispatch();
   const { theme } = useTheme();
   const requestBody = useSelector((state: RootState) => state.client.body);
@@ -47,7 +49,7 @@ export function BodyEditor() {
 
   return (
     <div>
-      <span>Body</span>
+      <span>{t('body')}</span>
       <div className="flex justify-center gap-2 mb-2">
         {LANGUAGE_OPTIONS.map((option) => (
           <button
